@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS Forward - Gizlilik Politikası / Privacy Policy</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: #333; background: #f8f9fa; }
+        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        h1 { color: #041E42; margin-bottom: 10px; font-size: 28px; }
+        h2 { color: #041E42; margin-top: 30px; margin-bottom: 10px; font-size: 20px; border-bottom: 2px solid #041E42; padding-bottom: 5px; }
+        p, li { margin-bottom: 10px; }
+        ul { padding-left: 20px; }
+        .lang-switch { text-align: right; margin-bottom: 20px; }
+        .lang-switch a { color: #041E42; text-decoration: none; font-weight: bold; padding: 5px 15px; border: 1px solid #041E42; border-radius: 5px; }
+        .lang-switch a:hover { background: #041E42; color: white; }
+        .date { color: #666; font-size: 14px; margin-bottom: 30px; }
+        .section { background: white; padding: 25px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .contact { background: #041E42; color: white; padding: 20px; border-radius: 10px; margin-top: 30px; }
+        .contact a { color: #7eb8ff; }
+        #en { display: none; }
+    </style>
+    <script>
+        function switchLang(lang) {
+            document.getElementById('tr').style.display = lang === 'tr' ? 'block' : 'none';
+            document.getElementById('en').style.display = lang === 'en' ? 'block' : 'none';
+        }
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="lang-switch">
+        <a href="#" onclick="switchLang('tr'); return false;">Türkçe</a>
+        <a href="#" onclick="switchLang('en'); return false;">English</a>
+    </div>
+
+    <!-- TÜRKÇE -->
+    <div id="tr">
+        <h1>🔒 Gizlilik Politikası</h1>
+        <p class="date">SMS Forward — Yorulmaz Software<br>Son güncelleme: Mayıs 2026</p>
+
+        <div class="section">
+            <h2>1. Genel Bakış</h2>
+            <p>SMS Forward, gelen SMS mesajlarınızı belirlediğiniz kurallara göre otomatik olarak e-posta adreslerine yönlendiren bir Android uygulamasıdır. Gizliliğinize saygı duyuyor ve verilerinizi korumayı taahhüt ediyoruz.</p>
+        </div>
+
+        <div class="section">
+            <h2>2. Toplanan Veriler</h2>
+            <p>Uygulama aşağıdaki verileri <strong>yalnızca cihazınızda</strong> işler:</p>
+            <ul>
+                <li><strong>SMS İçerikleri:</strong> Gelen SMS mesajlarının gönderen numarası ve içeriği, yalnızca filtre kurallarınızla eşleştiğinde okunur.</li>
+                <li><strong>E-posta Yapılandırması:</strong> SMTP sunucu bilgileri ve e-posta adresleri, yalnızca cihazınızda saklanır.</li>
+                <li><strong>Filtre Kuralları:</strong> Oluşturduğunuz yönlendirme kuralları cihazınızın yerel veritabanında tutulur.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. Verilerin Kullanımı</h2>
+            <ul>
+                <li>SMS verileri <strong>yalnızca</strong> belirlediğiniz kurallara göre e-posta yönlendirmesi yapmak için kullanılır.</li>
+                <li>Verileriniz hiçbir sunucuya gönderilmez veya üçüncü taraflarla paylaşılmaz.</li>
+                <li>E-postalar doğrudan cihazınızdan, sizin yapılandırdığınız SMTP sunucusu üzerinden gönderilir.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. Veri Depolama</h2>
+            <ul>
+                <li>Tüm veriler cihazınızın yerel depolama alanında (SQLite veritabanı) saklanır.</li>
+                <li>Uygulama kaldırıldığında tüm veriler otomatik olarak silinir.</li>
+                <li>Bulut yedekleme veya sunucu tarafı depolama <strong>yapılmaz</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. Üçüncü Taraf Hizmetler</h2>
+            <p>Uygulama aşağıdaki üçüncü taraf hizmetleri kullanır:</p>
+            <ul>
+                <li><strong>Google Firebase:</strong> Uygulama performansı izleme ve hata raporlama (anonim veriler).</li>
+                <li><strong>Google AdMob:</strong> Ücretsiz sürümde reklam gösterimi. AdMob'un kendi gizlilik politikası geçerlidir.</li>
+                <li><strong>RevenueCat:</strong> Abonelik yönetimi için kullanılır.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>6. Gerekli İzinler</h2>
+            <ul>
+                <li><strong>RECEIVE_SMS / READ_SMS:</strong> Gelen SMS'leri okuyarak e-postaya yönlendirmek için gereklidir.</li>
+                <li><strong>INTERNET:</strong> SMTP üzerinden e-posta göndermek için gereklidir.</li>
+                <li><strong>POST_NOTIFICATIONS:</strong> Yönlendirme bildirimlerini göstermek için gereklidir.</li>
+                <li><strong>FOREGROUND_SERVICE:</strong> Arka planda SMS dinleme servisi için gereklidir.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>7. Kullanıcı Hakları</h2>
+            <p>Dilediğiniz zaman:</p>
+            <ul>
+                <li>Uygulama izinlerini cihaz ayarlarından iptal edebilirsiniz.</li>
+                <li>Uygulamayı kaldırarak tüm verilerinizi silebilirsiniz.</li>
+                <li>E-posta yapılandırmanızı ve kurallarınızı uygulama içinden düzenleyebilir veya silebilirsiniz.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>8. Çocukların Gizliliği</h2>
+            <p>Bu uygulama 13 yaşın altındaki çocuklara yönelik değildir ve bilerek bu yaş grubundan kişisel veri toplamaz.</p>
+        </div>
+
+        <div class="section">
+            <h2>9. Değişiklikler</h2>
+            <p>Bu gizlilik politikası zaman zaman güncellenebilir. Değişiklikler bu sayfada yayınlanacaktır.</p>
+        </div>
+
+        <div class="contact">
+            <h2 style="color: white; border-color: rgba(255,255,255,0.3);">İletişim</h2>
+            <p>Gizlilik ile ilgili sorularınız için:<br>
+            📧 <a href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+        </div>
+    </div>
+
+    <!-- ENGLISH -->
+    <div id="en">
+        <h1>🔒 Privacy Policy</h1>
+        <p class="date">SMS Forward — Yorulmaz Software<br>Last updated: May 2026</p>
+
+        <div class="section">
+            <h2>1. Overview</h2>
+            <p>SMS Forward is an Android application that automatically forwards incoming SMS messages to email addresses based on rules you define. We respect your privacy and are committed to protecting your data.</p>
+        </div>
+
+        <div class="section">
+            <h2>2. Data Collected</h2>
+            <p>The application processes the following data <strong>only on your device</strong>:</p>
+            <ul>
+                <li><strong>SMS Content:</strong> Sender number and content of incoming SMS messages are read only when they match your filter rules.</li>
+                <li><strong>Email Configuration:</strong> SMTP server details and email addresses are stored only on your device.</li>
+                <li><strong>Filter Rules:</strong> Forwarding rules you create are kept in your device's local database.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. Use of Data</h2>
+            <ul>
+                <li>SMS data is used <strong>solely</strong> for email forwarding based on your defined rules.</li>
+                <li>Your data is never sent to any server or shared with third parties.</li>
+                <li>Emails are sent directly from your device through the SMTP server you configure.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. Data Storage</h2>
+            <ul>
+                <li>All data is stored in your device's local storage (SQLite database).</li>
+                <li>All data is automatically deleted when the application is uninstalled.</li>
+                <li>No cloud backup or server-side storage is performed.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. Third-Party Services</h2>
+            <p>The application uses the following third-party services:</p>
+            <ul>
+                <li><strong>Google Firebase:</strong> App performance monitoring and crash reporting (anonymous data).</li>
+                <li><strong>Google AdMob:</strong> Ad display in the free version. AdMob's own privacy policy applies.</li>
+                <li><strong>RevenueCat:</strong> Used for subscription management.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>6. Required Permissions</h2>
+            <ul>
+                <li><strong>RECEIVE_SMS / READ_SMS:</strong> Required to read incoming SMS and forward to email.</li>
+                <li><strong>INTERNET:</strong> Required to send emails via SMTP.</li>
+                <li><strong>POST_NOTIFICATIONS:</strong> Required to show forwarding notifications.</li>
+                <li><strong>FOREGROUND_SERVICE:</strong> Required for background SMS listening service.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>7. User Rights</h2>
+            <p>At any time, you can:</p>
+            <ul>
+                <li>Revoke application permissions from device settings.</li>
+                <li>Delete all your data by uninstalling the application.</li>
+                <li>Edit or delete your email configurations and rules from within the app.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>8. Children's Privacy</h2>
+            <p>This application is not intended for children under 13 and does not knowingly collect personal data from this age group.</p>
+        </div>
+
+        <div class="section">
+            <h2>9. Changes</h2>
+            <p>This privacy policy may be updated from time to time. Changes will be published on this page.</p>
+        </div>
+
+        <div class="contact">
+            <h2 style="color: white; border-color: rgba(255,255,255,0.3);">Contact</h2>
+            <p>For privacy-related questions:<br>
+            📧 <a href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
