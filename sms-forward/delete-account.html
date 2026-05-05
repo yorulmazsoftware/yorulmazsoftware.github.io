@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS Forward - Account & Data Deletion</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .lang-switch {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .lang-switch a {
+            display: inline-block;
+            padding: 6px 16px;
+            margin-left: 8px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            color: #555;
+            background: #fff;
+        }
+        .lang-switch a.active {
+            background: #4285f4;
+            color: #fff;
+            border-color: #4285f4;
+        }
+        .section { display: block; }
+        .section.hidden { display: none; }
+        h1 {
+            color: #1a73e8;
+            border-bottom: 3px solid #1a73e8;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            font-size: 1.8em;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95em;
+        }
+        h2 {
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        p, li {
+            margin-bottom: 10px;
+            color: #444;
+        }
+        ul { padding-left: 20px; }
+        .steps {
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #1a73e8;
+        }
+        .steps ol { padding-left: 20px; }
+        .steps li { margin-bottom: 12px; }
+        .email-link {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .email-link:hover { text-decoration: underline; }
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .info-box {
+            background: #e8f4fd;
+            border: 1px solid #90caf9;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        .data-table th {
+            background: #f1f3f4;
+            font-weight: 600;
+            color: #333;
+        }
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            color: #999;
+            font-size: 0.85em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="lang-switch">
+    <a href="#" id="btn-tr" onclick="switchLang('tr')">Türkçe</a>
+    <a href="#" id="btn-en" class="active" onclick="switchLang('en')">English</a>
+</div>
+
+<!-- ===================== ENGLISH ===================== -->
+<div id="section-en" class="section">
+    <h1>SMS Forward — Account & Data Deletion</h1>
+    <p class="subtitle">Yorulmaz Software &bull; Last updated: May 2026</p>
+
+    <h2>1. How to Delete Your Account</h2>
+    <p>If you wish to delete your SMS Forward account and all associated data, you can do so using either of the following methods:</p>
+
+    <div class="steps">
+        <h3>Method 1 — In-App Deletion</h3>
+        <ol>
+            <li>Open the <strong>SMS Forward</strong> app on your device.</li>
+            <li>Go to <strong>Settings</strong> (gear icon).</li>
+            <li>Scroll down and tap <strong>"Delete Account"</strong>.</li>
+            <li>Confirm the deletion when prompted.</li>
+        </ol>
+        <p>Your account and all associated data will be permanently deleted immediately.</p>
+    </div>
+
+    <div class="steps">
+        <h3>Method 2 — Email Request</h3>
+        <ol>
+            <li>Send an email to <a href="mailto:yorulmazsoftware@gmail.com" class="email-link">yorulmazsoftware@gmail.com</a></li>
+            <li>Use the subject line: <strong>"Account Deletion Request — SMS Forward"</strong></li>
+            <li>Include the email address associated with your account in the body.</li>
+        </ol>
+        <p>We will process your request within <strong>3 business days</strong> and send you a confirmation email.</p>
+    </div>
+
+    <h2>2. What Data Is Deleted</h2>
+    <p>When you delete your account, the following data is permanently removed:</p>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Data Type</th>
+                <th>Storage Location</th>
+                <th>Deletion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Account credentials (Google OAuth)</td>
+                <td>Firebase Authentication</td>
+                <td>Immediately deleted</td>
+            </tr>
+            <tr>
+                <td>SMTP / Email configuration</td>
+                <td>Device only (local)</td>
+                <td>Deleted with app uninstall or in-app</td>
+            </tr>
+            <tr>
+                <td>Filter rules</td>
+                <td>Device only (local)</td>
+                <td>Deleted with app uninstall or in-app</td>
+            </tr>
+            <tr>
+                <td>Subscription data</td>
+                <td>RevenueCat / Google Play</td>
+                <td>Deleted within 3 business days</td>
+            </tr>
+            <tr>
+                <td>Analytics data</td>
+                <td>Firebase (anonymous)</td>
+                <td>Automatically expires per retention policy</td>
+            </tr>
+            <tr>
+                <td>Crash logs</td>
+                <td>Firebase Crashlytics</td>
+                <td>Automatically expires after 90 days</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="warning-box">
+        <strong>⚠️ Important:</strong> Account deletion is permanent and cannot be undone. Please make sure you have exported any data you wish to keep before proceeding.
+    </div>
+
+    <h2>3. Data Deletion Without Account Deletion</h2>
+    <p>You can also delete your data without deleting your account:</p>
+    <ul>
+        <li>Delete individual filter rules from the app's main screen.</li>
+        <li>Clear SMTP settings from the Settings page.</li>
+        <li>Clear forwarding history from the app.</li>
+    </ul>
+
+    <div class="info-box">
+        <strong>ℹ️ Note:</strong> All locally stored data (SMTP settings, filter rules, forwarding history) is automatically deleted when you uninstall the app from your device.
+    </div>
+
+    <h2>4. Contact Us</h2>
+    <p>If you have any questions about data deletion, please contact us:</p>
+    <p>📧 <a href="mailto:yorulmazsoftware@gmail.com" class="email-link">yorulmazsoftware@gmail.com</a></p>
+</div>
+
+<!-- ===================== TÜRKÇE ===================== -->
+<div id="section-tr" class="section hidden">
+    <h1>SMS Forward — Hesap ve Veri Silme</h1>
+    <p class="subtitle">Yorulmaz Software &bull; Son güncelleme: Mayıs 2026</p>
+
+    <h2>1. Hesabınızı Nasıl Silebilirsiniz</h2>
+    <p>SMS Forward hesabınızı ve ilişkili tüm verilerinizi silmek istiyorsanız, aşağıdaki yöntemlerden birini kullanabilirsiniz:</p>
+
+    <div class="steps">
+        <h3>Yöntem 1 — Uygulama İçinden Silme</h3>
+        <ol>
+            <li>Cihazınızda <strong>SMS Forward</strong> uygulamasını açın.</li>
+            <li><strong>Ayarlar</strong> (dişli simgesi) bölümüne gidin.</li>
+            <li>Aşağı kaydırın ve <strong>"Hesabı Sil"</strong> seçeneğine dokunun.</li>
+            <li>İstendiğinde silme işlemini onaylayın.</li>
+        </ol>
+        <p>Hesabınız ve ilişkili tüm veriler anında kalıcı olarak silinecektir.</p>
+    </div>
+
+    <div class="steps">
+        <h3>Yöntem 2 — E-posta ile Talep</h3>
+        <ol>
+            <li><a href="mailto:yorulmazsoftware@gmail.com" class="email-link">yorulmazsoftware@gmail.com</a> adresine e-posta gönderin.</li>
+            <li>Konu satırını şu şekilde yazın: <strong>"Hesap Silme Talebi — SMS Forward"</strong></li>
+            <li>E-posta gövdesine hesabınızla ilişkili e-posta adresini ekleyin.</li>
+        </ol>
+        <p>Talebiniz <strong>3 iş günü</strong> içinde işleme alınacak ve size onay e-postası gönderilecektir.</p>
+    </div>
+
+    <h2>2. Hangi Veriler Silinir</h2>
+    <p>Hesabınızı sildiğinizde aşağıdaki veriler kalıcı olarak kaldırılır:</p>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Veri Türü</th>
+                <th>Depolama Yeri</th>
+                <th>Silme</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Hesap bilgileri (Google OAuth)</td>
+                <td>Firebase Authentication</td>
+                <td>Anında silinir</td>
+            </tr>
+            <tr>
+                <td>SMTP / E-posta yapılandırması</td>
+                <td>Yalnızca cihaz (yerel)</td>
+                <td>Uygulama kaldırıldığında veya uygulama içinden silinir</td>
+            </tr>
+            <tr>
+                <td>Filtre kuralları</td>
+                <td>Yalnızca cihaz (yerel)</td>
+                <td>Uygulama kaldırıldığında veya uygulama içinden silinir</td>
+            </tr>
+            <tr>
+                <td>Abonelik verileri</td>
+                <td>RevenueCat / Google Play</td>
+                <td>3 iş günü içinde silinir</td>
+            </tr>
+            <tr>
+                <td>Analitik verileri</td>
+                <td>Firebase (anonim)</td>
+                <td>Saklama politikasına göre otomatik olarak süresi dolar</td>
+            </tr>
+            <tr>
+                <td>Çökme günlükleri</td>
+                <td>Firebase Crashlytics</td>
+                <td>90 gün sonra otomatik olarak silinir</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="warning-box">
+        <strong>⚠️ Önemli:</strong> Hesap silme işlemi kalıcıdır ve geri alınamaz. Devam etmeden önce saklamak istediğiniz verileri dışa aktardığınızdan emin olun.
+    </div>
+
+    <h2>3. Hesap Silmeden Veri Silme</h2>
+    <p>Hesabınızı silmeden verilerinizi de silebilirsiniz:</p>
+    <ul>
+        <li>Uygulamanın ana ekranından filtre kurallarını tek tek silebilirsiniz.</li>
+        <li>Ayarlar sayfasından SMTP ayarlarını temizleyebilirsiniz.</li>
+        <li>Uygulamadan yönlendirme geçmişini temizleyebilirsiniz.</li>
+    </ul>
+
+    <div class="info-box">
+        <strong>ℹ️ Not:</strong> Yerel olarak depolanan tüm veriler (SMTP ayarları, filtre kuralları, yönlendirme geçmişi), uygulamayı cihazınızdan kaldırdığınızda otomatik olarak silinir.
+    </div>
+
+    <h2>4. İletişim</h2>
+    <p>Veri silme ile ilgili sorularınız için bizimle iletişime geçin:</p>
+    <p>📧 <a href="mailto:yorulmazsoftware@gmail.com" class="email-link">yorulmazsoftware@gmail.com</a></p>
+</div>
+
+<footer>
+    <p>&copy; 2026 Yorulmaz Software. All rights reserved.</p>
+</footer>
+
+<script>
+    function switchLang(lang) {
+        document.getElementById('section-en').classList.toggle('hidden', lang !== 'en');
+        document.getElementById('section-tr').classList.toggle('hidden', lang !== 'tr');
+        document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+        document.getElementById('btn-tr').classList.toggle('active', lang === 'tr');
+    }
+</script>
+
+</body>
+</html>
