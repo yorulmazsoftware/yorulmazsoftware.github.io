@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMS Forward — Help Center</title>
+    <style>
+        :root { --navy: #041E42; --navy-mid: #0a2d5e; --bg: #F7F8FC; --card: #FFFFFF; --border: #EEF0F5; --text: #1a1a2e; --muted: #6B7280; --success: #1a6b3c; --warning: #92400e; --telegram: #0088CC; --discord: #5865F2; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+        .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%); color: white; padding: 48px 24px; text-align: center; }
+        .hero h1 { font-size: 28px; margin-bottom: 8px; }
+        .hero p { opacity: 0.7; font-size: 14px; }
+        .container { max-width: 720px; margin: 0 auto; padding: 24px 16px; }
+        .section { margin-bottom: 32px; }
+        .section h2 { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: var(--navy); display: flex; align-items: center; gap: 8px; }
+        .section h2 .icon { font-size: 24px; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 12px; }
+        .card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+        .card p, .card li { font-size: 14px; color: var(--muted); }
+        .card ol, .card ul { padding-left: 20px; }
+        .card ol li, .card ul li { margin-bottom: 6px; }
+        .steps { counter-reset: step; list-style: none; padding: 0; }
+        .steps li { counter-increment: step; padding: 12px 16px 12px 48px; position: relative; border-left: 2px solid var(--border); margin-left: 16px; }
+        .steps li::before { content: counter(step); position: absolute; left: -16px; top: 12px; width: 30px; height: 30px; background: var(--navy); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+        .steps li:last-child { border-left: none; }
+        .steps li strong { display: block; font-size: 14px; color: var(--text); margin-bottom: 2px; }
+        .steps li span { font-size: 13px; color: var(--muted); }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; color: white; vertical-align: middle; }
+        .badge-pro { background: var(--warning); }
+        .badge-free { background: var(--success); }
+        code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 13px; }
+        .tip { background: #FEF3C7; border: 1px solid #FDE68A; border-radius: 12px; padding: 14px 16px; margin: 12px 0; font-size: 13px; }
+        .tip strong { color: var(--warning); }
+        a { color: var(--navy); }
+        .footer { text-align: center; padding: 32px; color: var(--muted); font-size: 12px; }
+        @media (prefers-color-scheme: dark) {
+            :root { --bg: #0a0a1a; --card: #1a1a2e; --border: #2a2a3e; --text: #e0e0e0; --muted: #9ca3af; }
+            .hero { background: linear-gradient(135deg, #000 0%, var(--navy-mid) 100%); }
+            code { background: #1e293b; color: #e0e0e0; }
+            .tip { background: #451a03; border-color: #78350f; }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>📱 SMS Forward</h1>
+        <p>Help Center — Comprehensive User Guide</p>
+    </div>
+
+    <div class="container">
+
+        <!-- Getting Started -->
+        <div class="section">
+            <h2><span class="icon">🚀</span> Getting Started</h2>
+            <div class="card">
+                <h3>How SMS Forward Works</h3>
+                <p>SMS Forward automatically captures incoming SMS messages and forwards them to your configured destinations — Email, Telegram, Discord, or custom Webhooks.</p>
+                <ol style="margin-top: 12px;">
+                    <li>Set up at least one <strong>SMTP email configuration</strong></li>
+                    <li>Create a <strong>forwarding target</strong> (where to send)</li>
+                    <li>Create a <strong>filter rule</strong> (which SMS to forward)</li>
+                    <li>Grant <strong>SMS and notification permissions</strong></li>
+                    <li>Enable the <strong>forwarding service</strong></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- SMTP Setup -->
+        <div class="section">
+            <h2><span class="icon">📧</span> Email (SMTP) Setup</h2>
+            <div class="card">
+                <h3>Gmail App Password Setup</h3>
+                <ol class="steps">
+                    <li><strong>Enable 2-Factor Authentication</strong><span>Go to Google Account → Security → 2-Step Verification → Turn On</span></li>
+                    <li><strong>Generate App Password</strong><span>Google Account → Security → App Passwords → Select "Mail" → Generate</span></li>
+                    <li><strong>Copy the 16-digit password</strong><span>This will be your SMTP password (NOT your regular Gmail password)</span></li>
+                    <li><strong>Configure in SMS Forward</strong><span>SMTP Host: <code>smtp.gmail.com</code> | Port: <code>587</code> | SSL: On</span></li>
+                </ol>
+                <div class="tip"><strong>💡 Tip:</strong> For Outlook use <code>smtp-mail.outlook.com</code> port <code>587</code>. For Yahoo use <code>smtp.mail.yahoo.com</code> port <code>465</code>.</div>
+            </div>
+        </div>
+
+        <!-- Telegram -->
+        <div class="section">
+            <h2><span class="icon">✈️</span> Telegram Bot Setup <span class="badge badge-pro">PRO</span></h2>
+            <div class="card">
+                <h3>Create a Telegram Bot & Get Chat ID</h3>
+                <ol class="steps">
+                    <li><strong>Open @BotFather on Telegram</strong><span>Search for <code>@BotFather</code> in Telegram and start a chat</span></li>
+                    <li><strong>Send /newbot</strong><span>Follow the prompts to name your bot and choose a username (must end with "bot")</span></li>
+                    <li><strong>Copy the Bot Token</strong><span>BotFather will give you a token like: <code>1234567890:ABCdef...</code></span></li>
+                    <li><strong>Start your bot</strong><span>Find your new bot in Telegram and press "Start", then send any message</span></li>
+                    <li><strong>Get your Chat ID</strong><span>Open in browser: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></span></li>
+                    <li><strong>Find the chat ID</strong><span>Look for <code>"chat":{"id":XXXXXXX}</code> — that number is your Chat ID</span></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Discord -->
+        <div class="section">
+            <h2><span class="icon">🎮</span> Discord Webhook Setup <span class="badge badge-pro">PRO</span></h2>
+            <div class="card">
+                <h3>Create a Discord Webhook</h3>
+                <ol class="steps">
+                    <li><strong>Open Server Settings</strong><span>Right-click your server → Server Settings → Integrations</span></li>
+                    <li><strong>Create Webhook</strong><span>Click "Webhooks" → "New Webhook" → Choose the target channel</span></li>
+                    <li><strong>Copy Webhook URL</strong><span>Click "Copy Webhook URL" — it looks like <code>https://discord.com/api/webhooks/...</code></span></li>
+                    <li><strong>Paste in SMS Forward</strong><span>Add a Discord forwarding target and paste the URL</span></li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Webhook -->
+        <div class="section">
+            <h2><span class="icon">🌐</span> Webhook Setup <span class="badge badge-pro">PRO</span></h2>
+            <div class="card">
+                <h3>Generic HTTP Webhook</h3>
+                <p>Webhooks send an HTTP POST (or PUT/PATCH) request to any URL you specify whenever an SMS matches your rule. This is perfect for integrating with:</p>
+                <ul style="margin-top: 8px;">
+                    <li><strong>Zapier</strong> — Use a "Catch Hook" trigger</li>
+                    <li><strong>IFTTT</strong> — Use a Webhooks trigger</li>
+                    <li><strong>n8n / Make</strong> — Use a Webhook node</li>
+                    <li><strong>Custom API</strong> — Your own server endpoint</li>
+                </ul>
+                <h3 style="margin-top: 16px;">Body Template Placeholders</h3>
+                <p>Use these placeholders in your JSON body template:</p>
+                <ul style="margin-top: 4px;">
+                    <li><code>{sender}</code> — Phone number or sender ID</li>
+                    <li><code>{contactName}</code> — Contact name (if permission granted)</li>
+                    <li><code>{body}</code> — SMS text content</li>
+                    <li><code>{date}</code> — ISO 8601 timestamp</li>
+                    <li><code>{ruleName}</code> — Matched rule name</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Filter Rules -->
+        <div class="section">
+            <h2><span class="icon">🔍</span> Filter Rules</h2>
+            <div class="card">
+                <h3>How Filter Matching Works</h3>
+                <p>Each filter rule has a <strong>sender filter</strong> and <strong>content filter</strong>. Both are optional:</p>
+                <ul style="margin-top: 8px;">
+                    <li><strong>Both empty</strong> — matches ALL incoming SMS</li>
+                    <li><strong>Sender filter only</strong> — matches SMS from specific sender</li>
+                    <li><strong>Content filter only</strong> — matches SMS containing specific text</li>
+                    <li><strong>Both set</strong> — both conditions must match (AND logic)</li>
+                </ul>
+                <div class="tip"><strong>💡 Tip:</strong> Matching is case-insensitive and supports Turkish characters (İ/i, Ş/ş, Ğ/ğ). With contacts permission, you can also filter by contact name.</div>
+                <h3 style="margin-top: 16px;">Regex Filtering <span class="badge badge-pro">PRO</span></h3>
+                <p>Pro users can enable regex for advanced pattern matching. Examples:</p>
+                <ul style="margin-top: 4px;">
+                    <li><code>^\\+90</code> — Turkish numbers only</li>
+                    <li><code>OTP|verification|code</code> — OTP messages</li>
+                    <li><code>\\d{6}</code> — Messages containing 6-digit codes</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Permissions -->
+        <div class="section">
+            <h2><span class="icon">🔐</span> Permissions</h2>
+            <div class="card">
+                <h3>Required Permissions</h3>
+                <ul>
+                    <li><strong>SMS (Receive SMS)</strong> — Core functionality, required to capture incoming messages</li>
+                    <li><strong>Notifications</strong> — Shows forwarding status notifications</li>
+                    <li><strong>Battery Optimization</strong> — Prevents system from killing the background service</li>
+                </ul>
+                <h3 style="margin-top: 16px;">Optional Permissions</h3>
+                <ul>
+                    <li><strong>Contacts</strong> — Enables filtering by contact name instead of phone number</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Battery -->
+        <div class="section">
+            <h2><span class="icon">🔋</span> Battery & Background Service</h2>
+            <div class="card">
+                <h3>Keeping SMS Forward Running</h3>
+                <p>Android aggressively kills background apps to save battery. To ensure SMS Forward works reliably:</p>
+                <ol style="margin-top: 8px;">
+                    <li>Go to <strong>Settings → Battery Optimization</strong> and disable optimization for SMS Forward</li>
+                    <li>On <strong>Xiaomi/MIUI</strong>: Settings → Apps → Manage apps → SMS Forward → Autostart: ON</li>
+                    <li>On <strong>Huawei/EMUI</strong>: Settings → Battery → App launch → SMS Forward → Manage manually → Enable all</li>
+                    <li>On <strong>Samsung</strong>: Settings → Battery → Battery usage → Sleeping apps → Remove SMS Forward</li>
+                </ol>
+                <div class="tip"><strong>⚠️ Important:</strong> After a device restart, the app's boot receiver will automatically restart the forwarding service if it was enabled.</div>
+            </div>
+        </div>
+
+        <!-- Troubleshooting -->
+        <div class="section">
+            <h2><span class="icon">🔧</span> Troubleshooting</h2>
+            <div class="card">
+                <h3>SMS is not being forwarded</h3>
+                <ul>
+                    <li>Check that the forwarding service is <strong>ON</strong> (toggle on home screen)</li>
+                    <li>Verify SMS permission is granted in <strong>Settings → Permissions</strong></li>
+                    <li>Ensure battery optimization is disabled for the app</li>
+                    <li>Check that your filter rule is <strong>active</strong> and has at least one forwarding target</li>
+                    <li>Review <strong>Debug Logs</strong> (Settings → Debug Logs) for detailed error info</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Email sending fails</h3>
+                <ul>
+                    <li>Verify your SMTP credentials — use an <strong>App Password</strong>, not your regular password</li>
+                    <li>Check SMTP host and port are correct</li>
+                    <li>Try sending a test email from the forwarding target screen</li>
+                    <li>For Gmail: ensure "Less secure apps" or App Passwords are configured</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Telegram messages not arriving</h3>
+                <ul>
+                    <li>Make sure you <strong>started</strong> the bot (sent /start or any message)</li>
+                    <li>Verify the Bot Token and Chat ID are correct</li>
+                    <li>Try the test button on the Telegram forwarding target screen</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Free vs Pro -->
+        <div class="section">
+            <h2><span class="icon">⭐</span> Free vs Pro</h2>
+            <div class="card">
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <th style="text-align: left; padding: 8px;">Feature</th>
+                        <th style="text-align: center; padding: 8px;"><span class="badge badge-free">FREE</span></th>
+                        <th style="text-align: center; padding: 8px;"><span class="badge badge-pro">PRO</span></th>
+                    </tr>
+                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Filter rules</td><td style="text-align: center;">1</td><td style="text-align: center;">Unlimited</td></tr>
+                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Email recipients</td><td style="text-align: center;">1</td><td style="text-align: center;">10</td></tr>
+                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">SMS history</td><td style="text-align: center;">50</td><td style="text-align: center;">Unlimited</td></tr>
+                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Email forwarding</td><td style="text-align: center;">✅</td><td style="text-align: center;">✅</td></tr>
+                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Telegram</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Discord</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Webhook</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Regex filtering</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+                    <tr><td style="padding: 8px;">Ads</td><td style="text-align: center;">Yes</td><td style="text-align: center;">No</td></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>SMS Forward by Yorulmaz Software</p>
+        <p style="margin-top: 4px;">
+            <a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Service</a> · <a href="mailto:yorulmazsoftware@gmail.com">Contact</a>
+        </p>
+    </div>
+</body>
+</html>
