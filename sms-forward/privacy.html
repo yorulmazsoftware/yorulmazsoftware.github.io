@@ -6,37 +6,80 @@
     <title>SMS Forward - Gizlilik Politikası / Privacy Policy</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; color: #333; background: #f8f9fa; }
-        .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Devanagari', 'Noto Sans Bengali', 'Noto Nastaliq Urdu', sans-serif; line-height: 1.7; color: #333; background: #f8f9fa; }
+        .container { max-width: 820px; margin: 0 auto; padding: 40px 20px; }
         h1 { color: #041E42; margin-bottom: 10px; font-size: 28px; }
         h2 { color: #041E42; margin-top: 30px; margin-bottom: 10px; font-size: 20px; border-bottom: 2px solid #041E42; padding-bottom: 5px; }
         p, li { margin-bottom: 10px; }
         ul { padding-left: 20px; }
-        .lang-switch { text-align: right; margin-bottom: 20px; }
-        .lang-switch a { color: #041E42; text-decoration: none; font-weight: bold; padding: 5px 15px; border: 1px solid #041E42; border-radius: 5px; }
-        .lang-switch a:hover { background: #041E42; color: white; }
+        .lang-switch { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; margin-bottom: 20px; }
+        .lang-btn { background: #fff; color: #041E42; border: 1px solid #041E42; border-radius: 6px; padding: 6px 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .15s, color .15s; font-family: inherit; }
+        .lang-btn:hover { background: #e9eef7; }
+        .lang-btn.active { background: #041E42; color: #fff; }
         .date { color: #666; font-size: 14px; margin-bottom: 30px; }
         .section { background: white; padding: 25px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .contact { background: #041E42; color: white; padding: 20px; border-radius: 10px; margin-top: 30px; }
         .contact a { color: #7eb8ff; }
-        #en { display: none; }
+        .lang-content { display: none; }
+        .lang-content.active { display: block; }
+        [dir="rtl"] { text-align: right; }
+        [dir="rtl"] ul { padding-left: 0; padding-right: 20px; }
+        [dir="rtl"] h2 { text-align: right; }
+        @media (max-width: 600px) {
+            .lang-switch { justify-content: center; }
+            .lang-btn { font-size: 13px; padding: 6px 10px; }
+            .container { padding: 24px 14px; }
+            h1 { font-size: 24px; }
+            h2 { font-size: 18px; }
+        }
     </style>
     <script>
+        var SUPPORTED_LANGS = ['tr','en','de','es','pt','fr','ar','hi','ru','id','bn','ur'];
+        var RTL_LANGS = ['ar','ur'];
         function switchLang(lang) {
-            document.getElementById('tr').style.display = lang === 'tr' ? 'block' : 'none';
-            document.getElementById('en').style.display = lang === 'en' ? 'block' : 'none';
+            if (SUPPORTED_LANGS.indexOf(lang) === -1) { lang = 'en'; }
+            var contents = document.querySelectorAll('.lang-content');
+            for (var i = 0; i < contents.length; i++) { contents[i].classList.remove('active'); }
+            var buttons = document.querySelectorAll('.lang-btn');
+            for (var j = 0; j < buttons.length; j++) { buttons[j].classList.remove('active'); }
+            var activeContent = document.querySelector('.lang-content[data-lang="' + lang + '"]');
+            var activeButton = document.querySelector('.lang-btn[data-lang="' + lang + '"]');
+            if (activeContent) { activeContent.classList.add('active'); }
+            if (activeButton) { activeButton.classList.add('active'); }
+            document.documentElement.lang = lang;
+            document.documentElement.dir = RTL_LANGS.indexOf(lang) !== -1 ? 'rtl' : 'ltr';
+            try { localStorage.setItem('smsforward_lang', lang); } catch (e) {}
         }
+        document.addEventListener('DOMContentLoaded', function () {
+            var saved = null;
+            try { saved = localStorage.getItem('smsforward_lang'); } catch (e) {}
+            if (!saved) {
+                var nav = (navigator.language || 'tr').toLowerCase().split('-')[0];
+                saved = SUPPORTED_LANGS.indexOf(nav) !== -1 ? nav : 'tr';
+            }
+            switchLang(saved);
+        });
     </script>
 </head>
 <body>
 <div class="container">
-    <div class="lang-switch">
-        <a href="#" onclick="switchLang('tr'); return false;">Türkçe</a>
-        <a href="#" onclick="switchLang('en'); return false;">English</a>
+    <div class="lang-switch" role="tablist" aria-label="Language selector">
+        <button type="button" class="lang-btn" data-lang="tr" onclick="switchLang('tr')">🇹🇷 Türkçe</button>
+        <button type="button" class="lang-btn" data-lang="en" onclick="switchLang('en')">🇬🇧 English</button>
+        <button type="button" class="lang-btn" data-lang="de" onclick="switchLang('de')">🇩🇪 Deutsch</button>
+        <button type="button" class="lang-btn" data-lang="es" onclick="switchLang('es')">🇪🇸 Español</button>
+        <button type="button" class="lang-btn" data-lang="pt" onclick="switchLang('pt')">🇧🇷 Português</button>
+        <button type="button" class="lang-btn" data-lang="fr" onclick="switchLang('fr')">🇫🇷 Français</button>
+        <button type="button" class="lang-btn" data-lang="ar" onclick="switchLang('ar')">🇸🇦 العربية</button>
+        <button type="button" class="lang-btn" data-lang="hi" onclick="switchLang('hi')">🇮🇳 हिन्दी</button>
+        <button type="button" class="lang-btn" data-lang="ru" onclick="switchLang('ru')">🇷🇺 Русский</button>
+        <button type="button" class="lang-btn" data-lang="id" onclick="switchLang('id')">🇮🇩 Bahasa Indonesia</button>
+        <button type="button" class="lang-btn" data-lang="bn" onclick="switchLang('bn')">🇧🇩 বাংলা</button>
+        <button type="button" class="lang-btn" data-lang="ur" onclick="switchLang('ur')">🇵🇰 اردو</button>
     </div>
 
     <!-- TÜRKÇE -->
-    <div id="tr">
+    <div class="lang-content" data-lang="tr" lang="tr">
         <h1>🔒 Gizlilik Politikası</h1>
         <p class="date">SMS Forward — Yorulmaz Software<br>Son güncelleme: Mayıs 2026</p>
 
@@ -121,7 +164,7 @@
     </div>
 
     <!-- ENGLISH -->
-    <div id="en">
+    <div class="lang-content" data-lang="en" lang="en">
         <h1>🔒 Privacy Policy</h1>
         <p class="date">SMS Forward — Yorulmaz Software<br>Last updated: May 2026</p>
 
@@ -201,6 +244,856 @@
         <div class="contact">
             <h2 style="color: white; border-color: rgba(255,255,255,0.3);">Contact</h2>
             <p>For privacy-related questions:<br>
+            📧 <a href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+        </div>
+    </div>
+
+    <!-- DEUTSCH -->
+    <div class="lang-content" data-lang="de" lang="de">
+        <h1>🔒 Datenschutzerklärung</h1>
+        <p class="date">SMS Forward — Yorulmaz Software<br>Letzte Aktualisierung: Mai 2026</p>
+
+        <div class="section">
+            <h2>1. Überblick</h2>
+            <p>SMS Forward ist eine Android-Anwendung, die eingehende SMS-Nachrichten anhand der von Ihnen definierten Regeln automatisch an E-Mail-Adressen weiterleitet. Wir respektieren Ihre Privatsphäre und verpflichten uns, Ihre Daten zu schützen.</p>
+        </div>
+
+        <div class="section">
+            <h2>2. Erhobene Daten</h2>
+            <p>Die Anwendung verarbeitet die folgenden Daten <strong>ausschließlich auf Ihrem Gerät</strong>:</p>
+            <ul>
+                <li><strong>SMS-Inhalte:</strong> Absendernummer und Inhalt eingehender SMS-Nachrichten werden nur gelesen, wenn sie Ihren Filterregeln entsprechen.</li>
+                <li><strong>E-Mail-Konfiguration:</strong> SMTP-Serverdaten und E-Mail-Adressen werden ausschließlich auf Ihrem Gerät gespeichert.</li>
+                <li><strong>Filterregeln:</strong> Die von Ihnen erstellten Weiterleitungsregeln werden in der lokalen Datenbank Ihres Geräts gespeichert.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. Verwendung der Daten</h2>
+            <ul>
+                <li>SMS-Daten werden <strong>ausschließlich</strong> zur E-Mail-Weiterleitung gemäß Ihren festgelegten Regeln verwendet.</li>
+                <li>Ihre Daten werden niemals an Server übertragen oder an Dritte weitergegeben.</li>
+                <li>E-Mails werden direkt von Ihrem Gerät über den von Ihnen konfigurierten SMTP-Server gesendet.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. Datenspeicherung</h2>
+            <ul>
+                <li>Alle Daten werden im lokalen Speicher Ihres Geräts (SQLite-Datenbank) abgelegt.</li>
+                <li>Alle Daten werden bei der Deinstallation der Anwendung automatisch gelöscht.</li>
+                <li>Es findet <strong>keine</strong> Cloud-Sicherung oder serverseitige Speicherung statt.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. Dienste von Drittanbietern</h2>
+            <p>Die Anwendung nutzt die folgenden Dienste von Drittanbietern:</p>
+            <ul>
+                <li><strong>Google Firebase:</strong> Überwachung der App-Leistung und Absturzberichte (anonyme Daten).</li>
+                <li><strong>Google AdMob:</strong> Anzeigenanzeige in der kostenlosen Version. Es gilt die Datenschutzerklärung von AdMob.</li>
+                <li><strong>RevenueCat:</strong> Wird für die Verwaltung von Abonnements verwendet.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>6. Erforderliche Berechtigungen</h2>
+            <ul>
+                <li><strong>RECEIVE_SMS / READ_SMS:</strong> Erforderlich, um eingehende SMS zu lesen und an E-Mail weiterzuleiten.</li>
+                <li><strong>INTERNET:</strong> Erforderlich, um E-Mails über SMTP zu senden.</li>
+                <li><strong>POST_NOTIFICATIONS:</strong> Erforderlich, um Weiterleitungsbenachrichtigungen anzuzeigen.</li>
+                <li><strong>FOREGROUND_SERVICE:</strong> Erforderlich für den SMS-Hintergrunddienst.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>7. Nutzerrechte</h2>
+            <p>Sie können jederzeit:</p>
+            <ul>
+                <li>Die App-Berechtigungen in den Geräteeinstellungen widerrufen.</li>
+                <li>Alle Ihre Daten durch Deinstallation der Anwendung löschen.</li>
+                <li>Ihre E-Mail-Konfigurationen und Regeln innerhalb der App bearbeiten oder löschen.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>8. Datenschutz von Kindern</h2>
+            <p>Diese Anwendung richtet sich nicht an Kinder unter 13 Jahren und erhebt wissentlich keine personenbezogenen Daten von dieser Altersgruppe.</p>
+        </div>
+
+        <div class="section">
+            <h2>9. Änderungen</h2>
+            <p>Diese Datenschutzerklärung kann von Zeit zu Zeit aktualisiert werden. Änderungen werden auf dieser Seite veröffentlicht.</p>
+        </div>
+
+        <div class="contact">
+            <h2 style="color: white; border-color: rgba(255,255,255,0.3);">Kontakt</h2>
+            <p>Bei Fragen zum Datenschutz:<br>
+            📧 <a href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+        </div>
+    </div>
+
+    <!-- ESPAÑOL -->
+    <div class="lang-content" data-lang="es" lang="es">
+        <h1>🔒 Política de Privacidad</h1>
+        <p class="date">SMS Forward — Yorulmaz Software<br>Última actualización: Mayo de 2026</p>
+
+        <div class="section">
+            <h2>1. Visión general</h2>
+            <p>SMS Forward es una aplicación de Android que reenvía automáticamente los mensajes SMS entrantes a direcciones de correo electrónico según las reglas que usted defina. Respetamos su privacidad y nos comprometemos a proteger sus datos.</p>
+        </div>
+
+        <div class="section">
+            <h2>2. Datos recopilados</h2>
+            <p>La aplicación procesa los siguientes datos <strong>únicamente en su dispositivo</strong>:</p>
+            <ul>
+                <li><strong>Contenido SMS:</strong> El número del remitente y el contenido de los mensajes SMS entrantes se leen solo cuando coinciden con sus reglas de filtrado.</li>
+                <li><strong>Configuración de correo:</strong> Los datos del servidor SMTP y las direcciones de correo se almacenan únicamente en su dispositivo.</li>
+                <li><strong>Reglas de filtrado:</strong> Las reglas de reenvío que crea se guardan en la base de datos local de su dispositivo.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. Uso de los datos</h2>
+            <ul>
+                <li>Los datos SMS se utilizan <strong>exclusivamente</strong> para el reenvío de correo conforme a las reglas definidas por usted.</li>
+                <li>Sus datos nunca se envían a ningún servidor ni se comparten con terceros.</li>
+                <li>Los correos electrónicos se envían directamente desde su dispositivo a través del servidor SMTP que usted configure.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. Almacenamiento de datos</h2>
+            <ul>
+                <li>Todos los datos se almacenan en el almacenamiento local de su dispositivo (base de datos SQLite).</li>
+                <li>Todos los datos se eliminan automáticamente al desinstalar la aplicación.</li>
+                <li>No se realiza copia de seguridad en la nube ni almacenamiento en servidores.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. Servicios de terceros</h2>
+            <p>La aplicación utiliza los siguientes servicios de terceros:</p>
+            <ul>
+                <li><strong>Google Firebase:</strong> Monitoreo del rendimiento de la app e informes de fallos (datos anónimos).</li>
+                <li><strong>Google AdMob:</strong> Visualización de anuncios en la versión gratuita. Se aplica la política de privacidad de AdMob.</li>
+                <li><strong>RevenueCat:</strong> Se utiliza para la gestión de suscripciones.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>6. Permisos requeridos</h2>
+            <ul>
+                <li><strong>RECEIVE_SMS / READ_SMS:</strong> Necesarios para leer los SMS entrantes y reenviarlos por correo.</li>
+                <li><strong>INTERNET:</strong> Necesario para enviar correos a través de SMTP.</li>
+                <li><strong>POST_NOTIFICATIONS:</strong> Necesario para mostrar notificaciones de reenvío.</li>
+                <li><strong>FOREGROUND_SERVICE:</strong> Necesario para el servicio de escucha de SMS en segundo plano.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>7. Derechos del usuario</h2>
+            <p>En cualquier momento, puede:</p>
+            <ul>
+                <li>Revocar los permisos de la aplicación desde la configuración del dispositivo.</li>
+                <li>Eliminar todos sus datos desinstalando la aplicación.</li>
+                <li>Editar o eliminar sus configuraciones de correo y reglas desde dentro de la app.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>8. Privacidad de los menores</h2>
+            <p>Esta aplicación no está destinada a menores de 13 años y no recopila a sabiendas datos personales de este grupo de edad.</p>
+        </div>
+
+        <div class="section">
+            <h2>9. Cambios</h2>
+            <p>Esta política de privacidad puede actualizarse de vez en cuando. Los cambios se publicarán en esta página.</p>
+        </div>
+
+        <div class="contact">
+            <h2 style="color: white; border-color: rgba(255,255,255,0.3);">Contacto</h2>
+            <p>Para preguntas relacionadas con la privacidad:<br>
+            📧 <a href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+        </div>
+    </div>
+
+    <!-- PORTUGUÊS (pt-BR) -->
+    <div class="lang-content" data-lang="pt" lang="pt-BR">
+        <h1>🔒 Política de Privacidade</h1>
+        <p class="date">SMS Forward — Yorulmaz Software<br>Última atualização: Maio de 2026</p>
+
+        <div class="section">
+            <h2>1. Visão geral</h2>
+            <p>O SMS Forward é um aplicativo Android que encaminha automaticamente mensagens SMS recebidas para endereços de e-mail com base nas regras que você definir. Respeitamos sua privacidade e estamos comprometidos em proteger seus dados.</p>
+        </div>
+
+        <div class="section">
+            <h2>2. Dados coletados</h2>
+            <p>O aplicativo processa os seguintes dados <strong>somente no seu dispositivo</strong>:</p>
+            <ul>
+                <li><strong>Conteúdo do SMS:</strong> O número do remetente e o conteúdo das mensagens SMS recebidas são lidos apenas quando correspondem às suas regras de filtragem.</li>
+                <li><strong>Configuração de e-mail:</strong> Dados do servidor SMTP e endereços de e-mail são armazenados apenas no seu dispositivo.</li>
+                <li><strong>Regras de filtragem:</strong> As regras de encaminhamento que você cria são mantidas no banco de dados local do seu dispositivo.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. Uso dos dados</h2>
+            <ul>
+                <li>Os dados de SMS são usados <strong>exclusivamente</strong> para encaminhamento de e-mail conforme as regras que você definir.</li>
+                <li>Seus dados nunca são enviados para nenhum servidor nem compartilhados com terceiros.</li>
+                <li>Os e-mails são enviados diretamente do seu dispositivo através do servidor SMTP que você configurar.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. Armazenamento de dados</h2>
+            <ul>
+                <li>Todos os dados são armazenados no armazenamento local do seu dispositivo (banco de dados SQLite).</li>
+                <li>Todos os dados são excluídos automaticamente quando o aplicativo é desinstalado.</li>
+                <li>Não é realizado backup em nuvem nem armazenamento em servidor.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. Serviços de terceiros</h2>
+            <p>O aplicativo utiliza os seguintes serviços de terceiros:</p>
+            <ul>
+                <li><strong>Google Firebase:</strong> Monitoramento de desempenho do app e relatórios de falhas (dados anônimos).</li>
+                <li><strong>Google AdMob:</strong> Exibição de anúncios na versão gratuita. Aplica-se a política de privacidade do AdMob.</li>
+                <li><strong>RevenueCat:</strong> Utilizado para o gerenciamento de assinaturas.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>6. Permissões necessárias</h2>
+            <ul>
+                <li><strong>RECEIVE_SMS / READ_SMS:</strong> Necessárias para ler os SMS recebidos e encaminhá-los por e-mail.</li>
+                <li><strong>INTERNET:</strong> Necessária para enviar e-mails via SMTP.</li>
+                <li><strong>POST_NOTIFICATIONS:</strong> Necessária para exibir notificações de encaminhamento.</li>
+                <li><strong>FOREGROUND_SERVICE:</strong> Necessária para o serviço de escuta de SMS em segundo plano.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>7. Direitos do usuário</h2>
+            <p>A qualquer momento, você pode:</p>
+            <ul>
+                <li>Revogar as permissões do aplicativo nas configurações do dispositivo.</li>
+                <li>Excluir todos os seus dados ao desinstalar o aplicativo.</li>
+                <li>Editar ou excluir suas configurações de e-mail e regras dentro do aplicativo.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>8. Privacidade de crianças</h2>
+            <p>Este aplicativo não se destina a crianças menores de 13 anos e não coleta intencionalmente dados pessoais desse grupo etário.</p>
+        </div>
+
+        <div class="section">
+            <h2>9. Alterações</h2>
+            <p>Esta política de privacidade pode ser atualizada periodicamente. As alterações serão publicadas nesta página.</p>
+        </div>
+
+        <div class="contact">
+            <h2 style="color: white; border-color: rgba(255,255,255,0.3);">Contato</h2>
+            <p>Para perguntas relacionadas à privacidade:<br>
+            📧 <a href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+        </div>
+    </div>
+
+    <!-- FRANÇAIS -->
+    <div class="lang-content" data-lang="fr" lang="fr">
+        <h1>🔒 Politique de Confidentialité</h1>
+        <p class="date">SMS Forward — Yorulmaz Software<br>Dernière mise à jour : Mai 2026</p>
+
+        <div class="section">
+            <h2>1. Aperçu</h2>
+            <p>SMS Forward est une application Android qui transfère automatiquement les SMS entrants vers des adresses e-mail selon les règles que vous définissez. Nous respectons votre vie privée et nous nous engageons à protéger vos données.</p>
+        </div>
+
+        <div class="section">
+            <h2>2. Données collectées</h2>
+            <p>L'application traite les données suivantes <strong>uniquement sur votre appareil</strong> :</p>
+            <ul>
+                <li><strong>Contenu des SMS :</strong> Le numéro de l'expéditeur et le contenu des SMS entrants sont lus uniquement lorsqu'ils correspondent à vos règles de filtrage.</li>
+                <li><strong>Configuration e-mail :</strong> Les informations du serveur SMTP et les adresses e-mail sont stockées uniquement sur votre appareil.</li>
+                <li><strong>Règles de filtrage :</strong> Les règles de transfert que vous créez sont conservées dans la base de données locale de votre appareil.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. Utilisation des données</h2>
+            <ul>
+                <li>Les données SMS sont utilisées <strong>exclusivement</strong> pour le transfert d'e-mails selon les règles que vous avez définies.</li>
+                <li>Vos données ne sont jamais envoyées à un serveur ni partagées avec des tiers.</li>
+                <li>Les e-mails sont envoyés directement depuis votre appareil via le serveur SMTP que vous configurez.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. Stockage des données</h2>
+            <ul>
+                <li>Toutes les données sont stockées dans le stockage local de votre appareil (base de données SQLite).</li>
+                <li>Toutes les données sont automatiquement supprimées lors de la désinstallation de l'application.</li>
+                <li>Aucune sauvegarde dans le cloud ni stockage côté serveur n'est effectué.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. Services tiers</h2>
+            <p>L'application utilise les services tiers suivants :</p>
+            <ul>
+                <li><strong>Google Firebase :</strong> Surveillance des performances de l'application et rapports de plantage (données anonymes).</li>
+                <li><strong>Google AdMob :</strong> Affichage de publicités dans la version gratuite. La politique de confidentialité d'AdMob s'applique.</li>
+                <li><strong>RevenueCat :</strong> Utilisé pour la gestion des abonnements.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>6. Autorisations requises</h2>
+            <ul>
+                <li><strong>RECEIVE_SMS / READ_SMS :</strong> Nécessaires pour lire les SMS entrants et les transférer par e-mail.</li>
+                <li><strong>INTERNET :</strong> Nécessaire pour envoyer des e-mails via SMTP.</li>
+                <li><strong>POST_NOTIFICATIONS :</strong> Nécessaire pour afficher les notifications de transfert.</li>
+                <li><strong>FOREGROUND_SERVICE :</strong> Nécessaire pour le service d'écoute des SMS en arrière-plan.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>7. Droits de l'utilisateur</h2>
+            <p>À tout moment, vous pouvez :</p>
+            <ul>
+                <li>Révoquer les autorisations de l'application depuis les paramètres de l'appareil.</li>
+                <li>Supprimer toutes vos données en désinstallant l'application.</li>
+                <li>Modifier ou supprimer vos configurations e-mail et vos règles depuis l'application.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>8. Vie privée des enfants</h2>
+            <p>Cette application n'est pas destinée aux enfants de moins de 13 ans et ne collecte pas sciemment de données personnelles de ce groupe d'âge.</p>
+        </div>
+
+        <div class="section">
+            <h2>9. Modifications</h2>
+            <p>Cette politique de confidentialité peut être mise à jour de temps à autre. Les modifications seront publiées sur cette page.</p>
+        </div>
+
+        <div class="contact">
+            <h2 style="color: white; border-color: rgba(255,255,255,0.3);">Contact</h2>
+            <p>Pour toute question relative à la confidentialité :<br>
+            📧 <a href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+        </div>
+    </div>
+
+    <!-- العربية -->
+    <div class="lang-content" data-lang="ar" lang="ar" dir="rtl">
+        <h1>🔒 سياسة الخصوصية</h1>
+        <p class="date">SMS Forward — Yorulmaz Software<br>آخر تحديث: مايو 2026</p>
+
+        <div class="section">
+            <h2>1. نظرة عامة</h2>
+            <p>SMS Forward هو تطبيق أندرويد يقوم تلقائيًا بإعادة توجيه الرسائل النصية القصيرة الواردة إلى عناوين البريد الإلكتروني وفقًا للقواعد التي تحددها. نحن نحترم خصوصيتك ونلتزم بحماية بياناتك.</p>
+        </div>
+
+        <div class="section">
+            <h2>2. البيانات التي يتم جمعها</h2>
+            <p>يعالج التطبيق البيانات التالية <strong>على جهازك فقط</strong>:</p>
+            <ul>
+                <li><strong>محتوى الرسائل النصية:</strong> تتم قراءة رقم المرسل ومحتوى الرسائل الواردة فقط عندما تتطابق مع قواعد التصفية الخاصة بك.</li>
+                <li><strong>إعدادات البريد الإلكتروني:</strong> تُخزَّن بيانات خادم SMTP وعناوين البريد الإلكتروني على جهازك فقط.</li>
+                <li><strong>قواعد التصفية:</strong> تُحفظ قواعد إعادة التوجيه التي تنشئها في قاعدة البيانات المحلية لجهازك.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. استخدام البيانات</h2>
+            <ul>
+                <li>تُستخدم بيانات الرسائل النصية <strong>حصريًا</strong> لإعادة توجيه البريد الإلكتروني وفق القواعد التي تحددها.</li>
+                <li>لا يتم إرسال بياناتك إلى أي خادم أو مشاركتها مع أي طرف ثالث.</li>
+                <li>تُرسل رسائل البريد الإلكتروني مباشرة من جهازك عبر خادم SMTP الذي تُعدّه.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. تخزين البيانات</h2>
+            <ul>
+                <li>تُخزَّن جميع البيانات في التخزين المحلي لجهازك (قاعدة بيانات SQLite).</li>
+                <li>تُحذف جميع البيانات تلقائيًا عند إلغاء تثبيت التطبيق.</li>
+                <li>لا يتم إجراء أي نسخ احتياطي سحابي أو تخزين على الخوادم.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. خدمات الطرف الثالث</h2>
+            <p>يستخدم التطبيق خدمات الطرف الثالث التالية:</p>
+            <ul>
+                <li><strong>Google Firebase:</strong> مراقبة أداء التطبيق وتقارير الأعطال (بيانات مجهولة الهوية).</li>
+                <li><strong>Google AdMob:</strong> عرض الإعلانات في النسخة المجانية. تنطبق سياسة الخصوصية الخاصة بـ AdMob.</li>
+                <li><strong>RevenueCat:</strong> يُستخدم لإدارة الاشتراكات.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>6. الأذونات المطلوبة</h2>
+            <ul>
+                <li><strong>RECEIVE_SMS / READ_SMS:</strong> مطلوبة لقراءة الرسائل الواردة وإعادة توجيهها عبر البريد الإلكتروني.</li>
+                <li><strong>INTERNET:</strong> مطلوبة لإرسال رسائل البريد الإلكتروني عبر SMTP.</li>
+                <li><strong>POST_NOTIFICATIONS:</strong> مطلوبة لعرض إشعارات إعادة التوجيه.</li>
+                <li><strong>FOREGROUND_SERVICE:</strong> مطلوبة لخدمة استقبال الرسائل في الخلفية.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>7. حقوق المستخدم</h2>
+            <p>يمكنك في أي وقت:</p>
+            <ul>
+                <li>إلغاء أذونات التطبيق من إعدادات الجهاز.</li>
+                <li>حذف جميع بياناتك عن طريق إلغاء تثبيت التطبيق.</li>
+                <li>تعديل أو حذف إعدادات البريد الإلكتروني والقواعد من داخل التطبيق.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>8. خصوصية الأطفال</h2>
+            <p>هذا التطبيق غير مخصص للأطفال دون سن 13 عامًا، ولا يقوم عن قصد بجمع بيانات شخصية من هذه الفئة العمرية.</p>
+        </div>
+
+        <div class="section">
+            <h2>9. التغييرات</h2>
+            <p>قد يتم تحديث سياسة الخصوصية هذه من وقت لآخر. سيتم نشر التغييرات على هذه الصفحة.</p>
+        </div>
+
+        <div class="contact">
+            <h2 style="color: white; border-color: rgba(255,255,255,0.3);">اتصل بنا</h2>
+            <p>للاستفسارات المتعلقة بالخصوصية:<br>
+            📧 <a href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+        </div>
+    </div>
+
+    <!-- हिन्दी -->
+    <div class="lang-content" data-lang="hi" lang="hi">
+        <h1>🔒 गोपनीयता नीति</h1>
+        <p class="date">SMS Forward — Yorulmaz Software<br>अंतिम अपडेट: मई 2026</p>
+
+        <div class="section">
+            <h2>1. सामान्य अवलोकन</h2>
+            <p>SMS Forward एक Android एप्लिकेशन है जो आपके द्वारा निर्धारित नियमों के आधार पर आने वाले SMS संदेशों को स्वचालित रूप से ईमेल पतों पर अग्रेषित करता है। हम आपकी गोपनीयता का सम्मान करते हैं और आपके डेटा की सुरक्षा के लिए प्रतिबद्ध हैं।</p>
+        </div>
+
+        <div class="section">
+            <h2>2. एकत्रित किया गया डेटा</h2>
+            <p>एप्लिकेशन निम्नलिखित डेटा को <strong>केवल आपके डिवाइस पर</strong> संसाधित करता है:</p>
+            <ul>
+                <li><strong>SMS सामग्री:</strong> आने वाले SMS संदेशों का प्रेषक नंबर और सामग्री केवल तभी पढ़ी जाती है जब वे आपके फ़िल्टर नियमों से मेल खाते हैं।</li>
+                <li><strong>ईमेल कॉन्फ़िगरेशन:</strong> SMTP सर्वर विवरण और ईमेल पते केवल आपके डिवाइस पर संग्रहीत किए जाते हैं।</li>
+                <li><strong>फ़िल्टर नियम:</strong> आपके द्वारा बनाए गए अग्रेषण नियम आपके डिवाइस के स्थानीय डेटाबेस में रखे जाते हैं।</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. डेटा का उपयोग</h2>
+            <ul>
+                <li>SMS डेटा का उपयोग <strong>केवल</strong> आपके निर्धारित नियमों के अनुसार ईमेल अग्रेषण के लिए किया जाता है।</li>
+                <li>आपका डेटा कभी भी किसी सर्वर पर नहीं भेजा जाता या तीसरे पक्षों के साथ साझा नहीं किया जाता।</li>
+                <li>ईमेल सीधे आपके डिवाइस से, आपके द्वारा कॉन्फ़िगर किए गए SMTP सर्वर के माध्यम से भेजे जाते हैं।</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. डेटा संग्रहण</h2>
+            <ul>
+                <li>सभी डेटा आपके डिवाइस के स्थानीय भंडारण (SQLite डेटाबेस) में संग्रहीत होता है।</li>
+                <li>एप्लिकेशन को अनइंस्टॉल करने पर सभी डेटा स्वचालित रूप से हटा दिया जाता है।</li>
+                <li>कोई क्लाउड बैकअप या सर्वर-साइड संग्रहण नहीं किया जाता।</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. तृतीय-पक्ष सेवाएँ</h2>
+            <p>एप्लिकेशन निम्नलिखित तृतीय-पक्ष सेवाओं का उपयोग करता है:</p>
+            <ul>
+                <li><strong>Google Firebase:</strong> ऐप प्रदर्शन निगरानी और क्रैश रिपोर्टिंग (अनाम डेटा)।</li>
+                <li><strong>Google AdMob:</strong> मुफ़्त संस्करण में विज्ञापन प्रदर्शन। AdMob की अपनी गोपनीयता नीति लागू होती है।</li>
+                <li><strong>RevenueCat:</strong> सदस्यता प्रबंधन के लिए उपयोग किया जाता है।</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>6. आवश्यक अनुमतियाँ</h2>
+            <ul>
+                <li><strong>RECEIVE_SMS / READ_SMS:</strong> आने वाले SMS पढ़ने और ईमेल पर अग्रेषित करने के लिए आवश्यक।</li>
+                <li><strong>INTERNET:</strong> SMTP के माध्यम से ईमेल भेजने के लिए आवश्यक।</li>
+                <li><strong>POST_NOTIFICATIONS:</strong> अग्रेषण सूचनाएँ दिखाने के लिए आवश्यक।</li>
+                <li><strong>FOREGROUND_SERVICE:</strong> पृष्ठभूमि में SMS सुनने की सेवा के लिए आवश्यक।</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>7. उपयोगकर्ता अधिकार</h2>
+            <p>आप किसी भी समय:</p>
+            <ul>
+                <li>डिवाइस सेटिंग्स से एप्लिकेशन अनुमतियाँ रद्द कर सकते हैं।</li>
+                <li>एप्लिकेशन को अनइंस्टॉल करके अपना सारा डेटा हटा सकते हैं।</li>
+                <li>ऐप के भीतर से अपनी ईमेल कॉन्फ़िगरेशन और नियमों को संपादित या हटा सकते हैं।</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>8. बच्चों की गोपनीयता</h2>
+            <p>यह एप्लिकेशन 13 वर्ष से कम आयु के बच्चों के लिए नहीं है और जानबूझकर इस आयु वर्ग से व्यक्तिगत डेटा एकत्र नहीं करता है।</p>
+        </div>
+
+        <div class="section">
+            <h2>9. परिवर्तन</h2>
+            <p>यह गोपनीयता नीति समय-समय पर अद्यतन की जा सकती है। परिवर्तन इस पृष्ठ पर प्रकाशित किए जाएँगे।</p>
+        </div>
+
+        <div class="contact">
+            <h2 style="color: white; border-color: rgba(255,255,255,0.3);">संपर्क</h2>
+            <p>गोपनीयता संबंधी प्रश्नों के लिए:<br>
+            📧 <a href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+        </div>
+    </div>
+
+    <!-- РУССКИЙ -->
+    <div class="lang-content" data-lang="ru" lang="ru">
+        <h1>🔒 Политика конфиденциальности</h1>
+        <p class="date">SMS Forward — Yorulmaz Software<br>Последнее обновление: Май 2026</p>
+
+        <div class="section">
+            <h2>1. Общие сведения</h2>
+            <p>SMS Forward — это приложение для Android, которое автоматически пересылает входящие SMS-сообщения на адреса электронной почты в соответствии с заданными Вами правилами. Мы уважаем Вашу конфиденциальность и обязуемся защищать Ваши данные.</p>
+        </div>
+
+        <div class="section">
+            <h2>2. Собираемые данные</h2>
+            <p>Приложение обрабатывает следующие данные <strong>только на Вашем устройстве</strong>:</p>
+            <ul>
+                <li><strong>Содержимое SMS:</strong> номер отправителя и содержимое входящих SMS считываются только при совпадении с Вашими правилами фильтрации.</li>
+                <li><strong>Настройки электронной почты:</strong> данные SMTP-сервера и адреса электронной почты хранятся только на Вашем устройстве.</li>
+                <li><strong>Правила фильтрации:</strong> создаваемые Вами правила пересылки хранятся в локальной базе данных Вашего устройства.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. Использование данных</h2>
+            <ul>
+                <li>Данные SMS используются <strong>исключительно</strong> для пересылки электронной почты в соответствии с заданными Вами правилами.</li>
+                <li>Ваши данные никогда не передаются на какие-либо серверы и не разглашаются третьим лицам.</li>
+                <li>Электронные письма отправляются напрямую с Вашего устройства через настроенный Вами SMTP-сервер.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. Хранение данных</h2>
+            <ul>
+                <li>Все данные хранятся в локальном хранилище Вашего устройства (база данных SQLite).</li>
+                <li>Все данные автоматически удаляются при удалении приложения.</li>
+                <li>Облачное резервное копирование или серверное хранение <strong>не выполняются</strong>.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. Сторонние сервисы</h2>
+            <p>Приложение использует следующие сторонние сервисы:</p>
+            <ul>
+                <li><strong>Google Firebase:</strong> мониторинг производительности и отчёты о сбоях (анонимные данные).</li>
+                <li><strong>Google AdMob:</strong> показ рекламы в бесплатной версии. Применяется политика конфиденциальности AdMob.</li>
+                <li><strong>RevenueCat:</strong> используется для управления подписками.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>6. Необходимые разрешения</h2>
+            <ul>
+                <li><strong>RECEIVE_SMS / READ_SMS:</strong> необходимы для чтения входящих SMS и пересылки их на электронную почту.</li>
+                <li><strong>INTERNET:</strong> необходим для отправки писем через SMTP.</li>
+                <li><strong>POST_NOTIFICATIONS:</strong> необходимо для отображения уведомлений о пересылке.</li>
+                <li><strong>FOREGROUND_SERVICE:</strong> необходим для фоновой службы прослушивания SMS.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>7. Права пользователя</h2>
+            <p>В любое время Вы можете:</p>
+            <ul>
+                <li>Отозвать разрешения приложения в настройках устройства.</li>
+                <li>Удалить все Ваши данные, удалив приложение.</li>
+                <li>Изменить или удалить настройки электронной почты и правила непосредственно в приложении.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>8. Конфиденциальность детей</h2>
+            <p>Это приложение не предназначено для детей младше 13 лет и сознательно не собирает персональные данные этой возрастной группы.</p>
+        </div>
+
+        <div class="section">
+            <h2>9. Изменения</h2>
+            <p>Эта политика конфиденциальности может время от времени обновляться. Изменения будут опубликованы на этой странице.</p>
+        </div>
+
+        <div class="contact">
+            <h2 style="color: white; border-color: rgba(255,255,255,0.3);">Контакты</h2>
+            <p>По вопросам конфиденциальности:<br>
+            📧 <a href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+        </div>
+    </div>
+
+    <!-- BAHASA INDONESIA -->
+    <div class="lang-content" data-lang="id" lang="id">
+        <h1>🔒 Kebijakan Privasi</h1>
+        <p class="date">SMS Forward — Yorulmaz Software<br>Terakhir diperbarui: Mei 2026</p>
+
+        <div class="section">
+            <h2>1. Ikhtisar</h2>
+            <p>SMS Forward adalah aplikasi Android yang secara otomatis meneruskan pesan SMS masuk ke alamat email berdasarkan aturan yang Anda tentukan. Kami menghormati privasi Anda dan berkomitmen untuk melindungi data Anda.</p>
+        </div>
+
+        <div class="section">
+            <h2>2. Data yang Dikumpulkan</h2>
+            <p>Aplikasi memproses data berikut <strong>hanya di perangkat Anda</strong>:</p>
+            <ul>
+                <li><strong>Isi SMS:</strong> Nomor pengirim dan isi pesan SMS masuk hanya dibaca ketika cocok dengan aturan filter Anda.</li>
+                <li><strong>Konfigurasi Email:</strong> Detail server SMTP dan alamat email hanya disimpan di perangkat Anda.</li>
+                <li><strong>Aturan Filter:</strong> Aturan penerusan yang Anda buat disimpan di basis data lokal perangkat Anda.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. Penggunaan Data</h2>
+            <ul>
+                <li>Data SMS digunakan <strong>semata-mata</strong> untuk penerusan email berdasarkan aturan yang Anda tentukan.</li>
+                <li>Data Anda tidak pernah dikirim ke server mana pun atau dibagikan kepada pihak ketiga.</li>
+                <li>Email dikirim langsung dari perangkat Anda melalui server SMTP yang Anda konfigurasi.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. Penyimpanan Data</h2>
+            <ul>
+                <li>Semua data disimpan di penyimpanan lokal perangkat Anda (basis data SQLite).</li>
+                <li>Semua data secara otomatis dihapus saat aplikasi dicopot pemasangannya.</li>
+                <li>Tidak ada pencadangan cloud atau penyimpanan di sisi server yang dilakukan.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. Layanan Pihak Ketiga</h2>
+            <p>Aplikasi menggunakan layanan pihak ketiga berikut:</p>
+            <ul>
+                <li><strong>Google Firebase:</strong> Pemantauan kinerja aplikasi dan pelaporan kerusakan (data anonim).</li>
+                <li><strong>Google AdMob:</strong> Tampilan iklan pada versi gratis. Kebijakan privasi AdMob berlaku.</li>
+                <li><strong>RevenueCat:</strong> Digunakan untuk manajemen langganan.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>6. Izin yang Diperlukan</h2>
+            <ul>
+                <li><strong>RECEIVE_SMS / READ_SMS:</strong> Diperlukan untuk membaca SMS masuk dan meneruskannya ke email.</li>
+                <li><strong>INTERNET:</strong> Diperlukan untuk mengirim email melalui SMTP.</li>
+                <li><strong>POST_NOTIFICATIONS:</strong> Diperlukan untuk menampilkan notifikasi penerusan.</li>
+                <li><strong>FOREGROUND_SERVICE:</strong> Diperlukan untuk layanan pendengar SMS di latar belakang.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>7. Hak Pengguna</h2>
+            <p>Kapan saja, Anda dapat:</p>
+            <ul>
+                <li>Mencabut izin aplikasi dari pengaturan perangkat.</li>
+                <li>Menghapus semua data Anda dengan mencopot pemasangan aplikasi.</li>
+                <li>Mengedit atau menghapus konfigurasi email dan aturan Anda dari dalam aplikasi.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>8. Privasi Anak</h2>
+            <p>Aplikasi ini tidak ditujukan untuk anak di bawah usia 13 tahun dan tidak secara sengaja mengumpulkan data pribadi dari kelompok usia ini.</p>
+        </div>
+
+        <div class="section">
+            <h2>9. Perubahan</h2>
+            <p>Kebijakan privasi ini dapat diperbarui dari waktu ke waktu. Perubahan akan dipublikasikan pada halaman ini.</p>
+        </div>
+
+        <div class="contact">
+            <h2 style="color: white; border-color: rgba(255,255,255,0.3);">Kontak</h2>
+            <p>Untuk pertanyaan terkait privasi:<br>
+            📧 <a href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+        </div>
+    </div>
+
+    <!-- বাংলা -->
+    <div class="lang-content" data-lang="bn" lang="bn">
+        <h1>🔒 গোপনীয়তা নীতি</h1>
+        <p class="date">SMS Forward — Yorulmaz Software<br>সর্বশেষ আপডেট: মে ২০২৬</p>
+
+        <div class="section">
+            <h2>১. সাধারণ পরিচিতি</h2>
+            <p>SMS Forward হল একটি Android অ্যাপ্লিকেশন যা আপনার নির্ধারিত নিয়ম অনুযায়ী আগত SMS বার্তাগুলিকে স্বয়ংক্রিয়ভাবে ইমেল ঠিকানায় ফরোয়ার্ড করে। আমরা আপনার গোপনীয়তাকে সম্মান করি এবং আপনার তথ্য সুরক্ষায় প্রতিশ্রুতিবদ্ধ।</p>
+        </div>
+
+        <div class="section">
+            <h2>২. সংগৃহীত তথ্য</h2>
+            <p>অ্যাপ্লিকেশনটি নিম্নলিখিত তথ্য <strong>কেবল আপনার ডিভাইসে</strong> প্রক্রিয়া করে:</p>
+            <ul>
+                <li><strong>SMS বিষয়বস্তু:</strong> আগত SMS বার্তার প্রেরক নম্বর এবং বিষয়বস্তু শুধুমাত্র তখনই পড়া হয় যখন তারা আপনার ফিল্টার নিয়মের সাথে মিলে যায়।</li>
+                <li><strong>ইমেল কনফিগারেশন:</strong> SMTP সার্ভারের বিবরণ এবং ইমেল ঠিকানা কেবল আপনার ডিভাইসে সংরক্ষণ করা হয়।</li>
+                <li><strong>ফিল্টার নিয়ম:</strong> আপনার তৈরি করা ফরোয়ার্ডিং নিয়মগুলি আপনার ডিভাইসের স্থানীয় ডাটাবেসে রাখা হয়।</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>৩. তথ্যের ব্যবহার</h2>
+            <ul>
+                <li>SMS তথ্য <strong>একমাত্র</strong> আপনার নির্ধারিত নিয়ম অনুযায়ী ইমেল ফরোয়ার্ডিংয়ের জন্য ব্যবহৃত হয়।</li>
+                <li>আপনার তথ্য কখনই কোনো সার্ভারে পাঠানো হয় না বা তৃতীয় পক্ষের সাথে শেয়ার করা হয় না।</li>
+                <li>ইমেলগুলি সরাসরি আপনার ডিভাইস থেকে, আপনার কনফিগার করা SMTP সার্ভারের মাধ্যমে পাঠানো হয়।</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>৪. তথ্য সংরক্ষণ</h2>
+            <ul>
+                <li>সমস্ত তথ্য আপনার ডিভাইসের স্থানীয় স্টোরেজে (SQLite ডাটাবেস) সংরক্ষণ করা হয়।</li>
+                <li>অ্যাপ্লিকেশনটি আনইনস্টল করলে সমস্ত তথ্য স্বয়ংক্রিয়ভাবে মুছে যায়।</li>
+                <li>কোনো ক্লাউড ব্যাকআপ বা সার্ভার-সাইড স্টোরেজ <strong>করা হয় না</strong>।</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>৫. তৃতীয় পক্ষের পরিষেবা</h2>
+            <p>অ্যাপ্লিকেশনটি নিম্নলিখিত তৃতীয় পক্ষের পরিষেবা ব্যবহার করে:</p>
+            <ul>
+                <li><strong>Google Firebase:</strong> অ্যাপের পারফরম্যান্স পর্যবেক্ষণ এবং ক্র্যাশ রিপোর্টিং (বেনামী তথ্য)।</li>
+                <li><strong>Google AdMob:</strong> বিনামূল্যের সংস্করণে বিজ্ঞাপন প্রদর্শন। AdMob-এর নিজস্ব গোপনীয়তা নীতি প্রযোজ্য।</li>
+                <li><strong>RevenueCat:</strong> সদস্যতা ব্যবস্থাপনার জন্য ব্যবহৃত হয়।</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>৬. প্রয়োজনীয় অনুমতি</h2>
+            <ul>
+                <li><strong>RECEIVE_SMS / READ_SMS:</strong> আগত SMS পড়তে এবং ইমেলে ফরোয়ার্ড করতে প্রয়োজন।</li>
+                <li><strong>INTERNET:</strong> SMTP-এর মাধ্যমে ইমেল পাঠাতে প্রয়োজন।</li>
+                <li><strong>POST_NOTIFICATIONS:</strong> ফরোয়ার্ডিং বিজ্ঞপ্তি দেখাতে প্রয়োজন।</li>
+                <li><strong>FOREGROUND_SERVICE:</strong> ব্যাকগ্রাউন্ডে SMS শোনার পরিষেবার জন্য প্রয়োজন।</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>৭. ব্যবহারকারীর অধিকার</h2>
+            <p>আপনি যে কোনো সময়:</p>
+            <ul>
+                <li>ডিভাইস সেটিংস থেকে অ্যাপ্লিকেশন অনুমতি প্রত্যাহার করতে পারেন।</li>
+                <li>অ্যাপ্লিকেশনটি আনইনস্টল করে আপনার সমস্ত তথ্য মুছে ফেলতে পারেন।</li>
+                <li>অ্যাপের ভিতর থেকে আপনার ইমেল কনফিগারেশন এবং নিয়ম সম্পাদনা বা মুছে ফেলতে পারেন।</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>৮. শিশুদের গোপনীয়তা</h2>
+            <p>এই অ্যাপ্লিকেশনটি ১৩ বছরের কম বয়সী শিশুদের জন্য নয় এবং জেনেশুনে এই বয়সের গোষ্ঠী থেকে ব্যক্তিগত তথ্য সংগ্রহ করে না।</p>
+        </div>
+
+        <div class="section">
+            <h2>৯. পরিবর্তনসমূহ</h2>
+            <p>এই গোপনীয়তা নীতি সময়ে সময়ে আপডেট হতে পারে। পরিবর্তনগুলি এই পৃষ্ঠায় প্রকাশিত হবে।</p>
+        </div>
+
+        <div class="contact">
+            <h2 style="color: white; border-color: rgba(255,255,255,0.3);">যোগাযোগ</h2>
+            <p>গোপনীয়তা সংক্রান্ত প্রশ্নের জন্য:<br>
+            📧 <a href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+        </div>
+    </div>
+
+    <!-- اردو -->
+    <div class="lang-content" data-lang="ur" lang="ur" dir="rtl">
+        <h1>🔒 پرائیویسی پالیسی</h1>
+        <p class="date">SMS Forward — Yorulmaz Software<br>آخری اپ ڈیٹ: مئی 2026</p>
+
+        <div class="section">
+            <h2>1. عمومی جائزہ</h2>
+            <p>SMS Forward ایک Android ایپلیکیشن ہے جو آپ کے متعین کردہ قواعد کی بنیاد پر آنے والے SMS پیغامات کو خودکار طور پر ای میل پتوں پر فارورڈ کرتی ہے۔ ہم آپ کی پرائیویسی کا احترام کرتے ہیں اور آپ کے ڈیٹا کی حفاظت کے لیے پُرعزم ہیں۔</p>
+        </div>
+
+        <div class="section">
+            <h2>2. جمع کردہ ڈیٹا</h2>
+            <p>ایپلیکیشن درج ذیل ڈیٹا کو <strong>صرف آپ کے ڈیوائس پر</strong> پراسیس کرتی ہے:</p>
+            <ul>
+                <li><strong>SMS مواد:</strong> آنے والے SMS پیغامات کا بھیجنے والے کا نمبر اور مواد صرف اسی وقت پڑھا جاتا ہے جب وہ آپ کے فلٹر قواعد سے میل کھائیں۔</li>
+                <li><strong>ای میل کنفیگریشن:</strong> SMTP سرور کی تفصیلات اور ای میل پتے صرف آپ کے ڈیوائس پر محفوظ ہوتے ہیں۔</li>
+                <li><strong>فلٹر قواعد:</strong> آپ کے بنائے گئے فارورڈنگ قواعد آپ کے ڈیوائس کے مقامی ڈیٹابیس میں رکھے جاتے ہیں۔</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. ڈیٹا کا استعمال</h2>
+            <ul>
+                <li>SMS ڈیٹا <strong>صرف</strong> آپ کے متعین کردہ قواعد کے مطابق ای میل فارورڈنگ کے لیے استعمال ہوتا ہے۔</li>
+                <li>آپ کا ڈیٹا کبھی بھی کسی سرور کو نہیں بھیجا جاتا اور نہ ہی فریقِ ثالث کے ساتھ شیئر کیا جاتا ہے۔</li>
+                <li>ای میلز براہِ راست آپ کے ڈیوائس سے، آپ کے کنفیگر کیے ہوئے SMTP سرور کے ذریعے بھیجی جاتی ہیں۔</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>4. ڈیٹا کا ذخیرہ</h2>
+            <ul>
+                <li>تمام ڈیٹا آپ کے ڈیوائس کے مقامی اسٹوریج (SQLite ڈیٹابیس) میں محفوظ ہوتا ہے۔</li>
+                <li>ایپلیکیشن کو ان انسٹال کرنے پر تمام ڈیٹا خودکار طور پر حذف ہو جاتا ہے۔</li>
+                <li>کوئی کلاؤڈ بیک اپ یا سرور سائیڈ اسٹوریج <strong>نہیں کیا جاتا</strong>۔</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>5. فریقِ ثالث کی خدمات</h2>
+            <p>ایپلیکیشن درج ذیل فریقِ ثالث کی خدمات استعمال کرتی ہے:</p>
+            <ul>
+                <li><strong>Google Firebase:</strong> ایپ کی کارکردگی کی نگرانی اور کریش رپورٹنگ (گمنام ڈیٹا)۔</li>
+                <li><strong>Google AdMob:</strong> مفت ورژن میں اشتہارات کی نمائش۔ AdMob کی اپنی پرائیویسی پالیسی لاگو ہوتی ہے۔</li>
+                <li><strong>RevenueCat:</strong> سبسکرپشن مینجمنٹ کے لیے استعمال ہوتی ہے۔</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>6. درکار اجازتیں</h2>
+            <ul>
+                <li><strong>RECEIVE_SMS / READ_SMS:</strong> آنے والے SMS پڑھنے اور ای میل پر فارورڈ کرنے کے لیے درکار۔</li>
+                <li><strong>INTERNET:</strong> SMTP کے ذریعے ای میلز بھیجنے کے لیے درکار۔</li>
+                <li><strong>POST_NOTIFICATIONS:</strong> فارورڈنگ اطلاعات دکھانے کے لیے درکار۔</li>
+                <li><strong>FOREGROUND_SERVICE:</strong> پس منظر میں SMS سننے کی سروس کے لیے درکار۔</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>7. صارف کے حقوق</h2>
+            <p>آپ کسی بھی وقت:</p>
+            <ul>
+                <li>ڈیوائس کی ترتیبات سے ایپلیکیشن کی اجازتیں منسوخ کر سکتے ہیں۔</li>
+                <li>ایپلیکیشن کو ان انسٹال کر کے اپنا تمام ڈیٹا حذف کر سکتے ہیں۔</li>
+                <li>ایپ کے اندر سے اپنی ای میل کنفیگریشن اور قواعد میں ترمیم یا انہیں حذف کر سکتے ہیں۔</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>8. بچوں کی پرائیویسی</h2>
+            <p>یہ ایپلیکیشن 13 سال سے کم عمر بچوں کے لیے نہیں ہے اور جان بوجھ کر اس عمر کے گروپ سے ذاتی ڈیٹا جمع نہیں کرتی۔</p>
+        </div>
+
+        <div class="section">
+            <h2>9. تبدیلیاں</h2>
+            <p>یہ پرائیویسی پالیسی وقتاً فوقتاً اپ ڈیٹ کی جا سکتی ہے۔ تبدیلیاں اسی صفحے پر شائع کی جائیں گی۔</p>
+        </div>
+
+        <div class="contact">
+            <h2 style="color: white; border-color: rgba(255,255,255,0.3);">رابطہ</h2>
+            <p>پرائیویسی سے متعلق سوالات کے لیے:<br>
             📧 <a href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
         </div>
     </div>
