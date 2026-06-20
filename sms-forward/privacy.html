@@ -86,6 +86,7 @@
         <div class="section">
             <h2>1. Genel Bakış</h2>
             <p>SMS Forward, gelen SMS mesajlarınızı belirlediğiniz kurallara göre otomatik olarak e-posta adreslerine yönlendiren bir Android uygulamasıdır. Gizliliğinize saygı duyuyor ve verilerinizi korumayı taahhüt ediyoruz.</p>
+            <p><strong>Önemli Not:</strong> Uygulamanın tam kapasiteyle çalışabilmesi için cihazınızda <strong>'Varsayılan SMS Uygulaması' (Default SMS Handler)</strong> olarak ayarlanması gerekmektedir. Uygulama, SMS mesajlarını okuma, gösterme, oluşturma ve gönderme yeteneklerine sahip tam donanımlı bir SMS uygulamasıdır.</p>
         </div>
 
         <div class="section">
@@ -129,10 +130,11 @@
         <div class="section">
             <h2>6. Gerekli İzinler</h2>
             <ul>
-                <li><strong>RECEIVE_SMS / READ_SMS:</strong> Gelen SMS'leri okuyarak e-postaya yönlendirmek için gereklidir.</li>
+                <li><strong>RECEIVE_SMS / READ_SMS / SEND_SMS:</strong> Gelen SMS'leri okuyarak e-postaya yönlendirmek ve yeni SMS oluşturup göndermek için gereklidir.</li>
                 <li><strong>INTERNET:</strong> SMTP üzerinden e-posta göndermek için gereklidir.</li>
                 <li><strong>POST_NOTIFICATIONS:</strong> Yönlendirme bildirimlerini göstermek için gereklidir.</li>
                 <li><strong>FOREGROUND_SERVICE:</strong> Arka planda SMS dinleme servisi için gereklidir.</li>
+                <li><strong>READ_CONTACTS (Rehber Erişimi):</strong> Gelen SMS'lerin kimden geldiğini gösterebilmek ve yeni SMS gönderirken kişi seçebilmek için cihazınızın rehberine erişim istenir. Rehber verileriniz sadece cihazınızda işlenir ve hiçbir üçüncü tarafla veya sunucularımızla asla paylaşılmaz.</li>
             </ul>
         </div>
 
@@ -171,6 +173,7 @@
         <div class="section">
             <h2>1. Overview</h2>
             <p>SMS Forward is an Android application that automatically forwards incoming SMS messages to email addresses based on rules you define. We respect your privacy and are committed to protecting your data.</p>
+            <p><strong>Important Note:</strong> To function properly, the app must be set as the <strong>'Default SMS Handler'</strong> on your device. The app is a fully functional SMS messenger capable of reading, displaying, composing, and sending SMS messages.</p>
         </div>
 
         <div class="section">
@@ -214,10 +217,11 @@
         <div class="section">
             <h2>6. Required Permissions</h2>
             <ul>
-                <li><strong>RECEIVE_SMS / READ_SMS:</strong> Required to read incoming SMS and forward to email.</li>
+                <li><strong>RECEIVE_SMS / READ_SMS / SEND_SMS:</strong> Required to read incoming SMS, forward them to email, and allow you to compose and send new SMS messages.</li>
                 <li><strong>INTERNET:</strong> Required to send emails via SMTP.</li>
                 <li><strong>POST_NOTIFICATIONS:</strong> Required to show forwarding notifications.</li>
                 <li><strong>FOREGROUND_SERVICE:</strong> Required for background SMS listening service.</li>
+                <li><strong>READ_CONTACTS (Contacts Access):</strong> The app requests access to your contacts solely to display sender names in the SMS inbox and to help you select recipients when composing a new SMS. Your contact data is processed entirely locally on your device and is never shared with us or any third parties.</li>
             </ul>
         </div>
 

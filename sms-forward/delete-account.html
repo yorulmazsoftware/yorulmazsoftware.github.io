@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMS Forward - Account & Data Deletion</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SMS Forward - Account &amp; Data Deletion</title>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
@@ -116,217 +117,1072 @@
             color: #999;
             font-size: 0.85em;
         }
-    </style>
+    
+        .lang-switch { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; margin-bottom: 20px; }
+        .lang-btn { background: #fff; color: #1a73e8; border: 1px solid #1a73e8; border-radius: 6px; padding: 6px 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .15s, color .15s; font-family: inherit; }
+        .lang-btn:hover { background: #e8f0fe; }
+        .lang-btn.active { background: #1a73e8; color: #fff; }
+        [dir="rtl"] { text-align: right; }
+        [dir="rtl"] ul, [dir="rtl"] .steps ol { padding-left: 0; padding-right: 20px; }
+        [dir="rtl"] .data-table th, [dir="rtl"] .data-table td { text-align: right; }
+        [dir="rtl"] .steps { border-left: none; border-right: 4px solid #1a73e8; }
+        </style>
 </head>
 <body>
-
-<div class="lang-switch">
-    <a href="#" id="btn-tr" onclick="switchLang('tr')">Türkçe</a>
-    <a href="#" id="btn-en" class="active" onclick="switchLang('en')">English</a>
-</div>
-
+<div class="lang-switch"><button class="lang-btn" id="btn-tr" onclick="switchLang('tr')" type="button">🇹🇷 Türkçe</button> <button class="lang-btn" id="btn-en" onclick="switchLang('en')" type="button">🇬🇧 English</button> <button class="lang-btn" id="btn-de" onclick="switchLang('de')" type="button">🇩🇪 Deutsch</button> <button class="lang-btn" id="btn-es" onclick="switchLang('es')" type="button">🇪🇸 Español</button> <button class="lang-btn" id="btn-pt" onclick="switchLang('pt')" type="button">🇧🇷 Português</button> <button class="lang-btn" id="btn-fr" onclick="switchLang('fr')" type="button">🇫🇷 Français</button> <button class="lang-btn" id="btn-ar" onclick="switchLang('ar')" type="button">🇸🇦 العربية</button> <button class="lang-btn" id="btn-hi" onclick="switchLang('hi')" type="button">🇮🇳 हिन्दी</button> <button class="lang-btn" id="btn-ru" onclick="switchLang('ru')" type="button">🇷🇺 Русский</button> <button class="lang-btn" id="btn-id" onclick="switchLang('id')" type="button">🇮🇩 Bahasa Indonesia</button> <button class="lang-btn" id="btn-bn" onclick="switchLang('bn')" type="button">🇧🇩 বাংলা</button> <button class="lang-btn" id="btn-ur" onclick="switchLang('ur')" type="button">🇵🇰 اردو</button> </div>
 <!-- ===================== ENGLISH ===================== -->
-<div id="section-en" class="section">
-    <h1>SMS Forward — Account & Data Deletion</h1>
-    <p class="subtitle">Yorulmaz Software &bull; Last updated: May 2026</p>
-
-    <h2>1. How to Delete Your Account</h2>
-    <p>If you wish to delete your SMS Forward account and all associated data, you can do so using either of the following methods:</p>
-
-    <div class="steps">
-        <h3>Method 1 — In-App Deletion</h3>
-        <ol>
-            <li>Open the <strong>SMS Forward</strong> app on your device.</li>
-            <li>Go to <strong>Settings</strong> (gear icon).</li>
-            <li>Scroll down and tap <strong>"Delete Account"</strong>.</li>
-            <li>Confirm the deletion when prompted.</li>
-        </ol>
-        <p>Your account and all associated data will be permanently deleted immediately.</p>
+<div class="section" id="section-en">
+<h1>SMS Forward — Account &amp; Data Deletion</h1>
+<p class="subtitle">Yorulmaz Software • Last updated: May 2026</p>
+<h2>1. How to Delete Your Account</h2>
+<p>If you wish to delete your SMS Forward account and all associated data, you can do so using either of the following methods:</p>
+<div class="steps">
+<h3>Method 1 — In-App Deletion</h3>
+<ol>
+<li>Open the <strong>SMS Forward</strong> app on your device.</li>
+<li>Go to <strong>Settings</strong> (gear icon).</li>
+<li>Scroll down and tap <strong>"Delete Account"</strong>.</li>
+<li>Confirm the deletion when prompted.</li>
+</ol>
+<p>Your account and all associated data will be permanently deleted immediately.</p>
+</div>
+<div class="steps">
+<h3>Method 2 — Email Request</h3>
+<ol>
+<li>Send an email to <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></li>
+<li>Use the subject line: <strong>"Account Deletion Request — SMS Forward"</strong></li>
+<li>Include the email address associated with your account in the body.</li>
+</ol>
+<p>We will process your request within <strong>3 business days</strong> and send you a confirmation email.</p>
+</div>
+<h2>2. What Data Is Deleted</h2>
+<p>When you delete your account, the following data is permanently removed:</p>
+<table class="data-table">
+<thead>
+<tr>
+<th>Data Type</th>
+<th>Storage Location</th>
+<th>Deletion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Account credentials (Google OAuth)</td>
+<td>Firebase Authentication</td>
+<td>Immediately deleted</td>
+</tr>
+<tr>
+<td>SMTP / Email configuration</td>
+<td>Device only (local)</td>
+<td>Deleted with app uninstall or in-app</td>
+</tr>
+<tr>
+<td>Filter rules</td>
+<td>Device only (local)</td>
+<td>Deleted with app uninstall or in-app</td>
+</tr>
+<tr>
+<td>Subscription data</td>
+<td>RevenueCat / Google Play</td>
+<td>Deleted within 3 business days</td>
+</tr>
+<tr>
+<td>Analytics data</td>
+<td>Firebase (anonymous)</td>
+<td>Automatically expires per retention policy</td>
+</tr>
+<tr>
+<td>Crash logs</td>
+<td>Firebase Crashlytics</td>
+<td>Automatically expires after 90 days</td>
+</tr>
+</tbody>
+</table>
+<div class="warning-box">
+<strong>⚠️ Important:</strong> Account deletion is permanent and cannot be undone. Please make sure you have exported any data you wish to keep before proceeding.
     </div>
-
-    <div class="steps">
-        <h3>Method 2 — Email Request</h3>
-        <ol>
-            <li>Send an email to <a href="mailto:yorulmazsoftware@gmail.com" class="email-link">yorulmazsoftware@gmail.com</a></li>
-            <li>Use the subject line: <strong>"Account Deletion Request — SMS Forward"</strong></li>
-            <li>Include the email address associated with your account in the body.</li>
-        </ol>
-        <p>We will process your request within <strong>3 business days</strong> and send you a confirmation email.</p>
+<h2>3. Data Deletion Without Account Deletion</h2>
+<p>You can also delete your data without deleting your account:</p>
+<ul>
+<li>Delete individual filter rules from the app's main screen.</li>
+<li>Clear SMTP settings from the Settings page.</li>
+<li>Clear forwarding history from the app.</li>
+</ul>
+<div class="info-box">
+<strong>ℹ️ Note:</strong> All locally stored data (SMTP settings, filter rules, forwarding history) is automatically deleted when you uninstall the app from your device.
     </div>
-
-    <h2>2. What Data Is Deleted</h2>
-    <p>When you delete your account, the following data is permanently removed:</p>
-
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>Data Type</th>
-                <th>Storage Location</th>
-                <th>Deletion</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Account credentials (Google OAuth)</td>
-                <td>Firebase Authentication</td>
-                <td>Immediately deleted</td>
-            </tr>
-            <tr>
-                <td>SMTP / Email configuration</td>
-                <td>Device only (local)</td>
-                <td>Deleted with app uninstall or in-app</td>
-            </tr>
-            <tr>
-                <td>Filter rules</td>
-                <td>Device only (local)</td>
-                <td>Deleted with app uninstall or in-app</td>
-            </tr>
-            <tr>
-                <td>Subscription data</td>
-                <td>RevenueCat / Google Play</td>
-                <td>Deleted within 3 business days</td>
-            </tr>
-            <tr>
-                <td>Analytics data</td>
-                <td>Firebase (anonymous)</td>
-                <td>Automatically expires per retention policy</td>
-            </tr>
-            <tr>
-                <td>Crash logs</td>
-                <td>Firebase Crashlytics</td>
-                <td>Automatically expires after 90 days</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="warning-box">
-        <strong>⚠️ Important:</strong> Account deletion is permanent and cannot be undone. Please make sure you have exported any data you wish to keep before proceeding.
+<h2>4. Contact Us</h2>
+<p>If you have any questions about data deletion, please contact us:</p>
+<p>📧 <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+</div>
+<!-- ===================== TÜRKÇE ===================== -->
+<div class="section hidden" id="section-tr">
+<h1>SMS Forward — Hesap ve Veri Silme</h1>
+<p class="subtitle">Yorulmaz Software • Son güncelleme: Mayıs 2026</p>
+<h2>1. Hesabınızı Nasıl Silebilirsiniz</h2>
+<p>SMS Forward hesabınızı ve ilişkili tüm verilerinizi silmek istiyorsanız, aşağıdaki yöntemlerden birini kullanabilirsiniz:</p>
+<div class="steps">
+<h3>Yöntem 1 — Uygulama İçinden Silme</h3>
+<ol>
+<li>Cihazınızda <strong>SMS Forward</strong> uygulamasını açın.</li>
+<li><strong>Ayarlar</strong> (dişli simgesi) bölümüne gidin.</li>
+<li>Aşağı kaydırın ve <strong>"Hesabı Sil"</strong> seçeneğine dokunun.</li>
+<li>İstendiğinde silme işlemini onaylayın.</li>
+</ol>
+<p>Hesabınız ve ilişkili tüm veriler anında kalıcı olarak silinecektir.</p>
+</div>
+<div class="steps">
+<h3>Yöntem 2 — E-posta ile Talep</h3>
+<ol>
+<li><a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a> adresine e-posta gönderin.</li>
+<li>Konu satırını şu şekilde yazın: <strong>"Hesap Silme Talebi — SMS Forward"</strong></li>
+<li>E-posta gövdesine hesabınızla ilişkili e-posta adresini ekleyin.</li>
+</ol>
+<p>Talebiniz <strong>3 iş günü</strong> içinde işleme alınacak ve size onay e-postası gönderilecektir.</p>
+</div>
+<h2>2. Hangi Veriler Silinir</h2>
+<p>Hesabınızı sildiğinizde aşağıdaki veriler kalıcı olarak kaldırılır:</p>
+<table class="data-table">
+<thead>
+<tr>
+<th>Veri Türü</th>
+<th>Depolama Yeri</th>
+<th>Silme</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hesap bilgileri (Google OAuth)</td>
+<td>Firebase Authentication</td>
+<td>Anında silinir</td>
+</tr>
+<tr>
+<td>SMTP / E-posta yapılandırması</td>
+<td>Yalnızca cihaz (yerel)</td>
+<td>Uygulama kaldırıldığında veya uygulama içinden silinir</td>
+</tr>
+<tr>
+<td>Filtre kuralları</td>
+<td>Yalnızca cihaz (yerel)</td>
+<td>Uygulama kaldırıldığında veya uygulama içinden silinir</td>
+</tr>
+<tr>
+<td>Abonelik verileri</td>
+<td>RevenueCat / Google Play</td>
+<td>3 iş günü içinde silinir</td>
+</tr>
+<tr>
+<td>Analitik verileri</td>
+<td>Firebase (anonim)</td>
+<td>Saklama politikasına göre otomatik olarak süresi dolar</td>
+</tr>
+<tr>
+<td>Çökme günlükleri</td>
+<td>Firebase Crashlytics</td>
+<td>90 gün sonra otomatik olarak silinir</td>
+</tr>
+</tbody>
+</table>
+<div class="warning-box">
+<strong>⚠️ Önemli:</strong> Hesap silme işlemi kalıcıdır ve geri alınamaz. Devam etmeden önce saklamak istediğiniz verileri dışa aktardığınızdan emin olun.
     </div>
-
-    <h2>3. Data Deletion Without Account Deletion</h2>
-    <p>You can also delete your data without deleting your account:</p>
-    <ul>
-        <li>Delete individual filter rules from the app's main screen.</li>
-        <li>Clear SMTP settings from the Settings page.</li>
-        <li>Clear forwarding history from the app.</li>
-    </ul>
-
-    <div class="info-box">
-        <strong>ℹ️ Note:</strong> All locally stored data (SMTP settings, filter rules, forwarding history) is automatically deleted when you uninstall the app from your device.
+<h2>3. Hesap Silmeden Veri Silme</h2>
+<p>Hesabınızı silmeden verilerinizi de silebilirsiniz:</p>
+<ul>
+<li>Uygulamanın ana ekranından filtre kurallarını tek tek silebilirsiniz.</li>
+<li>Ayarlar sayfasından SMTP ayarlarını temizleyebilirsiniz.</li>
+<li>Uygulamadan yönlendirme geçmişini temizleyebilirsiniz.</li>
+</ul>
+<div class="info-box">
+<strong>ℹ️ Not:</strong> Yerel olarak depolanan tüm veriler (SMTP ayarları, filtre kuralları, yönlendirme geçmişi), uygulamayı cihazınızdan kaldırdığınızda otomatik olarak silinir.
     </div>
-
-    <h2>4. Contact Us</h2>
-    <p>If you have any questions about data deletion, please contact us:</p>
-    <p>📧 <a href="mailto:yorulmazsoftware@gmail.com" class="email-link">yorulmazsoftware@gmail.com</a></p>
+<h2>4. İletişim</h2>
+<p>Veri silme ile ilgili sorularınız için bizimle iletişime geçin:</p>
+<p>📧 <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+</div>
+<div class="section hidden" id="section-de">
+<h1>SMS-Weiterleitung – Konto- und Datenlöschung</h1>
+<p class="subtitle">Yorulmaz Software • Letzte Aktualisierung: Mai 2026</p>
+<h2>1. So löschen Sie Ihr Konto</h2>
+<p>Wenn Sie Ihr SMS-Forward-Konto und alle damit verbundenen Daten löschen möchten, können Sie dies mit einer der folgenden Methoden tun:</p>
+<div class="steps">
+<h3>Methode 1 – In-App-Löschung</h3>
+<ol>
+<li>Öffnen Sie die <strong>SMS-Weiterleitung</strong> App auf Ihrem Gerät.</li>
+<li>Gehe zu <strong>Einstellungen</strong> (Zahnradsymbol).</li>
+<li>Scrollen Sie nach unten und tippen Sie auf <strong>„Konto löschen“</strong>.</li>
+<li>Bestätigen Sie den Löschvorgang, wenn Sie dazu aufgefordert werden.</li>
+</ol>
+<p>Ihr Konto und alle damit verbundenen Daten werden umgehend endgültig gelöscht.</p>
+</div>
+<div class="steps">
+<h3>Methode 2 – E-Mail-Anfrage</h3>
+<ol>
+<li>Senden Sie eine E-Mail an <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></li>
+<li>Verwenden Sie die Betreffzeile: <strong>„Anfrage zur Kontolöschung – SMS-Weiterleitung“</strong></li>
+<li>Fügen Sie die mit Ihrem Konto verknüpfte E-Mail-Adresse in den Text ein.</li>
+</ol>
+<p>Wir werden Ihre Anfrage innerhalb von 24 Stunden bearbeiten <strong>3 Werktage</strong> und senden Ihnen eine Bestätigungs-E-Mail.</p>
+</div>
+<h2>2. Welche Daten werden gelöscht?</h2>
+<p>Wenn Sie Ihr Konto löschen, werden die folgenden Daten dauerhaft entfernt:</p>
+<table class="data-table">
+<thead>
+<tr>
+<th>Datentyp</th>
+<th>Speicherort</th>
+<th>Streichung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kontoanmeldeinformationen (Google OAuth)</td>
+<td>Firebase-Authentifizierung</td>
+<td>Sofort gelöscht</td>
+</tr>
+<tr>
+<td>SMTP-/E-Mail-Konfiguration</td>
+<td>Nur Gerät (lokal)</td>
+<td>Mit App-Deinstallation oder In-App gelöscht</td>
+</tr>
+<tr>
+<td>Filterregeln</td>
+<td>Nur Gerät (lokal)</td>
+<td>Mit App-Deinstallation oder In-App gelöscht</td>
+</tr>
+<tr>
+<td>Abonnementdaten</td>
+<td>RevenueCat / Google Play</td>
+<td>Innerhalb von 3 Werktagen gelöscht</td>
+</tr>
+<tr>
+<td>Analytics-Daten</td>
+<td>Firebase (anonym)</td>
+<td>Läuft gemäß der Aufbewahrungsrichtlinie automatisch ab</td>
+</tr>
+<tr>
+<td>Absturzprotokolle</td>
+<td>Firebase Crashlytics</td>
+<td>Läuft automatisch nach 90 Tagen ab</td>
+</tr>
+</tbody>
+</table>
+<div class="warning-box">
+<strong>⚠️ Wichtig:</strong> Die Kontolöschung ist dauerhaft und kann nicht rückgängig gemacht werden. Bitte stellen Sie sicher, dass Sie alle Daten exportiert haben, die Sie behalten möchten, bevor Sie fortfahren.
+    </div>
+<h2>3. Datenlöschung ohne Kontolöschung</h2>
+<p>Sie können Ihre Daten auch löschen, ohne Ihr Konto zu löschen:</p>
+<ul>
+<li>Löschen Sie einzelne Filterregeln vom Hauptbildschirm der App.</li>
+<li>Löschen Sie die SMTP-Einstellungen auf der Seite „Einstellungen“.</li>
+<li>Löschen Sie den Weiterleitungsverlauf aus der App.</li>
+</ul>
+<div class="info-box">
+<strong>ℹ️ Hinweis:</strong> Alle lokal gespeicherten Daten (SMTP-Einstellungen, Filterregeln, Weiterleitungsverlauf) werden automatisch gelöscht, wenn Sie die App von Ihrem Gerät deinstallieren.
+    </div>
+<h2>4. Kontaktieren Sie uns</h2>
+<p>Bei Fragen zur Datenlöschung wenden Sie sich bitte an:</p>
+<p>📧 <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
 </div>
 
-<!-- ===================== TÜRKÇE ===================== -->
-<div id="section-tr" class="section hidden">
-    <h1>SMS Forward — Hesap ve Veri Silme</h1>
-    <p class="subtitle">Yorulmaz Software &bull; Son güncelleme: Mayıs 2026</p>
-
-    <h2>1. Hesabınızı Nasıl Silebilirsiniz</h2>
-    <p>SMS Forward hesabınızı ve ilişkili tüm verilerinizi silmek istiyorsanız, aşağıdaki yöntemlerden birini kullanabilirsiniz:</p>
-
-    <div class="steps">
-        <h3>Yöntem 1 — Uygulama İçinden Silme</h3>
-        <ol>
-            <li>Cihazınızda <strong>SMS Forward</strong> uygulamasını açın.</li>
-            <li><strong>Ayarlar</strong> (dişli simgesi) bölümüne gidin.</li>
-            <li>Aşağı kaydırın ve <strong>"Hesabı Sil"</strong> seçeneğine dokunun.</li>
-            <li>İstendiğinde silme işlemini onaylayın.</li>
-        </ol>
-        <p>Hesabınız ve ilişkili tüm veriler anında kalıcı olarak silinecektir.</p>
+<div class="section hidden" id="section-es">
+<h1>Reenvío de SMS: eliminación de cuentas y datos</h1>
+<p class="subtitle">Software Yorulmaz • Última actualización: mayo de 2026</p>
+<h2>1. Cómo eliminar tu cuenta</h2>
+<p>Si desea eliminar su cuenta de SMS Forward y todos los datos asociados, puede hacerlo utilizando cualquiera de los siguientes métodos:</p>
+<div class="steps">
+<h3>Método 1: eliminación dentro de la aplicación</h3>
+<ol>
+<li>Abre el <strong>Reenvío de SMS</strong> aplicación en su dispositivo.</li>
+<li>Ir a <strong>Ajustes</strong> (icono de engranaje).</li>
+<li>Desplácese hacia abajo y toque <strong>"Eliminar cuenta"</strong>.</li>
+<li>Confirme la eliminación cuando se le solicite.</li>
+</ol>
+<p>Su cuenta y todos los datos asociados se eliminarán permanentemente de inmediato.</p>
+</div>
+<div class="steps">
+<h3>Método 2: solicitud por correo electrónico</h3>
+<ol>
+<li>Enviar un correo electrónico a <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></li>
+<li>Utilice la línea de asunto: <strong>"Solicitud de eliminación de cuenta: reenvío de SMS"</strong></li>
+<li>Incluya la dirección de correo electrónico asociada con su cuenta en el cuerpo.</li>
+</ol>
+<p>Procesaremos su solicitud dentro de <strong>3 días hábiles</strong> y enviarle un correo electrónico de confirmación.</p>
+</div>
+<h2>2. Qué datos se eliminan</h2>
+<p>Cuando elimina su cuenta, los siguientes datos se eliminan permanentemente:</p>
+<table class="data-table">
+<thead>
+<tr>
+<th>Tipo de datos</th>
+<th>Ubicación de almacenamiento</th>
+<th>Supresión</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Credenciales de la cuenta (Google OAuth)</td>
+<td>Autenticación de base de fuego</td>
+<td>Eliminado inmediatamente</td>
+</tr>
+<tr>
+<td>Configuración SMTP/correo electrónico</td>
+<td>Solo dispositivo (local)</td>
+<td>Eliminado con la desinstalación de la aplicación o dentro de la aplicación</td>
+</tr>
+<tr>
+<td>Reglas de filtrado</td>
+<td>Solo dispositivo (local)</td>
+<td>Eliminado con la desinstalación de la aplicación o dentro de la aplicación</td>
+</tr>
+<tr>
+<td>Datos de suscripción</td>
+<td>IngresosCat / Google Play</td>
+<td>Eliminado en 3 días hábiles</td>
+</tr>
+<tr>
+<td>Datos analíticos</td>
+<td>Base de fuego (anónimo)</td>
+<td>Caduca automáticamente según la política de retención</td>
+</tr>
+<tr>
+<td>Registros de fallos</td>
+<td>Crashlytics de base de fuego</td>
+<td>Caduca automáticamente después de 90 días</td>
+</tr>
+</tbody>
+</table>
+<div class="warning-box">
+<strong>⚠️ Importante:</strong> La eliminación de la cuenta es permanente y no se puede deshacer. Asegúrese de haber exportado todos los datos que desee conservar antes de continuar.
     </div>
-
-    <div class="steps">
-        <h3>Yöntem 2 — E-posta ile Talep</h3>
-        <ol>
-            <li><a href="mailto:yorulmazsoftware@gmail.com" class="email-link">yorulmazsoftware@gmail.com</a> adresine e-posta gönderin.</li>
-            <li>Konu satırını şu şekilde yazın: <strong>"Hesap Silme Talebi — SMS Forward"</strong></li>
-            <li>E-posta gövdesine hesabınızla ilişkili e-posta adresini ekleyin.</li>
-        </ol>
-        <p>Talebiniz <strong>3 iş günü</strong> içinde işleme alınacak ve size onay e-postası gönderilecektir.</p>
+<h2>3. Eliminación de datos sin eliminación de cuenta</h2>
+<p>También puedes eliminar tus datos sin eliminar tu cuenta:</p>
+<ul>
+<li>Elimine reglas de filtrado individuales de la pantalla principal de la aplicación.</li>
+<li>Borre la configuración SMTP desde la página Configuración.</li>
+<li>Borre el historial de reenvíos desde la aplicación.</li>
+</ul>
+<div class="info-box">
+<strong>ℹ️ Nota:</strong> Todos los datos almacenados localmente (configuración SMTP, reglas de filtrado, historial de reenvío) se eliminan automáticamente cuando desinstalas la aplicación de tu dispositivo.
     </div>
+<h2>4. Contáctenos</h2>
+<p>Si tiene alguna pregunta sobre la eliminación de datos, comuníquese con nosotros:</p>
+<p>📧 <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+</div>
 
-    <h2>2. Hangi Veriler Silinir</h2>
-    <p>Hesabınızı sildiğinizde aşağıdaki veriler kalıcı olarak kaldırılır:</p>
-
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>Veri Türü</th>
-                <th>Depolama Yeri</th>
-                <th>Silme</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Hesap bilgileri (Google OAuth)</td>
-                <td>Firebase Authentication</td>
-                <td>Anında silinir</td>
-            </tr>
-            <tr>
-                <td>SMTP / E-posta yapılandırması</td>
-                <td>Yalnızca cihaz (yerel)</td>
-                <td>Uygulama kaldırıldığında veya uygulama içinden silinir</td>
-            </tr>
-            <tr>
-                <td>Filtre kuralları</td>
-                <td>Yalnızca cihaz (yerel)</td>
-                <td>Uygulama kaldırıldığında veya uygulama içinden silinir</td>
-            </tr>
-            <tr>
-                <td>Abonelik verileri</td>
-                <td>RevenueCat / Google Play</td>
-                <td>3 iş günü içinde silinir</td>
-            </tr>
-            <tr>
-                <td>Analitik verileri</td>
-                <td>Firebase (anonim)</td>
-                <td>Saklama politikasına göre otomatik olarak süresi dolar</td>
-            </tr>
-            <tr>
-                <td>Çökme günlükleri</td>
-                <td>Firebase Crashlytics</td>
-                <td>90 gün sonra otomatik olarak silinir</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div class="warning-box">
-        <strong>⚠️ Önemli:</strong> Hesap silme işlemi kalıcıdır ve geri alınamaz. Devam etmeden önce saklamak istediğiniz verileri dışa aktardığınızdan emin olun.
+<div class="section hidden" id="section-pt">
+<h1>Encaminhamento de SMS – exclusão de conta e dados</h1>
+<p class="subtitle">Software Yorulmaz • Última atualização: maio de 2026</p>
+<h2>1. Como excluir sua conta</h2>
+<p>Se desejar excluir sua conta SMS Forward e todos os dados associados, você pode fazer isso usando um dos seguintes métodos:</p>
+<div class="steps">
+<h3>Método 1 – Exclusão no aplicativo</h3>
+<ol>
+<li>Abra o <strong>Encaminhamento de SMS</strong> aplicativo no seu dispositivo.</li>
+<li>Vá para <strong>Configurações</strong> (ícone de engrenagem).</li>
+<li>Role para baixo e toque em <strong>"Excluir conta"</strong>.</li>
+<li>Confirme a exclusão quando solicitado.</li>
+</ol>
+<p>Sua conta e todos os dados associados serão excluídos permanentemente imediatamente.</p>
+</div>
+<div class="steps">
+<h3>Método 2 – Solicitação por e-mail</h3>
+<ol>
+<li>Envie um e-mail para <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></li>
+<li>Use a linha de assunto: <strong>"Solicitação de exclusão de conta - encaminhamento de SMS"</strong></li>
+<li>Inclua o endereço de e-mail associado à sua conta no corpo.</li>
+</ol>
+<p>Processaremos sua solicitação dentro <strong>3 dias úteis</strong> e enviar-lhe um e-mail de confirmação.</p>
+</div>
+<h2>2. Quais dados são excluídos</h2>
+<p>Quando você exclui sua conta, os seguintes dados são removidos permanentemente:</p>
+<table class="data-table">
+<thead>
+<tr>
+<th>Tipo de dados</th>
+<th>Local de armazenamento</th>
+<th>Eliminação</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Credenciais da conta (Google OAuth)</td>
+<td>Autenticação Firebase</td>
+<td>Excluído imediatamente</td>
+</tr>
+<tr>
+<td>Configuração de SMTP/e-mail</td>
+<td>Somente dispositivo (local)</td>
+<td>Excluído com desinstalação do aplicativo ou no aplicativo</td>
+</tr>
+<tr>
+<td>Regras de filtragem</td>
+<td>Somente dispositivo (local)</td>
+<td>Excluído com desinstalação do aplicativo ou no aplicativo</td>
+</tr>
+<tr>
+<td>Dados de assinatura</td>
+<td>ReceitaCat / Google Play</td>
+<td>Excluído em até 3 dias úteis</td>
+</tr>
+<tr>
+<td>Dados analíticos</td>
+<td>Firebase (anônimo)</td>
+<td>Expira automaticamente de acordo com a política de retenção</td>
+</tr>
+<tr>
+<td>Registros de falhas</td>
+<td>Crashlytics do Firebase</td>
+<td>Expira automaticamente após 90 dias</td>
+</tr>
+</tbody>
+</table>
+<div class="warning-box">
+<strong>⚠️ Importante:</strong> A exclusão da conta é permanente e não pode ser desfeita. Certifique-se de ter exportado todos os dados que deseja manter antes de continuar.
     </div>
-
-    <h2>3. Hesap Silmeden Veri Silme</h2>
-    <p>Hesabınızı silmeden verilerinizi de silebilirsiniz:</p>
-    <ul>
-        <li>Uygulamanın ana ekranından filtre kurallarını tek tek silebilirsiniz.</li>
-        <li>Ayarlar sayfasından SMTP ayarlarını temizleyebilirsiniz.</li>
-        <li>Uygulamadan yönlendirme geçmişini temizleyebilirsiniz.</li>
-    </ul>
-
-    <div class="info-box">
-        <strong>ℹ️ Not:</strong> Yerel olarak depolanan tüm veriler (SMTP ayarları, filtre kuralları, yönlendirme geçmişi), uygulamayı cihazınızdan kaldırdığınızda otomatik olarak silinir.
+<h2>3. Exclusão de dados sem exclusão de conta</h2>
+<p>Você também pode excluir seus dados sem excluir sua conta:</p>
+<ul>
+<li>Exclua regras de filtro individuais da tela principal do aplicativo.</li>
+<li>Limpe as configurações de SMTP na página Configurações.</li>
+<li>Limpe o histórico de encaminhamento do aplicativo.</li>
+</ul>
+<div class="info-box">
+<strong>ℹ️ Nota:</strong> Todos os dados armazenados localmente (configurações de SMTP, regras de filtro, histórico de encaminhamento) são excluídos automaticamente quando você desinstala o aplicativo do seu dispositivo.
     </div>
+<h2>4. Contate-nos</h2>
+<p>Se você tiver alguma dúvida sobre a exclusão de dados, entre em contato conosco:</p>
+<p>📧 <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+</div>
 
-    <h2>4. İletişim</h2>
-    <p>Veri silme ile ilgili sorularınız için bizimle iletişime geçin:</p>
-    <p>📧 <a href="mailto:yorulmazsoftware@gmail.com" class="email-link">yorulmazsoftware@gmail.com</a></p>
+<div class="section hidden" id="section-fr">
+<h1>Transfert SMS – Suppression de compte et de données</h1>
+<p class="subtitle">Logiciel Yorulmaz • Dernière mise à jour : mai 2026</p>
+<h2>1. Comment supprimer votre compte</h2>
+<p>Si vous souhaitez supprimer votre compte SMS Forward et toutes les données associées, vous pouvez le faire en utilisant l'une des méthodes suivantes :</p>
+<div class="steps">
+<h3>Méthode 1 – Suppression dans l’application</h3>
+<ol>
+<li>Ouvrez le <strong>Transfert de SMS</strong> application sur votre appareil.</li>
+<li>Aller à <strong>Paramètres</strong> (icône d'engrenage).</li>
+<li>Faites défiler vers le bas et appuyez sur <strong>"Supprimer le compte"</strong>.</li>
+<li>Confirmez la suppression lorsque vous y êtes invité.</li>
+</ol>
+<p>Votre compte et toutes les données associées seront définitivement supprimés immédiatement.</p>
+</div>
+<div class="steps">
+<h3>Méthode 2 – Demande par e-mail</h3>
+<ol>
+<li>Envoyez un e-mail à <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></li>
+<li>Utilisez la ligne d'objet : <strong>« Demande de suppression de compte – Transfert SMS »</strong></li>
+<li>Incluez l'adresse e-mail associée à votre compte dans le corps.</li>
+</ol>
+<p>Nous traiterons votre demande dans les <strong>3 jours ouvrés</strong> et vous envoie un email de confirmation.</p>
+</div>
+<h2>2. Quelles données sont supprimées</h2>
+<p>Lorsque vous supprimez votre compte, les données suivantes sont définitivement supprimées :</p>
+<table class="data-table">
+<thead>
+<tr>
+<th>Type de données</th>
+<th>Emplacement de stockage</th>
+<th>Effacement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Identifiants du compte (Google OAuth)</td>
+<td>Authentification Firebase</td>
+<td>Immédiatement supprimé</td>
+</tr>
+<tr>
+<td>Configuration SMTP / E-mail</td>
+<td>Appareil uniquement (local)</td>
+<td>Supprimé avec la désinstallation de l'application ou dans l'application</td>
+</tr>
+<tr>
+<td>Règles de filtrage</td>
+<td>Appareil uniquement (local)</td>
+<td>Supprimé avec la désinstallation de l'application ou dans l'application</td>
+</tr>
+<tr>
+<td>Données d'abonnement</td>
+<td>RevenuCat / Google Play</td>
+<td>Supprimé dans les 3 jours ouvrables</td>
+</tr>
+<tr>
+<td>Données analytiques</td>
+<td>Firebase (anonyme)</td>
+<td>Expire automatiquement selon la politique de rétention</td>
+</tr>
+<tr>
+<td>Journaux de crash</td>
+<td>Firebase Crashlytics</td>
+<td>Expire automatiquement après 90 jours</td>
+</tr>
+</tbody>
+</table>
+<div class="warning-box">
+<strong>⚠️Important :</strong> La suppression du compte est définitive et ne peut être annulée. Veuillez vous assurer d'avoir exporté toutes les données que vous souhaitez conserver avant de continuer.
+    </div>
+<h2>3. Suppression des données sans suppression de compte</h2>
+<p>Vous pouvez également supprimer vos données sans supprimer votre compte :</p>
+<ul>
+<li>Supprimez les règles de filtrage individuelles de l'écran principal de l'application.</li>
+<li>Effacez les paramètres SMTP à partir de la page Paramètres.</li>
+<li>Effacez l’historique des transferts depuis l’application.</li>
+</ul>
+<div class="info-box">
+<strong>ℹ️ Remarque :</strong> Toutes les données stockées localement (paramètres SMTP, règles de filtrage, historique de transfert) sont automatiquement supprimées lorsque vous désinstallez l'application de votre appareil.
+    </div>
+<h2>4. Contactez-nous</h2>
+<p>Si vous avez des questions concernant la suppression des données, veuillez nous contacter :</p>
+<p>📧 <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+</div>
+
+<div class="section hidden" dir="rtl" id="section-ar">
+<h1>إعادة توجيه الرسائل القصيرة - حذف الحساب والبيانات</h1>
+<p class="subtitle">برنامج Yorulmaz • آخر تحديث: مايو 2026</p>
+<h2>1. كيفية حذف حسابك</h2>
+<p>إذا كنت ترغب في حذف حساب SMS Forward الخاص بك وجميع البيانات المرتبطة به، فيمكنك القيام بذلك باستخدام إحدى الطرق التالية:</p>
+<div class="steps">
+<h3>الطريقة الأولى - الحذف داخل التطبيق</h3>
+<ol>
+<li>افتح <strong>الرسائل القصيرة إلى الأمام</strong> التطبيق على جهازك.</li>
+<li>اذهب الى <strong>إعدادات</strong> (أيقونة الترس).</li>
+<li>قم بالتمرير لأسفل وانقر فوق <strong>"حذف الحساب"</strong>.</li>
+<li>قم بتأكيد الحذف عندما يُطلب منك ذلك.</li>
+</ol>
+<p>سيتم حذف حسابك وجميع البيانات المرتبطة به نهائيًا على الفور.</p>
+</div>
+<div class="steps">
+<h3>الطريقة الثانية - طلب البريد الإلكتروني</h3>
+<ol>
+<li>إرسال بريد إلكتروني إلى <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></li>
+<li>استخدم سطر الموضوع: <strong>"طلب حذف الحساب - إعادة توجيه الرسائل القصيرة"</strong></li>
+<li>قم بتضمين عنوان البريد الإلكتروني المرتبط بحسابك في النص الأساسي.</li>
+</ol>
+<p>سوف نقوم بمعالجة طلبك داخل <strong>3 أيام عمل</strong> وأرسل لك رسالة تأكيد بالبريد الإلكتروني.</p>
+</div>
+<h2>2. ما هي البيانات التي يتم حذفها</h2>
+<p>عند حذف حسابك، تتم إزالة البيانات التالية نهائيًا:</p>
+<table class="data-table">
+<thead>
+<tr>
+<th>نوع البيانات</th>
+<th>موقع التخزين</th>
+<th>الحذف</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>بيانات اعتماد الحساب (Google OAuth)</td>
+<td>مصادقة Firebase</td>
+<td>تم حذفه على الفور</td>
+</tr>
+<tr>
+<td>SMTP / تكوين البريد الإلكتروني</td>
+<td>الجهاز فقط (محلي)</td>
+<td>تم حذفه مع إلغاء تثبيت التطبيق أو داخل التطبيق</td>
+</tr>
+<tr>
+<td>قواعد التصفية</td>
+<td>الجهاز فقط (محلي)</td>
+<td>تم حذفه مع إلغاء تثبيت التطبيق أو داخل التطبيق</td>
+</tr>
+<tr>
+<td>بيانات الاشتراك</td>
+<td>الإيرادات / جوجل بلاي</td>
+<td>تم الحذف خلال 3 أيام عمل</td>
+</tr>
+<tr>
+<td>بيانات التحليلات</td>
+<td>Firebase (مجهول)</td>
+<td>تنتهي صلاحيته تلقائيًا وفقًا لسياسة الاحتفاظ</td>
+</tr>
+<tr>
+<td>سجلات الأعطال</td>
+<td>Firebase Crashlytics</td>
+<td>تنتهي صلاحيته تلقائيًا بعد 90 يومًا</td>
+</tr>
+</tbody>
+</table>
+<div class="warning-box">
+<strong>⚠️ هام:</strong> يعد حذف الحساب نهائيًا ولا يمكن التراجع عنه. يرجى التأكد من قيامك بتصدير أي بيانات ترغب في الاحتفاظ بها قبل المتابعة.
+    </div>
+<h2>3. حذف البيانات دون حذف الحساب</h2>
+<p>يمكنك أيضًا حذف بياناتك دون حذف حسابك:</p>
+<ul>
+<li>احذف قواعد التصفية الفردية من الشاشة الرئيسية للتطبيق.</li>
+<li>امسح إعدادات SMTP من صفحة الإعدادات.</li>
+<li>مسح سجل إعادة التوجيه من التطبيق.</li>
+</ul>
+<div class="info-box">
+<strong>ℹ️ ملاحظة:</strong> يتم حذف جميع البيانات المخزنة محليًا (إعدادات SMTP وقواعد التصفية وسجل إعادة التوجيه) تلقائيًا عند إلغاء تثبيت التطبيق من جهازك.
+    </div>
+<h2>4. اتصل بنا</h2>
+<p>إذا كان لديك أي أسئلة حول حذف البيانات، يرجى الاتصال بنا:</p>
+<p>📧 <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+</div>
+
+<div class="section hidden" id="section-hi">
+<h1>एसएमएस अग्रेषित - खाता एवं डेटा हटाना</h1>
+<p class="subtitle">योरुलमाज़ सॉफ्टवेयर • अंतिम अद्यतन: मई 2026</p>
+<h2>1. अपना अकाउंट कैसे डिलीट करें</h2>
+<p>यदि आप अपना एसएमएस फ़ॉरवर्ड खाता और सभी संबद्ध डेटा हटाना चाहते हैं, तो आप निम्न तरीकों में से किसी एक का उपयोग करके ऐसा कर सकते हैं:</p>
+<div class="steps">
+<h3>विधि 1 - इन-ऐप विलोपन</h3>
+<ol>
+<li>खोलें <strong>एसएमएस अग्रेषित करें</strong> आपके डिवाइस पर ऐप।</li>
+<li>जाओ <strong>सेटिंग्स</strong> (गियर आइकन).</li>
+<li>नीचे स्क्रॉल करें और टैप करें <strong>"खाता हटा दो"</strong>.</li>
+<li>संकेत मिलने पर विलोपन की पुष्टि करें।</li>
+</ol>
+<p>आपका खाता और सभी संबद्ध डेटा तुरंत स्थायी रूप से हटा दिए जाएंगे।</p>
+</div>
+<div class="steps">
+<h3>विधि 2 - ईमेल अनुरोध</h3>
+<ol>
+<li>को एक ईमेल भेजो <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></li>
+<li>विषय पंक्ति का प्रयोग करें: <strong>"खाता हटाने का अनुरोध - एसएमएस अग्रेषित करें"</strong></li>
+<li>मुख्य भाग में अपने खाते से संबद्ध ईमेल पता शामिल करें।</li>
+</ol>
+<p>हम आपके अनुरोध पर कार्रवाई करेंगे <strong>3 व्यावसायिक दिन</strong> और आपको एक पुष्टिकरण ईमेल भेजें।</p>
+</div>
+<h2>2. कौन सा डेटा डिलीट किया गया है</h2>
+<p>जब आप अपना खाता हटाते हैं, तो निम्नलिखित डेटा स्थायी रूप से हटा दिया जाता है:</p>
+<table class="data-table">
+<thead>
+<tr>
+<th>डेटा प्रकार</th>
+<th>रखने की जगह</th>
+<th>विलोपन</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>खाता क्रेडेंशियल (Google OAuth)</td>
+<td>फायरबेस प्रमाणीकरण</td>
+<td>तुरंत हटा दिया गया</td>
+</tr>
+<tr>
+<td>एसएमटीपी/ईमेल कॉन्फ़िगरेशन</td>
+<td>केवल डिवाइस (स्थानीय)</td>
+<td>ऐप अनइंस्टॉल या इन-ऐप के साथ हटा दिया गया</td>
+</tr>
+<tr>
+<td>फ़िल्टर नियम</td>
+<td>केवल डिवाइस (स्थानीय)</td>
+<td>ऐप अनइंस्टॉल या इन-ऐप के साथ हटा दिया गया</td>
+</tr>
+<tr>
+<td>सदस्यता डेटा</td>
+<td>रेवेन्यूकैट / गूगल प्ले</td>
+<td>3 व्यावसायिक दिनों के भीतर हटा दिया गया</td>
+</tr>
+<tr>
+<td>विश्लेषिकी डेटा</td>
+<td>फायरबेस (गुमनाम)</td>
+<td>प्रति अवधारण नीति स्वचालित रूप से समाप्त हो जाती है</td>
+</tr>
+<tr>
+<td>क्रैश लॉग</td>
+<td>फायरबेस क्रैशलाइटिक्स</td>
+<td>90 दिनों के बाद स्वतः समाप्त हो जाता है</td>
+</tr>
+</tbody>
+</table>
+<div class="warning-box">
+<strong>⚠️ महत्वपूर्ण:</strong> खाता हटाना स्थायी है और इसे पूर्ववत नहीं किया जा सकता। कृपया सुनिश्चित करें कि आगे बढ़ने से पहले आपने वह डेटा निर्यात कर लिया है जिसे आप रखना चाहते हैं।
+    </div>
+<h2>3. खाता हटाए बिना डेटा हटाना</h2>
+<p>आप अपना खाता हटाए बिना भी अपना डेटा हटा सकते हैं:</p>
+<ul>
+<li>ऐप की मुख्य स्क्रीन से अलग-अलग फ़िल्टर नियम हटाएं।</li>
+<li>सेटिंग्स पृष्ठ से एसएमटीपी सेटिंग्स साफ़ करें।</li>
+<li>ऐप से अग्रेषण इतिहास साफ़ करें।</li>
+</ul>
+<div class="info-box">
+<strong>ℹ️ नोट:</strong> जब आप अपने डिवाइस से ऐप को अनइंस्टॉल करते हैं तो सभी स्थानीय रूप से संग्रहीत डेटा (एसएमटीपी सेटिंग्स, फ़िल्टर नियम, फ़ॉरवर्डिंग इतिहास) स्वचालित रूप से हटा दिया जाता है।
+    </div>
+<h2>4. हमसे संपर्क करें</h2>
+<p>यदि डेटा हटाने के बारे में आपके कोई प्रश्न हैं, तो कृपया हमसे संपर्क करें:</p>
+<p>📧 <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+</div>
+
+<div class="section hidden" id="section-ru">
+<h1>СМС переадресация — удаление аккаунта и данных</h1>
+<p class="subtitle">Программное обеспечение Yorulmaz • Последнее обновление: май 2026 г.</p>
+<h2>1. Как удалить свою учетную запись</h2>
+<p>Если вы хотите удалить свою учетную запись SMS Forward и все связанные с ней данные, вы можете сделать это одним из следующих способов:</p>
+<div class="steps">
+<h3>Способ 1 — Удаление из приложения</h3>
+<ol>
+<li>Откройте <strong>СМС переадресация</strong> приложение на вашем устройстве.</li>
+<li>Перейти к <strong>Настройки</strong> (значок шестеренки).</li>
+<li>Прокрутите вниз и нажмите <strong>«Удалить учетную запись»</strong>.</li>
+<li>Подтвердите удаление при появлении соответствующего запроса.</li>
+</ol>
+<p>Ваша учетная запись и все связанные с ней данные будут немедленно удалены без возможности восстановления.</p>
+</div>
+<div class="steps">
+<h3>Способ 2 — запрос по электронной почте</h3>
+<ol>
+<li>Отправьте электронное письмо на <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></li>
+<li>Используйте тему письма: <strong>«Запрос на удаление аккаунта — Переадресация СМС»</strong></li>
+<li>Включите в тело адрес электронной почты, связанный с вашей учетной записью.</li>
+</ol>
+<p>Мы обработаем ваш запрос в течение <strong>3 рабочих дня</strong> и отправить вам письмо с подтверждением.</p>
+</div>
+<h2>2. Какие данные удаляются</h2>
+<p>Когда вы удаляете свою учетную запись, следующие данные удаляются навсегда:</p>
+<table class="data-table">
+<thead>
+<tr>
+<th>Тип данных</th>
+<th>Место хранения</th>
+<th>Удаление</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Учетные данные учетной записи (Google OAuth)</td>
+<td>Аутентификация Firebase</td>
+<td>Сразу удалено</td>
+</tr>
+<tr>
+<td>Конфигурация SMTP/электронной почты</td>
+<td>Только устройство (локальное)</td>
+<td>Удален при удалении приложения или в приложении.</td>
+</tr>
+<tr>
+<td>Правила фильтрации</td>
+<td>Только устройство (локальное)</td>
+<td>Удален при удалении приложения или в приложении.</td>
+</tr>
+<tr>
+<td>Данные подписки</td>
+<td>RevenueCat / Google Play</td>
+<td>Удален в течение 3 рабочих дней.</td>
+</tr>
+<tr>
+<td>Аналитические данные</td>
+<td>Firebase (анонимно)</td>
+<td>Срок действия истекает автоматически в соответствии с политикой хранения.</td>
+</tr>
+<tr>
+<td>Журналы сбоев</td>
+<td>Firebase Крашлитикс</td>
+<td>Автоматически истекает через 90 дней.</td>
+</tr>
+</tbody>
+</table>
+<div class="warning-box">
+<strong>⚠️ Важно:</strong> Удаление учетной записи является окончательным и не может быть отменено. Прежде чем продолжить, убедитесь, что вы экспортировали все данные, которые хотите сохранить.
+    </div>
+<h2>3. Удаление данных без удаления учетной записи</h2>
+<p>Вы также можете удалить свои данные, не удаляя свою учетную запись:</p>
+<ul>
+<li>Удалите отдельные правила фильтрации с главного экрана приложения.</li>
+<li>Очистите настройки SMTP на странице настроек.</li>
+<li>Очистите историю переадресаций из приложения.</li>
+</ul>
+<div class="info-box">
+<strong>ℹ️ Примечание:</strong> Все локально хранящиеся данные (настройки SMTP, правила фильтрации, история переадресации) автоматически удаляются при удалении приложения с устройства.
+    </div>
+<h2>4. Свяжитесь с нами</h2>
+<p>Если у вас есть вопросы по поводу удаления данных, свяжитесь с нами:</p>
+<p>📧 <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+</div>
+
+<div class="section hidden" id="section-id">
+<h1>Penerusan SMS — Penghapusan Akun &amp; Data</h1>
+<p class="subtitle">Perangkat Lunak Yorulmaz • Terakhir diperbarui: Mei 2026</p>
+<h2>1. Cara Menghapus Akun Anda</h2>
+<p>Jika Anda ingin menghapus akun SMS Forward dan semua data terkait, Anda dapat melakukannya menggunakan salah satu metode berikut:</p>
+<div class="steps">
+<h3>Metode 1 — Penghapusan Dalam Aplikasi</h3>
+<ol>
+<li>Buka <strong>SMS Teruskan</strong> aplikasi di perangkat Anda.</li>
+<li>Pergi ke <strong>Pengaturan</strong> (ikon roda gigi).</li>
+<li>Gulir ke bawah dan ketuk <strong>"Hapus Akun"</strong>.</li>
+<li>Konfirmasikan penghapusan saat diminta.</li>
+</ol>
+<p>Akun Anda dan semua data terkait akan segera dihapus secara permanen.</p>
+</div>
+<div class="steps">
+<h3>Metode 2 — Permintaan Email</h3>
+<ol>
+<li>Kirim email ke <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></li>
+<li>Gunakan baris subjek: <strong>"Permintaan Penghapusan Akun — Penerusan SMS"</strong></li>
+<li>Sertakan alamat email yang terkait dengan akun Anda di badan.</li>
+</ol>
+<p>Kami akan memproses permintaan Anda dalam waktu <strong>3 hari kerja</strong> dan mengirimi Anda email konfirmasi.</p>
+</div>
+<h2>2. Data Apa yang Dihapus</h2>
+<p>Saat Anda menghapus akun Anda, data berikut akan dihapus secara permanen:</p>
+<table class="data-table">
+<thead>
+<tr>
+<th>Tipe Data</th>
+<th>Lokasi Penyimpanan</th>
+<th>Penghapusan</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kredensial akun (Google OAuth)</td>
+<td>Otentikasi Firebase</td>
+<td>Segera dihapus</td>
+</tr>
+<tr>
+<td>Konfigurasi SMTP / Email</td>
+<td>Hanya perangkat (lokal)</td>
+<td>Dihapus dengan uninstall aplikasi atau dalam aplikasi</td>
+</tr>
+<tr>
+<td>Filter aturan</td>
+<td>Hanya perangkat (lokal)</td>
+<td>Dihapus dengan uninstall aplikasi atau dalam aplikasi</td>
+</tr>
+<tr>
+<td>Data langganan</td>
+<td>PendapatanKucing / Google Play</td>
+<td>Dihapus dalam 3 hari kerja</td>
+</tr>
+<tr>
+<td>Data analisis</td>
+<td>Firebase (anonim)</td>
+<td>Secara otomatis habis masa berlakunya per kebijakan penyimpanan</td>
+</tr>
+<tr>
+<td>Log kerusakan</td>
+<td>Firebase Crashlytics</td>
+<td>Secara otomatis kedaluwarsa setelah 90 hari</td>
+</tr>
+</tbody>
+</table>
+<div class="warning-box">
+<strong>⚠️ Penting:</strong> Penghapusan akun bersifat permanen dan tidak dapat dibatalkan. Harap pastikan Anda telah mengekspor data apa pun yang ingin Anda simpan sebelum melanjutkan.
+    </div>
+<h2>3. Penghapusan Data Tanpa Penghapusan Akun</h2>
+<p>Anda juga dapat menghapus data Anda tanpa menghapus akun Anda:</p>
+<ul>
+<li>Hapus aturan filter individual dari layar utama aplikasi.</li>
+<li>Hapus pengaturan SMTP dari halaman Pengaturan.</li>
+<li>Hapus riwayat penerusan dari aplikasi.</li>
+</ul>
+<div class="info-box">
+<strong>ℹ️ Catatan:</strong> Semua data yang disimpan secara lokal (pengaturan SMTP, aturan filter, riwayat penerusan) secara otomatis dihapus saat Anda menghapus instalasi aplikasi dari perangkat Anda.
+    </div>
+<h2>4. Hubungi Kami</h2>
+<p>Jika Anda memiliki pertanyaan tentang penghapusan data, silakan hubungi kami:</p>
+<p>📧 <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+</div>
+
+<div class="section hidden" id="section-bn">
+<h1>এসএমএস ফরওয়ার্ড — অ্যাকাউন্ট এবং ডেটা মুছে ফেলা</h1>
+<p class="subtitle">Yorulmaz সফ্টওয়্যার • সর্বশেষ আপডেট: মে 2026</p>
+<h2>1. কিভাবে আপনার অ্যাকাউন্ট মুছে ফেলবেন</h2>
+<p>আপনি যদি আপনার এসএমএস ফরোয়ার্ড অ্যাকাউন্ট এবং সমস্ত সম্পর্কিত ডেটা মুছে ফেলতে চান, তাহলে আপনি নিম্নলিখিত পদ্ধতিগুলির যে কোনো একটি ব্যবহার করে তা করতে পারেন:</p>
+<div class="steps">
+<h3>পদ্ধতি 1 - ইন-অ্যাপ মুছে ফেলা</h3>
+<ol>
+<li>খুলুন <strong>এসএমএস ফরওয়ার্ড করুন</strong> আপনার ডিভাইসে অ্যাপ।</li>
+<li>যান <strong>সেটিংস</strong> (গিয়ার আইকন)।</li>
+<li>নিচে স্ক্রোল করুন এবং আলতো চাপুন <strong>"অ্যাকাউন্ট মুছুন"</strong>.</li>
+<li>অনুরোধ করা হলে মুছে ফেলা নিশ্চিত করুন.</li>
+</ol>
+<p>আপনার অ্যাকাউন্ট এবং সমস্ত সংশ্লিষ্ট ডেটা অবিলম্বে স্থায়ীভাবে মুছে ফেলা হবে।</p>
+</div>
+<div class="steps">
+<h3>পদ্ধতি 2 - ইমেল অনুরোধ</h3>
+<ol>
+<li>একটি ইমেল পাঠান <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></li>
+<li>বিষয় লাইন ব্যবহার করুন: <strong>"অ্যাকাউন্ট মুছে ফেলার অনুরোধ - এসএমএস ফরওয়ার্ড"</strong></li>
+<li>আপনার অ্যাকাউন্টের সাথে যুক্ত ইমেল ঠিকানাটি বডিতে অন্তর্ভুক্ত করুন।</li>
+</ol>
+<p>আমরা মধ্যে আপনার অনুরোধ প্রক্রিয়া করা হবে <strong>3 ব্যবসায়িক দিন</strong> এবং আপনাকে একটি নিশ্চিতকরণ ইমেল পাঠান।</p>
+</div>
+<h2>2. কি ডেটা মুছে ফেলা হয়</h2>
+<p>আপনি আপনার অ্যাকাউন্ট মুছে ফেললে, নিম্নলিখিত ডেটা স্থায়ীভাবে মুছে ফেলা হয়:</p>
+<table class="data-table">
+<thead>
+<tr>
+<th>ডেটা টাইপ</th>
+<th>স্টোরেজ অবস্থান</th>
+<th>মুছে ফেলা</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>অ্যাকাউন্টের শংসাপত্র (Google OAuth)</td>
+<td>ফায়ারবেস প্রমাণীকরণ</td>
+<td>সঙ্গে সঙ্গে মুছে ফেলা হয়েছে</td>
+</tr>
+<tr>
+<td>SMTP/ইমেল কনফিগারেশন</td>
+<td>শুধুমাত্র ডিভাইস (স্থানীয়)</td>
+<td>অ্যাপ আনইনস্টল বা ইন-অ্যাপ দিয়ে মুছে ফেলা হয়েছে</td>
+</tr>
+<tr>
+<td>ফিল্টার নিয়ম</td>
+<td>শুধুমাত্র ডিভাইস (স্থানীয়)</td>
+<td>অ্যাপ আনইনস্টল বা ইন-অ্যাপ দিয়ে মুছে ফেলা হয়েছে</td>
+</tr>
+<tr>
+<td>সাবস্ক্রিপশন ডেটা</td>
+<td>RevenueCat / Google Play</td>
+<td>3 ব্যবসায়িক দিনের মধ্যে মুছে ফেলা হয়েছে</td>
+</tr>
+<tr>
+<td>বিশ্লেষণ তথ্য</td>
+<td>ফায়ারবেস (বেনামী)</td>
+<td>প্রতি ধারণ নীতি স্বয়ংক্রিয়ভাবে মেয়াদ শেষ হয়</td>
+</tr>
+<tr>
+<td>ক্র্যাশ লগ</td>
+<td>ফায়ারবেস ক্র্যাশলাইটিক্স</td>
+<td>90 দিন পর স্বয়ংক্রিয়ভাবে মেয়াদ শেষ হয়ে যায়</td>
+</tr>
+</tbody>
+</table>
+<div class="warning-box">
+<strong>⚠️ গুরুত্বপূর্ণ:</strong> অ্যাকাউন্ট মুছে ফেলা স্থায়ী এবং পূর্বাবস্থায় ফেরানো যাবে না। অনুগ্রহ করে নিশ্চিত করুন যে আপনি এগিয়ে যাওয়ার আগে আপনি রাখতে চান এমন কোনো ডেটা রপ্তানি করেছেন।
+    </div>
+<h2>3. অ্যাকাউন্ট মুছে ফেলা ছাড়া ডেটা মুছে ফেলা</h2>
+<p>আপনি আপনার অ্যাকাউন্ট মুছে না দিয়েও আপনার ডেটা মুছতে পারেন:</p>
+<ul>
+<li>অ্যাপের প্রধান স্ক্রীন থেকে পৃথক ফিল্টার নিয়ম মুছুন।</li>
+<li>সেটিংস পৃষ্ঠা থেকে SMTP সেটিংস সাফ করুন।</li>
+<li>অ্যাপ থেকে ফরওয়ার্ড করার ইতিহাস সাফ করুন।</li>
+</ul>
+<div class="info-box">
+<strong>ℹ️ নোট:</strong> আপনি যখন আপনার ডিভাইস থেকে অ্যাপটি আনইনস্টল করেন তখন স্থানীয়ভাবে সঞ্চিত সমস্ত ডেটা (SMTP সেটিংস, ফিল্টার নিয়ম, ফরওয়ার্ডিং ইতিহাস) স্বয়ংক্রিয়ভাবে মুছে যায়।
+    </div>
+<h2>4. আমাদের সাথে যোগাযোগ করুন</h2>
+<p>ডেটা মুছে ফেলার বিষয়ে আপনার কোন প্রশ্ন থাকলে, অনুগ্রহ করে আমাদের সাথে যোগাযোগ করুন:</p>
+<p>📧 <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
+</div>
+
+<div class="section hidden" dir="rtl" id="section-ur">
+<h1>ایس ایم ایس فارورڈ - اکاؤنٹ اور ڈیٹا ڈیلیٹ کرنا</h1>
+<p class="subtitle">Yorulmaz سافٹ ویئر • آخری بار اپ ڈیٹ کیا گیا: مئی 2026</p>
+<h2>1. اپنا اکاؤنٹ کیسے حذف کریں۔</h2>
+<p>اگر آپ اپنا SMS فارورڈ اکاؤنٹ اور تمام متعلقہ ڈیٹا کو حذف کرنا چاہتے ہیں، تو آپ درج ذیل طریقوں میں سے کسی ایک کو استعمال کرکے ایسا کر سکتے ہیں:</p>
+<div class="steps">
+<h3>طریقہ 1 - ایپ میں حذف کرنا</h3>
+<ol>
+<li>کھولیں۔ <strong>ایس ایم ایس فارورڈ کریں۔</strong> آپ کے آلے پر ایپ۔</li>
+<li>پر جائیں۔ <strong>ترتیبات</strong> (گئر آئیکن)۔</li>
+<li>نیچے سکرول کریں اور تھپتھپائیں۔ <strong>"اکاؤنٹ حذف کریں"</strong>.</li>
+<li>جب اشارہ کیا جائے تو حذف کرنے کی تصدیق کریں۔</li>
+</ol>
+<p>آپ کا اکاؤنٹ اور تمام متعلقہ ڈیٹا فوری طور پر مستقل طور پر حذف کر دیا جائے گا۔</p>
+</div>
+<div class="steps">
+<h3>طریقہ 2 - ای میل کی درخواست</h3>
+<ol>
+<li>کو ای میل بھیجیں۔ <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></li>
+<li>موضوع لائن کا استعمال کریں: <strong>"اکاؤنٹ ڈیلیٹ کرنے کی درخواست - ایس ایم ایس فارورڈ"</strong></li>
+<li>باڈی میں اپنے اکاؤنٹ سے وابستہ ای میل ایڈریس شامل کریں۔</li>
+</ol>
+<p>ہم آپ کی درخواست پر کارروائی کریں گے۔ <strong>3 کاروباری دن</strong> اور آپ کو ایک تصدیقی ای میل بھیجیں۔</p>
+</div>
+<h2>2. کون سا ڈیٹا حذف کیا جاتا ہے۔</h2>
+<p>جب آپ اپنا اکاؤنٹ حذف کرتے ہیں، تو درج ذیل ڈیٹا کو مستقل طور پر ہٹا دیا جاتا ہے:</p>
+<table class="data-table">
+<thead>
+<tr>
+<th>ڈیٹا کی قسم</th>
+<th>ذخیرہ کرنے کا مقام</th>
+<th>حذف کرنا</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>اکاؤنٹ کی اسناد (Google OAuth)</td>
+<td>فائر بیس کی توثیق</td>
+<td>فوری طور پر حذف کر دیا گیا۔</td>
+</tr>
+<tr>
+<td>SMTP / ای میل کنفیگریشن</td>
+<td>صرف آلہ (مقامی)</td>
+<td>ایپ ان انسٹال یا ان ایپ کے ساتھ حذف کر دیا گیا۔</td>
+</tr>
+<tr>
+<td>فلٹر کے قواعد</td>
+<td>صرف آلہ (مقامی)</td>
+<td>ایپ ان انسٹال یا ان ایپ کے ساتھ حذف کر دیا گیا۔</td>
+</tr>
+<tr>
+<td>سبسکرپشن ڈیٹا</td>
+<td>RevenueCat / Google Play</td>
+<td>3 کاروباری دنوں کے اندر حذف کر دیا گیا۔</td>
+</tr>
+<tr>
+<td>تجزیاتی ڈیٹا</td>
+<td>Firebase (گمنام)</td>
+<td>فی ریٹینشن پالیسی خود بخود ختم ہو جاتی ہے۔</td>
+</tr>
+<tr>
+<td>کریش لاگز</td>
+<td>Firebase Crashlytics</td>
+<td>90 دنوں کے بعد خود بخود ختم ہو جاتا ہے۔</td>
+</tr>
+</tbody>
+</table>
+<div class="warning-box">
+<strong>⚠️ اہم:</strong> اکاؤنٹ کو حذف کرنا مستقل ہے اور اسے کالعدم نہیں کیا جا سکتا۔ براہ کرم یقینی بنائیں کہ آپ نے کوئی بھی ڈیٹا برآمد کر لیا ہے جسے آپ آگے بڑھنے سے پہلے رکھنا چاہتے ہیں۔
+    </div>
+<h2>3. اکاؤنٹ کو حذف کیے بغیر ڈیٹا کو حذف کرنا</h2>
+<p>آپ اپنا اکاؤنٹ حذف کیے بغیر بھی اپنا ڈیٹا حذف کر سکتے ہیں:</p>
+<ul>
+<li>ایپ کی مرکزی اسکرین سے انفرادی فلٹر قواعد کو حذف کریں۔</li>
+<li>ترتیبات کے صفحہ سے SMTP ترتیبات کو صاف کریں۔</li>
+<li>ایپ سے فارورڈنگ کی تاریخ صاف کریں۔</li>
+</ul>
+<div class="info-box">
+<strong>ℹ️ نوٹ:</strong> جب آپ اپنے آلے سے ایپ کو اَن انسٹال کرتے ہیں تو مقامی طور پر ذخیرہ شدہ تمام ڈیٹا (SMTP سیٹنگز، فلٹر رولز، فارورڈنگ ہسٹری) خود بخود حذف ہو جاتا ہے۔
+    </div>
+<h2>4. ہم سے رابطہ کریں۔</h2>
+<p>اگر آپ کا ڈیٹا ڈیلیٹ کرنے کے بارے میں کوئی سوال ہے تو براہ کرم ہم سے رابطہ کریں:</p>
+<p>📧 <a class="email-link" href="mailto:yorulmazsoftware@gmail.com">yorulmazsoftware@gmail.com</a></p>
 </div>
 
 <footer>
-    <p>&copy; 2026 Yorulmaz Software. All rights reserved.</p>
+<p>© 2026 Yorulmaz Software. All rights reserved.</p>
 </footer>
-
 <script>
-    function switchLang(lang) {
-        document.getElementById('section-en').classList.toggle('hidden', lang !== 'en');
-        document.getElementById('section-tr').classList.toggle('hidden', lang !== 'tr');
-        document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-        document.getElementById('btn-tr').classList.toggle('active', lang === 'tr');
-    }
-</script>
-
+        var SUPPORTED_LANGS = ['tr','en','de','es','pt','fr','ar','hi','ru','id','bn','ur'];
+        var RTL_LANGS = ['ar','ur'];
+        function switchLang(lang) {
+            if (SUPPORTED_LANGS.indexOf(lang) === -1) { lang = 'en'; }
+            var contents = document.querySelectorAll('.section');
+            for (var i = 0; i < contents.length; i++) { 
+                if(contents[i].id.startsWith('section-')) contents[i].classList.add('hidden'); 
+            }
+            var buttons = document.querySelectorAll('.lang-btn');
+            for (var j = 0; j < buttons.length; j++) { buttons[j].classList.remove('active'); }
+            
+            var activeContent = document.getElementById('section-' + lang);
+            var activeButton = document.getElementById('btn-' + lang);
+            if (activeContent) { activeContent.classList.remove('hidden'); }
+            if (activeButton) { activeButton.classList.add('active'); }
+            
+            document.documentElement.lang = lang;
+            document.documentElement.dir = RTL_LANGS.indexOf(lang) !== -1 ? 'rtl' : 'ltr';
+            try { localStorage.setItem('smsforward_lang', lang); } catch (e) {}
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            var saved = null;
+            try { saved = localStorage.getItem('smsforward_lang'); } catch (e) {}
+            if (!saved) {
+                var nav = (navigator.language || 'tr').toLowerCase().split('-')[0];
+                saved = SUPPORTED_LANGS.indexOf(nav) !== -1 ? nav : 'en';
+            }
+            switchLang(saved);
+        });
+        </script>
 </body>
 </html>

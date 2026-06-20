@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMS Forward — Help Center</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SMS Forward — Help Center</title>
+<style>
         :root { --navy: #041E42; --navy-mid: #0a2d5e; --bg: #F7F8FC; --card: #FFFFFF; --border: #EEF0F5; --text: #1a1a2e; --muted: #6B7280; --success: #1a6b3c; --warning: #92400e; --telegram: #0088CC; --discord: #5865F2; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
@@ -40,218 +41,2315 @@
             code { background: #1e293b; color: #e0e0e0; }
             .tip { background: #451a03; border-color: #78350f; }
         }
-    </style>
+    
+        .lang-switch { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 20px; }
+        .lang-btn { background: #fff; color: var(--navy); border: 1px solid var(--navy); border-radius: 6px; padding: 6px 12px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .15s, color .15s; font-family: inherit; }
+        .lang-btn:hover { background: #e9eef7; }
+        .lang-btn.active { background: var(--navy); color: #fff; }
+        .lang-content { display: none; }
+        .lang-content.active { display: block; }
+        [dir="rtl"] { text-align: right; }
+        [dir="rtl"] .steps li { padding: 12px 48px 12px 16px; border-left: none; border-right: 2px solid var(--border); margin-left: 0; margin-right: 16px; }
+        [dir="rtl"] .steps li::before { left: auto; right: -16px; }
+        </style>
+
+<script>
+        var SUPPORTED_LANGS = ['tr','en','de','es','pt','fr','ar','hi','ru','id','bn','ur'];
+        var RTL_LANGS = ['ar','ur'];
+        function switchLang(lang) {
+            if (SUPPORTED_LANGS.indexOf(lang) === -1) { lang = 'en'; }
+            var contents = document.querySelectorAll('.lang-content');
+            for (var i = 0; i < contents.length; i++) { contents[i].classList.remove('active'); }
+            var buttons = document.querySelectorAll('.lang-btn');
+            for (var j = 0; j < buttons.length; j++) { buttons[j].classList.remove('active'); }
+            var activeContent = document.querySelector('.lang-content[data-lang="' + lang + '"]');
+            var activeButton = document.querySelector('.lang-btn[data-lang="' + lang + '"]');
+            if (activeContent) { activeContent.classList.add('active'); }
+            if (activeButton) { activeButton.classList.add('active'); }
+            document.documentElement.lang = lang;
+            document.documentElement.dir = RTL_LANGS.indexOf(lang) !== -1 ? 'rtl' : 'ltr';
+            try { localStorage.setItem('smsforward_lang', lang); } catch (e) {}
+        }
+        document.addEventListener('DOMContentLoaded', function () {
+            var saved = null;
+            try { saved = localStorage.getItem('smsforward_lang'); } catch (e) {}
+            if (!saved) {
+                var nav = (navigator.language || 'tr').toLowerCase().split('-')[0];
+                saved = SUPPORTED_LANGS.indexOf(nav) !== -1 ? nav : 'en';
+            }
+            switchLang(saved);
+        });
+    </script>
 </head>
 <body>
-    <div class="hero">
-        <h1>📱 SMS Forward</h1>
-        <p>Help Center — Comprehensive User Guide</p>
-    </div>
-
-    <div class="container">
-
-        <!-- Getting Started -->
-        <div class="section">
-            <h2><span class="icon">🚀</span> Getting Started</h2>
-            <div class="card">
-                <h3>How SMS Forward Works</h3>
-                <p>SMS Forward automatically captures incoming SMS messages and forwards them to your configured destinations — Email, Telegram, Discord, or custom Webhooks.</p>
-                <ol style="margin-top: 12px;">
-                    <li>Set up at least one <strong>SMTP email configuration</strong></li>
-                    <li>Create a <strong>forwarding target</strong> (where to send)</li>
-                    <li>Create a <strong>filter rule</strong> (which SMS to forward)</li>
-                    <li>Grant <strong>SMS and notification permissions</strong></li>
-                    <li>Enable the <strong>forwarding service</strong></li>
-                </ol>
-            </div>
-        </div>
-
-        <!-- SMTP Setup -->
-        <div class="section">
-            <h2><span class="icon">📧</span> Email (SMTP) Setup</h2>
-            <div class="card">
-                <h3>Gmail App Password Setup</h3>
-                <ol class="steps">
-                    <li><strong>Enable 2-Factor Authentication</strong><span>Go to Google Account → Security → 2-Step Verification → Turn On</span></li>
-                    <li><strong>Generate App Password</strong><span>Google Account → Security → App Passwords → Select "Mail" → Generate</span></li>
-                    <li><strong>Copy the 16-digit password</strong><span>This will be your SMTP password (NOT your regular Gmail password)</span></li>
-                    <li><strong>Configure in SMS Forward</strong><span>SMTP Host: <code>smtp.gmail.com</code> | Port: <code>587</code> | SSL: On</span></li>
-                </ol>
-                <div class="tip"><strong>💡 Tip:</strong> For Outlook use <code>smtp-mail.outlook.com</code> port <code>587</code>. For Yahoo use <code>smtp.mail.yahoo.com</code> port <code>465</code>.</div>
-            </div>
-        </div>
-
-        <!-- Telegram -->
-        <div class="section">
-            <h2><span class="icon">✈️</span> Telegram Bot Setup <span class="badge badge-pro">PRO</span></h2>
-            <div class="card">
-                <h3>Create a Telegram Bot & Get Chat ID</h3>
-                <ol class="steps">
-                    <li><strong>Open @BotFather on Telegram</strong><span>Search for <code>@BotFather</code> in Telegram and start a chat</span></li>
-                    <li><strong>Send /newbot</strong><span>Follow the prompts to name your bot and choose a username (must end with "bot")</span></li>
-                    <li><strong>Copy the Bot Token</strong><span>BotFather will give you a token like: <code>1234567890:ABCdef...</code></span></li>
-                    <li><strong>Start your bot</strong><span>Find your new bot in Telegram and press "Start", then send any message</span></li>
-                    <li><strong>Get your Chat ID</strong><span>Open in browser: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></span></li>
-                    <li><strong>Find the chat ID</strong><span>Look for <code>"chat":{"id":XXXXXXX}</code> — that number is your Chat ID</span></li>
-                </ol>
-            </div>
-        </div>
-
-        <!-- Discord -->
-        <div class="section">
-            <h2><span class="icon">🎮</span> Discord Webhook Setup <span class="badge badge-pro">PRO</span></h2>
-            <div class="card">
-                <h3>Create a Discord Webhook</h3>
-                <ol class="steps">
-                    <li><strong>Open Server Settings</strong><span>Right-click your server → Server Settings → Integrations</span></li>
-                    <li><strong>Create Webhook</strong><span>Click "Webhooks" → "New Webhook" → Choose the target channel</span></li>
-                    <li><strong>Copy Webhook URL</strong><span>Click "Copy Webhook URL" — it looks like <code>https://discord.com/api/webhooks/...</code></span></li>
-                    <li><strong>Paste in SMS Forward</strong><span>Add a Discord forwarding target and paste the URL</span></li>
-                </ol>
-            </div>
-        </div>
-
-        <!-- Webhook -->
-        <div class="section">
-            <h2><span class="icon">🌐</span> Webhook Setup <span class="badge badge-pro">PRO</span></h2>
-            <div class="card">
-                <h3>Generic HTTP Webhook</h3>
-                <p>Webhooks send an HTTP POST (or PUT/PATCH) request to any URL you specify whenever an SMS matches your rule. This is perfect for integrating with:</p>
-                <ul style="margin-top: 8px;">
-                    <li><strong>Zapier</strong> — Use a "Catch Hook" trigger</li>
-                    <li><strong>IFTTT</strong> — Use a Webhooks trigger</li>
-                    <li><strong>n8n / Make</strong> — Use a Webhook node</li>
-                    <li><strong>Custom API</strong> — Your own server endpoint</li>
-                </ul>
-                <h3 style="margin-top: 16px;">Body Template Placeholders</h3>
-                <p>Use these placeholders in your JSON body template:</p>
-                <ul style="margin-top: 4px;">
-                    <li><code>{sender}</code> — Phone number or sender ID</li>
-                    <li><code>{contactName}</code> — Contact name (if permission granted)</li>
-                    <li><code>{body}</code> — SMS text content</li>
-                    <li><code>{date}</code> — ISO 8601 timestamp</li>
-                    <li><code>{ruleName}</code> — Matched rule name</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Filter Rules -->
-        <div class="section">
-            <h2><span class="icon">🔍</span> Filter Rules</h2>
-            <div class="card">
-                <h3>How Filter Matching Works</h3>
-                <p>Each filter rule has a <strong>sender filter</strong> and <strong>content filter</strong>. Both are optional:</p>
-                <ul style="margin-top: 8px;">
-                    <li><strong>Both empty</strong> — matches ALL incoming SMS</li>
-                    <li><strong>Sender filter only</strong> — matches SMS from specific sender</li>
-                    <li><strong>Content filter only</strong> — matches SMS containing specific text</li>
-                    <li><strong>Both set</strong> — both conditions must match (AND logic)</li>
-                </ul>
-                <div class="tip"><strong>💡 Tip:</strong> Matching is case-insensitive and supports Turkish characters (İ/i, Ş/ş, Ğ/ğ). With contacts permission, you can also filter by contact name.</div>
-                <h3 style="margin-top: 16px;">Regex Filtering <span class="badge badge-pro">PRO</span></h3>
-                <p>Pro users can enable regex for advanced pattern matching. Examples:</p>
-                <ul style="margin-top: 4px;">
-                    <li><code>^\\+90</code> — Turkish numbers only</li>
-                    <li><code>OTP|verification|code</code> — OTP messages</li>
-                    <li><code>\\d{6}</code> — Messages containing 6-digit codes</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Permissions -->
-        <div class="section">
-            <h2><span class="icon">🔐</span> Permissions</h2>
-            <div class="card">
-                <h3>Required Permissions</h3>
-                <ul>
-                    <li><strong>SMS (Receive SMS)</strong> — Core functionality, required to capture incoming messages</li>
-                    <li><strong>Notifications</strong> — Shows forwarding status notifications</li>
-                    <li><strong>Battery Optimization</strong> — Prevents system from killing the background service</li>
-                </ul>
-                <h3 style="margin-top: 16px;">Optional Permissions</h3>
-                <ul>
-                    <li><strong>Contacts</strong> — Enables filtering by contact name instead of phone number</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Battery -->
-        <div class="section">
-            <h2><span class="icon">🔋</span> Battery & Background Service</h2>
-            <div class="card">
-                <h3>Keeping SMS Forward Running</h3>
-                <p>Android aggressively kills background apps to save battery. To ensure SMS Forward works reliably:</p>
-                <ol style="margin-top: 8px;">
-                    <li>Go to <strong>Settings → Battery Optimization</strong> and disable optimization for SMS Forward</li>
-                    <li>On <strong>Xiaomi/MIUI</strong>: Settings → Apps → Manage apps → SMS Forward → Autostart: ON</li>
-                    <li>On <strong>Huawei/EMUI</strong>: Settings → Battery → App launch → SMS Forward → Manage manually → Enable all</li>
-                    <li>On <strong>Samsung</strong>: Settings → Battery → Battery usage → Sleeping apps → Remove SMS Forward</li>
-                </ol>
-                <div class="tip"><strong>⚠️ Important:</strong> After a device restart, the app's boot receiver will automatically restart the forwarding service if it was enabled.</div>
-            </div>
-        </div>
-
-        <!-- Troubleshooting -->
-        <div class="section">
-            <h2><span class="icon">🔧</span> Troubleshooting</h2>
-            <div class="card">
-                <h3>SMS is not being forwarded</h3>
-                <ul>
-                    <li>Check that the forwarding service is <strong>ON</strong> (toggle on home screen)</li>
-                    <li>Verify SMS permission is granted in <strong>Settings → Permissions</strong></li>
-                    <li>Ensure battery optimization is disabled for the app</li>
-                    <li>Check that your filter rule is <strong>active</strong> and has at least one forwarding target</li>
-                    <li>Review <strong>Debug Logs</strong> (Settings → Debug Logs) for detailed error info</li>
-                </ul>
-            </div>
-            <div class="card">
-                <h3>Email sending fails</h3>
-                <ul>
-                    <li>Verify your SMTP credentials — use an <strong>App Password</strong>, not your regular password</li>
-                    <li>Check SMTP host and port are correct</li>
-                    <li>Try sending a test email from the forwarding target screen</li>
-                    <li>For Gmail: ensure "Less secure apps" or App Passwords are configured</li>
-                </ul>
-            </div>
-            <div class="card">
-                <h3>Telegram messages not arriving</h3>
-                <ul>
-                    <li>Make sure you <strong>started</strong> the bot (sent /start or any message)</li>
-                    <li>Verify the Bot Token and Chat ID are correct</li>
-                    <li>Try the test button on the Telegram forwarding target screen</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Free vs Pro -->
-        <div class="section">
-            <h2><span class="icon">⭐</span> Free vs Pro</h2>
-            <div class="card">
-                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
-                    <tr style="border-bottom: 1px solid var(--border);">
-                        <th style="text-align: left; padding: 8px;">Feature</th>
-                        <th style="text-align: center; padding: 8px;"><span class="badge badge-free">FREE</span></th>
-                        <th style="text-align: center; padding: 8px;"><span class="badge badge-pro">PRO</span></th>
-                    </tr>
-                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Filter rules</td><td style="text-align: center;">1</td><td style="text-align: center;">Unlimited</td></tr>
-                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Email recipients</td><td style="text-align: center;">1</td><td style="text-align: center;">10</td></tr>
-                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">SMS history</td><td style="text-align: center;">50</td><td style="text-align: center;">Unlimited</td></tr>
-                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Email forwarding</td><td style="text-align: center;">✅</td><td style="text-align: center;">✅</td></tr>
-                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Telegram</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
-                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Discord</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
-                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Webhook</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
-                    <tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Regex filtering</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
-                    <tr><td style="padding: 8px;">Ads</td><td style="text-align: center;">Yes</td><td style="text-align: center;">No</td></tr>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer">
-        <p>SMS Forward by Yorulmaz Software</p>
-        <p style="margin-top: 4px;">
-            <a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Service</a> · <a href="mailto:yorulmazsoftware@gmail.com">Contact</a>
-        </p>
-    </div>
+<div class="hero">
+<h1>📱 SMS Forward</h1>
+<p>Help Center — Comprehensive User Guide</p>
+</div>
+<div class="container"><div aria-label="Language selector" class="lang-switch" role="tablist">
+<button class="lang-btn" data-lang="tr" onclick="switchLang('tr')" type="button">🇹🇷 Türkçe</button>
+<button class="lang-btn" data-lang="en" onclick="switchLang('en')" type="button">🇬🇧 English</button>
+<button class="lang-btn" data-lang="de" onclick="switchLang('de')" type="button">🇩🇪 Deutsch</button>
+<button class="lang-btn" data-lang="es" onclick="switchLang('es')" type="button">🇪🇸 Español</button>
+<button class="lang-btn" data-lang="pt" onclick="switchLang('pt')" type="button">🇧🇷 Português</button>
+<button class="lang-btn" data-lang="fr" onclick="switchLang('fr')" type="button">🇫🇷 Français</button>
+<button class="lang-btn" data-lang="ar" onclick="switchLang('ar')" type="button">🇸🇦 العربية</button>
+<button class="lang-btn" data-lang="hi" onclick="switchLang('hi')" type="button">🇮🇳 हिन्दी</button>
+<button class="lang-btn" data-lang="ru" onclick="switchLang('ru')" type="button">🇷🇺 Русский</button>
+<button class="lang-btn" data-lang="id" onclick="switchLang('id')" type="button">🇮🇩 Bahasa Indonesia</button>
+<button class="lang-btn" data-lang="bn" onclick="switchLang('bn')" type="button">🇧🇩 বাংলা</button>
+<button class="lang-btn" data-lang="ur" onclick="switchLang('ur')" type="button">🇵🇰 اردو</button>
+</div>
+<div class="lang-content active" data-lang="en" lang="en">
+ Getting Started 
+<div class="section">
+<h2><span class="icon">🚀</span> Getting Started</h2>
+<div class="card">
+<h3>How SMS Forward Works</h3>
+<p>SMS Forward automatically captures incoming SMS messages and forwards them to your configured destinations — Email, Telegram, Discord, or custom Webhooks.</p>
+<ol style="margin-top: 12px;">
+<li>Set up at least one <strong>SMTP email configuration</strong></li>
+<li>Create a <strong>forwarding target</strong> (where to send)</li>
+<li>Create a <strong>filter rule</strong> (which SMS to forward)</li>
+<li>Grant <strong>SMS and notification permissions</strong></li>
+<li>Enable the <strong>forwarding service</strong></li>
+</ol>
+</div>
+</div>
+ SMTP Setup 
+<div class="section">
+<h2><span class="icon">📧</span> Email (SMTP) Setup</h2>
+<div class="card">
+<h3>Gmail App Password Setup</h3>
+<ol class="steps">
+<li><strong>Enable 2-Factor Authentication</strong><span>Go to Google Account → Security → 2-Step Verification → Turn On</span></li>
+<li><strong>Generate App Password</strong><span>Google Account → Security → App Passwords → Select "Mail" → Generate</span></li>
+<li><strong>Copy the 16-digit password</strong><span>This will be your SMTP password (NOT your regular Gmail password)</span></li>
+<li><strong>Configure in SMS Forward</strong><span>SMTP Host: <code>smtp.gmail.com</code> | Port: <code>587</code> | SSL: On</span></li>
+</ol>
+<div class="tip"><strong>💡 Tip:</strong> For Outlook use <code>smtp-mail.outlook.com</code> port <code>587</code>. For Yahoo use <code>smtp.mail.yahoo.com</code> port <code>465</code>.</div>
+</div>
+</div>
+ Telegram 
+<div class="section">
+<h2><span class="icon">✈️</span> Telegram Bot Setup <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Create a Telegram Bot &amp; Get Chat ID</h3>
+<ol class="steps">
+<li><strong>Open @BotFather on Telegram</strong><span>Search for <code>@BotFather</code> in Telegram and start a chat</span></li>
+<li><strong>Send /newbot</strong><span>Follow the prompts to name your bot and choose a username (must end with "bot")</span></li>
+<li><strong>Copy the Bot Token</strong><span>BotFather will give you a token like: <code>1234567890:ABCdef...</code></span></li>
+<li><strong>Start your bot</strong><span>Find your new bot in Telegram and press "Start", then send any message</span></li>
+<li><strong>Get your Chat ID</strong><span>Open in browser: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></span></li>
+<li><strong>Find the chat ID</strong><span>Look for <code>"chat":{"id":XXXXXXX}</code> — that number is your Chat ID</span></li>
+</ol>
+</div>
+</div>
+ Discord 
+<div class="section">
+<h2><span class="icon">🎮</span> Discord Webhook Setup <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Create a Discord Webhook</h3>
+<ol class="steps">
+<li><strong>Open Server Settings</strong><span>Right-click your server → Server Settings → Integrations</span></li>
+<li><strong>Create Webhook</strong><span>Click "Webhooks" → "New Webhook" → Choose the target channel</span></li>
+<li><strong>Copy Webhook URL</strong><span>Click "Copy Webhook URL" — it looks like <code>https://discord.com/api/webhooks/...</code></span></li>
+<li><strong>Paste in SMS Forward</strong><span>Add a Discord forwarding target and paste the URL</span></li>
+</ol>
+</div>
+</div>
+ Webhook 
+<div class="section">
+<h2><span class="icon">🌐</span> Webhook Setup <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Generic HTTP Webhook</h3>
+<p>Webhooks send an HTTP POST (or PUT/PATCH) request to any URL you specify whenever an SMS matches your rule. This is perfect for integrating with:</p>
+<ul style="margin-top: 8px;">
+<li><strong>Zapier</strong> — Use a "Catch Hook" trigger</li>
+<li><strong>IFTTT</strong> — Use a Webhooks trigger</li>
+<li><strong>n8n / Make</strong> — Use a Webhook node</li>
+<li><strong>Custom API</strong> — Your own server endpoint</li>
+</ul>
+<h3 style="margin-top: 16px;">Body Template Placeholders</h3>
+<p>Use these placeholders in your JSON body template:</p>
+<ul style="margin-top: 4px;">
+<li><code>{sender}</code> — Phone number or sender ID</li>
+<li><code>{contactName}</code> — Contact name (if permission granted)</li>
+<li><code>{body}</code> — SMS text content</li>
+<li><code>{date}</code> — ISO 8601 timestamp</li>
+<li><code>{ruleName}</code> — Matched rule name</li>
+</ul>
+</div>
+</div>
+ Filter Rules 
+<div class="section">
+<h2><span class="icon">🔍</span> Filter Rules</h2>
+<div class="card">
+<h3>How Filter Matching Works</h3>
+<p>Each filter rule has a <strong>sender filter</strong> and <strong>content filter</strong>. Both are optional:</p>
+<ul style="margin-top: 8px;">
+<li><strong>Both empty</strong> — matches ALL incoming SMS</li>
+<li><strong>Sender filter only</strong> — matches SMS from specific sender</li>
+<li><strong>Content filter only</strong> — matches SMS containing specific text</li>
+<li><strong>Both set</strong> — both conditions must match (AND logic)</li>
+</ul>
+<div class="tip"><strong>💡 Tip:</strong> Matching is case-insensitive and supports Turkish characters (İ/i, Ş/ş, Ğ/ğ). With contacts permission, you can also filter by contact name.</div>
+<h3 style="margin-top: 16px;">Regex Filtering <span class="badge badge-pro">PRO</span></h3>
+<p>Pro users can enable regex for advanced pattern matching. Examples:</p>
+<ul style="margin-top: 4px;">
+<li><code>^\+90</code> — Turkish numbers only</li>
+<li><code>OTP|verification|code</code> — OTP messages</li>
+<li><code>\d{6}</code> — Messages containing 6-digit codes</li>
+</ul>
+</div>
+</div>
+ Permissions 
+<div class="section">
+<h2><span class="icon">🔐</span> Permissions</h2>
+<div class="card">
+<h3>Required Permissions</h3>
+<ul>
+<li><strong>SMS (Receive SMS)</strong> — Core functionality, required to capture incoming messages</li>
+<li><strong>Notifications</strong> — Shows forwarding status notifications</li>
+<li><strong>Battery Optimization</strong> — Prevents system from killing the background service</li>
+</ul>
+<h3 style="margin-top: 16px;">Optional Permissions</h3>
+<ul>
+<li><strong>Contacts</strong> — Enables filtering by contact name instead of phone number</li>
+</ul>
+</div>
+</div>
+ Battery 
+<div class="section">
+<h2><span class="icon">🔋</span> Battery &amp; Background Service</h2>
+<div class="card">
+<h3>Keeping SMS Forward Running</h3>
+<p>Android aggressively kills background apps to save battery. To ensure SMS Forward works reliably:</p>
+<ol style="margin-top: 8px;">
+<li>Go to <strong>Settings → Battery Optimization</strong> and disable optimization for SMS Forward</li>
+<li>On <strong>Xiaomi/MIUI</strong>: Settings → Apps → Manage apps → SMS Forward → Autostart: ON</li>
+<li>On <strong>Huawei/EMUI</strong>: Settings → Battery → App launch → SMS Forward → Manage manually → Enable all</li>
+<li>On <strong>Samsung</strong>: Settings → Battery → Battery usage → Sleeping apps → Remove SMS Forward</li>
+</ol>
+<div class="tip"><strong>⚠️ Important:</strong> After a device restart, the app's boot receiver will automatically restart the forwarding service if it was enabled.</div>
+</div>
+</div>
+ Troubleshooting 
+<div class="section">
+<h2><span class="icon">🔧</span> Troubleshooting</h2>
+<div class="card">
+<h3>SMS is not being forwarded</h3>
+<ul>
+<li>Check that the forwarding service is <strong>ON</strong> (toggle on home screen)</li>
+<li>Verify SMS permission is granted in <strong>Settings → Permissions</strong></li>
+<li>Ensure battery optimization is disabled for the app</li>
+<li>Check that your filter rule is <strong>active</strong> and has at least one forwarding target</li>
+<li>Review <strong>Debug Logs</strong> (Settings → Debug Logs) for detailed error info</li>
+</ul>
+</div>
+<div class="card">
+<h3>Email sending fails</h3>
+<ul>
+<li>Verify your SMTP credentials — use an <strong>App Password</strong>, not your regular password</li>
+<li>Check SMTP host and port are correct</li>
+<li>Try sending a test email from the forwarding target screen</li>
+<li>For Gmail: ensure "Less secure apps" or App Passwords are configured</li>
+</ul>
+</div>
+<div class="card">
+<h3>Telegram messages not arriving</h3>
+<ul>
+<li>Make sure you <strong>started</strong> the bot (sent /start or any message)</li>
+<li>Verify the Bot Token and Chat ID are correct</li>
+<li>Try the test button on the Telegram forwarding target screen</li>
+</ul>
+</div>
+</div>
+ Free vs Pro 
+<div class="section">
+<h2><span class="icon">⭐</span> Free vs Pro</h2>
+<div class="card">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<tr style="border-bottom: 1px solid var(--border);">
+<th style="text-align: left; padding: 8px;">Feature</th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-free">FREE</span></th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-pro">PRO</span></th>
+</tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Filter rules</td><td style="text-align: center;">1</td><td style="text-align: center;">Unlimited</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Email recipients</td><td style="text-align: center;">1</td><td style="text-align: center;">10</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">SMS history</td><td style="text-align: center;">50</td><td style="text-align: center;">Unlimited</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Email forwarding</td><td style="text-align: center;">✅</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Telegram</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Discord</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Webhook</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Regex filtering</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr><td style="padding: 8px;">Ads</td><td style="text-align: center;">Yes</td><td style="text-align: center;">No</td></tr>
+</table>
+</div>
+</div>
+</div><div class="lang-content" data-lang="tr" lang="tr">
+ Başlarken 
+<div class="section">
+<h2><span class="icon">🚀</span> Başlarken</h2>
+<div class="card">
+<h3>SMS İletme Nasıl Çalışır?</h3>
+<p>SMS İletme, gelen SMS mesajlarını otomatik olarak yakalar ve bunları yapılandırılmış hedeflerinize (E-posta, Telegram, Discord veya özel Web Kancaları) iletir.</p>
+<ol style="margin-top: 12px;">
+<li>En az bir tane kurun <strong>SMTP e-posta yapılandırması</strong></li>
+<li>Bir oluştur <strong>yönlendirme hedefi</strong> (nereye gönderilecek)</li>
+<li>Bir oluştur <strong>filtre kuralı</strong> (hangi SMS'in iletileceği)</li>
+<li>Hibe etmek <strong>SMS ve bildirim izinleri</strong></li>
+<li>Etkinleştir <strong>yönlendirme hizmeti</strong></li>
+</ol>
+</div>
+</div>
+ SMTP Kurulumu 
+<div class="section">
+<h2><span class="icon">📧</span> E-posta (SMTP) Kurulumu</h2>
+<div class="card">
+<h3>Gmail Uygulama Şifre Kurulumu</h3>
+<ol class="steps">
+<li><strong>2 Faktörlü Kimlik Doğrulamayı Etkinleştir</strong><span>Google Hesabı → Güvenlik → 2 Adımlı Doğrulama → Aç'a gidin</span></li>
+<li><strong>Uygulama Şifresi Oluştur</strong><span>Google Hesabı → Güvenlik → Uygulama Şifreleri → "Posta"yı seçin → Oluştur</span></li>
+<li><strong>16 haneli şifreyi kopyalayın</strong><span>Bu SMTP şifreniz olacaktır (normal Gmail şifreniz DEĞİLDİR)</span></li>
+<li><strong>SMS İletme'de yapılandırma</strong><span>SMTP Ana Bilgisayarı: <code>smtp.gmail.com</code> | Liman: <code>587</code> | SSL: Açık</span></li>
+</ol>
+<div class="tip"><strong>💡 İpucu:</strong> Outlook kullanımı için <code>smtp-mail.outlook.com</code> liman <code>587</code>. Yahoo'nun kullanımı için <code>smtp.mail.yahoo.com</code> liman <code>465</code>.</div>
+</div>
+</div>
+ Telgraf 
+<div class="section">
+<h2><span class="icon">✈️</span> Telegram Bot Kurulumu <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Telegram Botu Oluşturun ve Sohbet Kimliği Alın</h3>
+<ol class="steps">
+<li><strong>Telegram'da @BotFather'ı açın</strong><span>Ara <code>@BotFather</code> Telegram'da ve bir sohbet başlatın</span></li>
+<li><strong>/yenibot gönder</strong><span>Botunuza bir ad vermek için talimatları izleyin ve bir kullanıcı adı seçin ("bot" ile bitmelidir)</span></li>
+<li><strong>Bot Tokenını kopyalayın</strong><span>BotFather size şöyle bir jeton verecek: <code>1234567890:ABCdef...</code></span></li>
+<li><strong>Botunuzu başlatın</strong><span>Telegram'da yeni botunuzu bulun ve "Başlat"a basın, ardından istediğiniz mesajı gönderin</span></li>
+<li><strong>Sohbet Kimliğinizi alın</strong><span>Tarayıcıda aç: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></span></li>
+<li><strong>Sohbet kimliğini bulun</strong><span>Aramak <code>"chat":{"id":XXXXXXX}</code> — bu numara Sohbet Kimliğinizdir</span></li>
+</ol>
+</div>
+</div>
+ Anlaşmazlık 
+<div class="section">
+<h2><span class="icon">🎮</span> Discord Webhook Kurulumu <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Discord Web Kancası Oluşturun</h3>
+<ol class="steps">
+<li><strong>Sunucu Ayarlarını Aç</strong><span>Sunucunuza sağ tıklayın → Sunucu Ayarları → Entegrasyonlar</span></li>
+<li><strong>Web Kancası Oluştur</strong><span>"Web Kancaları" → "Yeni Web Kancası"nı tıklayın → Hedef kanalı seçin</span></li>
+<li><strong>Web Kancası URL'sini kopyala</strong><span>"Web Kancası URL'sini Kopyala"yı tıklayın; şuna benziyor <code>https://discord.com/api/webhooks/...</code></span></li>
+<li><strong>SMS İletme'ye yapıştırın</strong><span>Discord yönlendirme hedefi ekleyin ve URL'yi yapıştırın</span></li>
+</ol>
+</div>
+</div>
+ Web kancası 
+<div class="section">
+<h2><span class="icon">🌐</span> Web Kancası Kurulumu <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Genel HTTP Web Kancası</h3>
+<p>Web kancaları, bir SMS kuralınızla eşleştiğinde belirttiğiniz herhangi bir URL'ye bir HTTP POST (veya PUT/PATCH) isteği gönderir. Bu, aşağıdakilerle entegrasyon için mükemmeldir:</p>
+<ul style="margin-top: 8px;">
+<li><strong>Zapier</strong> — "Catch Hook" tetikleyicisini kullanın</li>
+<li><strong>IFTTT</strong> — Bir Web Kancası tetikleyicisi kullanın</li>
+<li><strong>n8n / Yap</strong> — Bir Webhook düğümü kullanın</li>
+<li><strong>Özel API</strong> — Kendi sunucu uç noktanız</li>
+</ul>
+<h3 style="margin-top: 16px;">Gövde Şablonu Yer Tutucuları</h3>
+<p>JSON gövde şablonunuzda şu yer tutucuları kullanın:</p>
+<ul style="margin-top: 4px;">
+<li><code>{sender}</code> — Telefon numarası veya gönderenin kimliği</li>
+<li><code>{contactName}</code> — Kişinin adı (izin verilmişse)</li>
+<li><code>{body}</code> — SMS metin içeriği</li>
+<li><code>{date}</code> — ISO 8601 zaman damgası</li>
+<li><code>{ruleName}</code> — Eşleşen kural adı</li>
+</ul>
+</div>
+</div>
+ Filtre Kuralları 
+<div class="section">
+<h2><span class="icon">🔍</span> Filtre Kuralları</h2>
+<div class="card">
+<h3>Filtre Eşleştirme Nasıl Çalışır?</h3>
+<p>Her filtre kuralının bir <strong>gönderen filtresi</strong> Ve <strong>içerik filtresi</strong>. Her ikisi de isteğe bağlıdır:</p>
+<ul style="margin-top: 8px;">
+<li><strong>İkisi de boş</strong> — TÜM gelen SMS'lerle eşleşir</li>
+<li><strong>Yalnızca gönderen filtresi</strong> — belirli gönderenden gelen SMS ile eşleşir</li>
+<li><strong>Yalnızca içerik filtresi</strong> — belirli bir metni içeren SMS ile eşleşir</li>
+<li><strong>Her ikisi de ayarlandı</strong> — her iki koşul da eşleşmelidir (VE mantığı)</li>
+</ul>
+<div class="tip"><strong>💡 İpucu:</strong> Eşleştirme büyük/küçük harfe duyarlı değildir ve Türkçe karakterleri (İ/i, Ş/ş, Ğ/ğ) destekler. Kişi izniyle kişi adına göre de filtreleme yapabilirsiniz.</div>
+<h3 style="margin-top: 16px;">Regex Filtreleme <span class="badge badge-pro">PRO</span></h3>
+<p>Profesyonel kullanıcılar gelişmiş kalıp eşleştirme için regex'i etkinleştirebilir. Örnekler:</p>
+<ul style="margin-top: 4px;">
+<li><code>^\+90</code> — Yalnızca Türkçe sayılar</li>
+<li><code>OTP|verification|code</code> — OTP mesajları</li>
+<li><code>\d{6}</code> — 6 haneli kodlar içeren mesajlar</li>
+</ul>
+</div>
+</div>
+ İzinler 
+<div class="section">
+<h2><span class="icon">🔐</span> İzinler</h2>
+<div class="card">
+<h3>Gerekli İzinler</h3>
+<ul>
+<li><strong>SMS (SMS Al)</strong> — Gelen mesajları yakalamak için gereken temel işlevsellik</li>
+<li><strong>Bildirimler</strong> — İletim durumu bildirimlerini gösterir</li>
+<li><strong>Pil Optimizasyonu</strong> — Sistemin arka plan hizmetini sonlandırmasını önler</li>
+</ul>
+<h3 style="margin-top: 16px;">İsteğe Bağlı İzinler</h3>
+<ul>
+<li><strong>Kişiler</strong> — Telefon numarası yerine kişi adına göre filtrelemeyi etkinleştirir</li>
+</ul>
+</div>
+</div>
+ Pil 
+<div class="section">
+<h2><span class="icon">🔋</span> Pil ve Arka Plan Hizmeti</h2>
+<div class="card">
+<h3>SMS İletmeyi Çalıştırmayı Sürdürme</h3>
+<p>Android, pilden tasarruf etmek için arka plan uygulamalarını agresif bir şekilde öldürür. SMS Yönlendirmenin güvenilir bir şekilde çalıştığından emin olmak için:</p>
+<ol style="margin-top: 8px;">
+<li>Git <strong>Ayarlar → Pil Optimizasyonu</strong> ve SMS Yönlendirme için optimizasyonu devre dışı bırakın</li>
+<li>Açık <strong>Xiaomi/MIUI</strong>: Ayarlar → Uygulamalar → Uygulamaları yönet → SMS İlet → Otomatik başlatma: AÇIK</li>
+<li>Açık <strong>Huawei/EMUI</strong>: Ayarlar → Pil → Uygulama başlatma → SMS İletme → Manuel olarak yönet → Tümünü etkinleştir</li>
+<li>Açık <strong>SAMSUNG</strong>: Ayarlar → Pil → Pil kullanımı → Uyku uygulamaları → SMS Yönlendirmeyi Kaldır</li>
+</ol>
+<div class="tip"><strong>⚠️ Önemli:</strong> Cihaz yeniden başlatıldıktan sonra uygulamanın önyükleme alıcısı, eğer etkinleştirilmişse, yönlendirme hizmetini otomatik olarak yeniden başlatır.</div>
+</div>
+</div>
+ Sorun giderme 
+<div class="section">
+<h2><span class="icon">🔧</span> Sorun giderme</h2>
+<div class="card">
+<h3>SMS iletilmiyor</h3>
+<ul>
+<li>Yönlendirme hizmetinin olup olmadığını kontrol edin <strong>AÇIK</strong> (ana ekranda geçiş yapın)</li>
+<li>SMS izninin verildiğini doğrulayın <strong>Ayarlar → İzinler</strong></li>
+<li>Uygulama için pil optimizasyonunun devre dışı bırakıldığından emin olun</li>
+<li>Filtre kuralınızın geçerli olup olmadığını kontrol edin <strong>aktif</strong> ve en az bir yönlendirme hedefi var</li>
+<li>Gözden geçirmek <strong>Hata Ayıklama Günlükleri</strong> Ayrıntılı hata bilgisi için (Ayarlar → Hata Ayıklama Günlükleri)</li>
+</ul>
+</div>
+<div class="card">
+<h3>E-posta gönderimi başarısız oluyor</h3>
+<ul>
+<li>SMTP kimlik bilgilerinizi doğrulayın — bir <strong>Uygulama Şifresi</strong>, normal şifreniz değil</li>
+<li>SMTP ana bilgisayarının ve bağlantı noktasının doğru olup olmadığını kontrol edin</li>
+<li>İletim hedefi ekranından bir test e-postası göndermeyi deneyin</li>
+<li>Gmail için: "Daha az güvenli uygulamalar"ın veya Uygulama Şifrelerinin yapılandırıldığından emin olun</li>
+</ul>
+</div>
+<div class="card">
+<h3>Telegram mesajları gelmiyor</h3>
+<ul>
+<li>Emin ol <strong>başladı</strong> bot (gönderildi / başlat veya herhangi bir mesaj)</li>
+<li>Bot Jetonu ve Sohbet Kimliğinin doğru olduğunu doğrulayın</li>
+<li>Telegram yönlendirme hedef ekranındaki test düğmesini deneyin</li>
+</ul>
+</div>
+</div>
+ Ücretsiz ve Pro 
+<div class="section">
+<h2><span class="icon">⭐</span> Ücretsiz ve Pro</h2>
+<div class="card">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<tr style="border-bottom: 1px solid var(--border);">
+<th style="text-align: left; padding: 8px;">Özellik</th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-free">FREE</span></th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-pro">PRO</span></th>
+</tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Filtre kuralları</td><td style="text-align: center;">1</td><td style="text-align: center;">Sınırsız</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">E-posta alıcıları</td><td style="text-align: center;">1</td><td style="text-align: center;">10</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">SMS geçmişi</td><td style="text-align: center;">50</td><td style="text-align: center;">Sınırsız</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">E-posta yönlendirme</td><td style="text-align: center;">✅</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Telgraf</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Anlaşmazlık</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Web kancası</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Regex filtreleme</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr><td style="padding: 8px;">Reklamlar</td><td style="text-align: center;">Evet</td><td style="text-align: center;">HAYIR</td></tr>
+</table>
+</div>
+</div>
+</div><div class="lang-content" data-lang="de" lang="de">
+ Erste Schritte 
+<div class="section">
+<h2><span class="icon">🚀</span> Erste Schritte</h2>
+<div class="card">
+<h3>So funktioniert die SMS-Weiterleitung</h3>
+<p>SMS Forward erfasst automatisch eingehende SMS-Nachrichten und leitet sie an Ihre konfigurierten Ziele weiter – E-Mail, Telegram, Discord oder benutzerdefinierte Webhooks.</p>
+<ol style="margin-top: 12px;">
+<li>Richten Sie mindestens eine ein <strong>SMTP-E-Mail-Konfiguration</strong></li>
+<li>Erstellen Sie eine <strong>Weiterleitungsziel</strong> (wohin senden)</li>
+<li>Erstellen Sie eine <strong>Filterregel</strong> (welche SMS weitergeleitet werden soll)</li>
+<li>Gewähren <strong>SMS- und Benachrichtigungsberechtigungen</strong></li>
+<li>Aktivieren Sie die <strong>Speditionsdienst</strong></li>
+</ol>
+</div>
+</div>
+ SMTP-Setup 
+<div class="section">
+<h2><span class="icon">📧</span> E-Mail (SMTP)-Setup</h2>
+<div class="card">
+<h3>Passwort-Setup für die Gmail-App</h3>
+<ol class="steps">
+<li><strong>Aktivieren Sie die 2-Faktor-Authentifizierung</strong><span>Gehen Sie zu Google-Konto → Sicherheit → Bestätigung in zwei Schritten → Aktivieren</span></li>
+<li><strong>App-Passwort generieren</strong><span>Google-Konto → Sicherheit → App-Passwörter → „Mail“ auswählen → Generieren</span></li>
+<li><strong>Kopieren Sie das 16-stellige Passwort</strong><span>Dies ist Ihr SMTP-Passwort (NICHT Ihr reguläres Gmail-Passwort).</span></li>
+<li><strong>Konfigurieren Sie die SMS-Weiterleitung</strong><span>SMTP-Host: <code>smtp.gmail.com</code> | Hafen: <code>587</code> | SSL: Ein</span></li>
+</ol>
+<div class="tip"><strong>💡 Tipp:</strong> Für Outlook-Nutzung <code>smtp-mail.outlook.com</code> Hafen <code>587</code>. Für Yahoo-Nutzung <code>smtp.mail.yahoo.com</code> Hafen <code>465</code>.</div>
+</div>
+</div>
+ Telegramm 
+<div class="section">
+<h2><span class="icon">✈️</span> Telegram-Bot-Setup <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Erstellen Sie einen Telegram-Bot und erhalten Sie eine Chat-ID</h3>
+<ol class="steps">
+<li><strong>Öffnen Sie @BotFather auf Telegram</strong><span>Suchen nach <code>@BotFather</code> in Telegram und starten Sie einen Chat</span></li>
+<li><strong>Senden Sie /newbot</strong><span>Befolgen Sie die Anweisungen, um Ihrem Bot einen Namen zu geben und einen Benutzernamen auszuwählen (muss mit „bot“ enden).</span></li>
+<li><strong>Kopieren Sie das Bot-Token</strong><span>BotFather gibt Ihnen einen Token wie: <code>1234567890:ABCdef...</code></span></li>
+<li><strong>Starten Sie Ihren Bot</strong><span>Suchen Sie Ihren neuen Bot in Telegram, drücken Sie „Start“ und senden Sie dann eine beliebige Nachricht</span></li>
+<li><strong>Holen Sie sich Ihre Chat-ID</strong><span>Im Browser öffnen: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></span></li>
+<li><strong>Suchen Sie die Chat-ID</strong><span>Suchen <code>"chat":{"id":XXXXXXX}</code> – Diese Nummer ist Ihre Chat-ID</span></li>
+</ol>
+</div>
+</div>
+ Zwietracht 
+<div class="section">
+<h2><span class="icon">🎮</span> Discord-Webhook-Setup <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Erstellen Sie einen Discord-Webhook</h3>
+<ol class="steps">
+<li><strong>Öffnen Sie die Servereinstellungen</strong><span>Klicken Sie mit der rechten Maustaste auf Ihren Server → Servereinstellungen → Integrationen</span></li>
+<li><strong>Erstellen Sie einen Webhook</strong><span>Klicken Sie auf „Webhooks“ → „Neuer Webhook“ → Wählen Sie den Zielkanal</span></li>
+<li><strong>Webhook-URL kopieren</strong><span>Klicken Sie auf „Webhook-URL kopieren“ – es sieht so aus <code>https://discord.com/api/webhooks/...</code></span></li>
+<li><strong>Einfügen in SMS-Weiterleitung</strong><span>Fügen Sie ein Discord-Weiterleitungsziel hinzu und fügen Sie die URL ein</span></li>
+</ol>
+</div>
+</div>
+ Webhook 
+<div class="section">
+<h2><span class="icon">🌐</span> Webhook-Setup <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Allgemeiner HTTP-Webhook</h3>
+<p>Webhooks senden eine HTTP-POST- (oder PUT/PATCH-)Anfrage an eine beliebige von Ihnen angegebene URL, wenn eine SMS Ihrer Regel entspricht. Dies ist perfekt für die Integration mit:</p>
+<ul style="margin-top: 8px;">
+<li><strong>Zapier</strong> — Verwenden Sie einen „Catch Hook“-Auslöser</li>
+<li><strong>IFTTT</strong> – Verwenden Sie einen Webhooks-Trigger</li>
+<li><strong>n8n / Machen</strong> – Verwenden Sie einen Webhook-Knoten</li>
+<li><strong>Benutzerdefinierte API</strong> – Ihr eigener Server-Endpunkt</li>
+</ul>
+<h3 style="margin-top: 16px;">Platzhalter für Körpervorlagen</h3>
+<p>Verwenden Sie diese Platzhalter in Ihrer JSON-Body-Vorlage:</p>
+<ul style="margin-top: 4px;">
+<li><code>{sender}</code> — Telefonnummer oder Absender-ID</li>
+<li><code>{contactName}</code> — Name des Kontakts (sofern die Erlaubnis erteilt wurde)</li>
+<li><code>{body}</code> — SMS-Textinhalt</li>
+<li><code>{date}</code> — ISO 8601-Zeitstempel</li>
+<li><code>{ruleName}</code> – Übereinstimmender Regelname</li>
+</ul>
+</div>
+</div>
+ Filterregeln 
+<div class="section">
+<h2><span class="icon">🔍</span> Filterregeln</h2>
+<div class="card">
+<h3>So funktioniert der Filterabgleich</h3>
+<p>Jede Filterregel hat eine <strong>Absenderfilter</strong> Und <strong>Inhaltsfilter</strong>. Beides ist optional:</p>
+<ul style="margin-top: 8px;">
+<li><strong>Beide leer</strong> – entspricht ALLEN eingehenden SMS</li>
+<li><strong>Nur Absenderfilter</strong> – Entspricht SMS von einem bestimmten Absender</li>
+<li><strong>Nur Inhaltsfilter</strong> – Entspricht SMS, die einen bestimmten Text enthalten</li>
+<li><strong>Beide eingestellt</strong> — beide Bedingungen müssen übereinstimmen (UND-Logik)</li>
+</ul>
+<div class="tip"><strong>💡 Tipp:</strong> Bei der Zuordnung wird die Groß-/Kleinschreibung nicht beachtet und türkische Zeichen (İ/i, Ş/ş, Ğ/ğ) unterstützt. Mit der Kontaktberechtigung können Sie auch nach Kontaktnamen filtern.</div>
+<h3 style="margin-top: 16px;">Regex-Filterung <span class="badge badge-pro">PRO</span></h3>
+<p>Pro-Benutzer können Regex für den erweiterten Mustervergleich aktivieren. Beispiele:</p>
+<ul style="margin-top: 4px;">
+<li><code>^\+90</code> — Nur türkische Nummern</li>
+<li><code>OTP|verification|code</code> — OTP-Nachrichten</li>
+<li><code>\d{6}</code> — Nachrichten mit 6-stelligen Codes</li>
+</ul>
+</div>
+</div>
+ Berechtigungen 
+<div class="section">
+<h2><span class="icon">🔐</span> Berechtigungen</h2>
+<div class="card">
+<h3>Erforderliche Berechtigungen</h3>
+<ul>
+<li><strong>SMS (SMS empfangen)</strong> – Kernfunktionalität, erforderlich zum Erfassen eingehender Nachrichten</li>
+<li><strong>Benachrichtigungen</strong> – Zeigt Benachrichtigungen zum Weiterleitungsstatus an</li>
+<li><strong>Batterieoptimierung</strong> – Verhindert, dass das System den Hintergrunddienst beendet</li>
+</ul>
+<h3 style="margin-top: 16px;">Optionale Berechtigungen</h3>
+<ul>
+<li><strong>Kontakte</strong> – Ermöglicht das Filtern nach Kontaktname statt Telefonnummer</li>
+</ul>
+</div>
+</div>
+ Batterie 
+<div class="section">
+<h2><span class="icon">🔋</span> Batterie- und Hintergrundservice</h2>
+<div class="card">
+<h3>Die SMS-Weiterleitung läuft weiter</h3>
+<p>Android beendet aggressiv Hintergrund-Apps, um Batterie zu sparen. Um sicherzustellen, dass die SMS-Weiterleitung zuverlässig funktioniert:</p>
+<ol style="margin-top: 8px;">
+<li>Gehe zu <strong>Einstellungen → Batterieoptimierung</strong> und deaktivieren Sie die Optimierung für die SMS-Weiterleitung</li>
+<li>An <strong>Xiaomi/MIUI</strong>: Einstellungen → Apps → Apps verwalten → SMS-Weiterleitung → Autostart: EIN</li>
+<li>An <strong>Huawei/EMUI</strong>: Einstellungen → Akku → App-Start → SMS-Weiterleitung → Manuell verwalten → Alle aktivieren</li>
+<li>An <strong>Samsung</strong>: Einstellungen → Akku → Akkuverbrauch → Schlafende Apps → SMS-Weiterleitung entfernen</li>
+</ol>
+<div class="tip"><strong>⚠️ Wichtig:</strong> Nach einem Geräteneustart startet der Boot-Receiver der App den Weiterleitungsdienst automatisch neu, sofern dieser aktiviert war.</div>
+</div>
+</div>
+ Fehlerbehebung 
+<div class="section">
+<h2><span class="icon">🔧</span> Fehlerbehebung</h2>
+<div class="card">
+<h3>SMS wird nicht weitergeleitet</h3>
+<ul>
+<li>Überprüfen Sie, ob der Weiterleitungsdienst vorhanden ist <strong>AN</strong> (auf dem Startbildschirm umschalten)</li>
+<li>Überprüfen Sie, ob die SMS-Berechtigung erteilt wurde <strong>Einstellungen → Berechtigungen</strong></li>
+<li>Stellen Sie sicher, dass die Batterieoptimierung für die App deaktiviert ist</li>
+<li>Überprüfen Sie, ob Ihre Filterregel lautet <strong>aktiv</strong> und hat mindestens ein Weiterleitungsziel</li>
+<li>Rezension <strong>Debug-Protokolle</strong> (Einstellungen → Debug-Protokolle) für detaillierte Fehlerinformationen</li>
+</ul>
+</div>
+<div class="card">
+<h3>Der E-Mail-Versand schlägt fehl</h3>
+<ul>
+<li>Überprüfen Sie Ihre SMTP-Anmeldeinformationen – verwenden Sie eine <strong>App-Passwort</strong>, nicht Ihr reguläres Passwort</li>
+<li>Überprüfen Sie, ob SMTP-Host und -Port korrekt sind</li>
+<li>Versuchen Sie, eine Test-E-Mail über den Weiterleitungszielbildschirm zu senden</li>
+<li>Für Gmail: Stellen Sie sicher, dass „Weniger sichere Apps“ oder App-Passwörter konfiguriert sind</li>
+</ul>
+</div>
+<div class="card">
+<h3>Telegram-Nachrichten kommen nicht an</h3>
+<ul>
+<li>Stellen Sie sicher, dass Sie <strong>begonnen</strong> der Bot (gesendet /start oder eine beliebige Nachricht)</li>
+<li>Überprüfen Sie, ob das Bot-Token und die Chat-ID korrekt sind</li>
+<li>Probieren Sie die Testschaltfläche auf dem Zielbildschirm für die Telegram-Weiterleitung aus</li>
+</ul>
+</div>
+</div>
+ Kostenlos vs. Pro 
+<div class="section">
+<h2><span class="icon">⭐</span> Kostenlos vs. Pro</h2>
+<div class="card">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<tr style="border-bottom: 1px solid var(--border);">
+<th style="text-align: left; padding: 8px;">Besonderheit</th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-free">FREE</span></th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-pro">PRO</span></th>
+</tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Filterregeln</td><td style="text-align: center;">1</td><td style="text-align: center;">Unbegrenzt</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">E-Mail-Empfänger</td><td style="text-align: center;">1</td><td style="text-align: center;">10</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">SMS-Verlauf</td><td style="text-align: center;">50</td><td style="text-align: center;">Unbegrenzt</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">E-Mail-Weiterleitung</td><td style="text-align: center;">✅</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Telegramm</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Zwietracht</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Webhook</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Regex-Filterung</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr><td style="padding: 8px;">Anzeigen</td><td style="text-align: center;">Ja</td><td style="text-align: center;">NEIN</td></tr>
+</table>
+</div>
+</div>
+</div><div class="lang-content" data-lang="es" lang="es">
+ Empezando 
+<div class="section">
+<h2><span class="icon">🚀</span> Empezando</h2>
+<div class="card">
+<h3>Cómo funciona el reenvío de SMS</h3>
+<p>SMS Forward captura automáticamente los mensajes SMS entrantes y los reenvía a sus destinos configurados: correo electrónico, Telegram, Discord o Webhooks personalizados.</p>
+<ol style="margin-top: 12px;">
+<li>Configurar al menos uno <strong>Configuración de correo electrónico SMTP</strong></li>
+<li>Crear un <strong>objetivo de reenvío</strong> (dónde enviar)</li>
+<li>Crear un <strong>regla de filtro</strong> (qué SMS reenviar)</li>
+<li>Conceder <strong>Permisos de SMS y notificaciones</strong></li>
+<li>Habilitar el <strong>servicio de reenvío</strong></li>
+</ol>
+</div>
+</div>
+ Configuración SMTP 
+<div class="section">
+<h2><span class="icon">📧</span> Configuración de correo electrónico (SMTP)</h2>
+<div class="card">
+<h3>Configuración de contraseña de la aplicación Gmail</h3>
+<ol class="steps">
+<li><strong>Habilitar la autenticación de 2 factores</strong><span>Vaya a Cuenta de Google → Seguridad → Verificación en 2 pasos → Activar</span></li>
+<li><strong>Generar contraseña de aplicación</strong><span>Cuenta de Google → Seguridad → Contraseñas de aplicaciones → Seleccione "Correo" → Generar</span></li>
+<li><strong>Copie la contraseña de 16 dígitos</strong><span>Esta será su contraseña SMTP (NO su contraseña habitual de Gmail)</span></li>
+<li><strong>Configurar en Reenvío de SMS</strong><span>Anfitrión SMTP: <code>smtp.gmail.com</code> | Puerto: <code>587</code> | SSL: activado</span></li>
+</ol>
+<div class="tip"><strong>💡 Consejo:</strong> Para uso de Outlook <code>smtp-mail.outlook.com</code> puerto <code>587</code>. Para uso de Yahoo <code>smtp.mail.yahoo.com</code> puerto <code>465</code>.</div>
+</div>
+</div>
+ Telegrama 
+<div class="section">
+<h2><span class="icon">✈️</span> Configuración del robot de Telegram <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Cree un bot de Telegram y obtenga una identificación de chat</h3>
+<ol class="steps">
+<li><strong>Abra @BotFather en Telegram</strong><span>Buscar <code>@BotFather</code> en Telegram e iniciar un chat</span></li>
+<li><strong>Enviar /nuevobot</strong><span>Siga las instrucciones para nombrar su bot y elija un nombre de usuario (debe terminar con "bot")</span></li>
+<li><strong>Copia el token del bot</strong><span>BotFather te dará una ficha como: <code>1234567890:ABCdef...</code></span></li>
+<li><strong>Inicia tu robot</strong><span>Encuentra tu nuevo bot en Telegram y presiona "Inicio", luego envía cualquier mensaje</span></li>
+<li><strong>Obtenga su ID de chat</strong><span>Abrir en el navegador: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></span></li>
+<li><strong>Encuentra el ID del chat</strong><span>Buscar <code>"chat":{"id":XXXXXXX}</code> — ese número es tu ID de chat</span></li>
+</ol>
+</div>
+</div>
+ Discordia 
+<div class="section">
+<h2><span class="icon">🎮</span> Configuración del webhook de Discord <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Crear un webhook de Discord</h3>
+<ol class="steps">
+<li><strong>Abrir configuración del servidor</strong><span>Haga clic derecho en su servidor → Configuración del servidor → Integraciones</span></li>
+<li><strong>Crear webhook</strong><span>Haga clic en "Webhooks" → "Nuevo Webhook" → Elija el canal de destino</span></li>
+<li><strong>Copiar URL de webhook</strong><span>Haga clic en "Copiar URL de Webhook"; parece <code>https://discord.com/api/webhooks/...</code></span></li>
+<li><strong>Pegar en Reenviar SMS</strong><span>Agregue un objetivo de reenvío de Discord y pegue la URL</span></li>
+</ol>
+</div>
+</div>
+ gancho web 
+<div class="section">
+<h2><span class="icon">🌐</span> Configuración del webhook <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Webhook HTTP genérico</h3>
+<p>Los webhooks envían una solicitud HTTP POST (o PUT/PATCH) a cualquier URL que especifique cada vez que un SMS coincida con su regla. Esto es perfecto para integrar con:</p>
+<ul style="margin-top: 8px;">
+<li><strong>Zapier</strong> — Utilice un disparador de "gancho de captura"</li>
+<li><strong>IFTTT</strong> — Utilice un activador de Webhooks</li>
+<li><strong>n8n / hacer</strong> — Utilice un nodo Webhook</li>
+<li><strong>API personalizada</strong> — Su propio punto final de servidor</li>
+</ul>
+<h3 style="margin-top: 16px;">Marcadores de posición de plantilla de cuerpo</h3>
+<p>Utilice estos marcadores de posición en su plantilla de cuerpo JSON:</p>
+<ul style="margin-top: 4px;">
+<li><code>{sender}</code> — Número de teléfono o ID del remitente</li>
+<li><code>{contactName}</code> — Nombre del contacto (si se concede permiso)</li>
+<li><code>{body}</code> — Contenido de texto SMS</li>
+<li><code>{date}</code> — Marca de tiempo ISO 8601</li>
+<li><code>{ruleName}</code> — Nombre de regla coincidente</li>
+</ul>
+</div>
+</div>
+ Reglas de filtrado 
+<div class="section">
+<h2><span class="icon">🔍</span> Reglas de filtrado</h2>
+<div class="card">
+<h3>Cómo funciona la coincidencia de filtros</h3>
+<p>Cada regla de filtro tiene un <strong>filtro de remitente</strong> y <strong>filtro de contenido</strong>. Ambos son opcionales:</p>
+<ul style="margin-top: 8px;">
+<li><strong>ambos vacios</strong> — coincide con TODOS los SMS entrantes</li>
+<li><strong>Solo filtro de remitente</strong> — coincide con SMS de un remitente específico</li>
+<li><strong>Solo filtro de contenido</strong> — coincide con SMS que contienen texto específico</li>
+<li><strong>ambos establecidos</strong> — ambas condiciones deben coincidir (lógica Y)</li>
+</ul>
+<div class="tip"><strong>💡 Consejo:</strong> La coincidencia no distingue entre mayúsculas y minúsculas y admite caracteres turcos (İ/i, Ş/ş, Ğ/ğ). Con el permiso de los contactos, también puede filtrar por nombre del contacto.</div>
+<h3 style="margin-top: 16px;">Filtrado de expresiones regulares <span class="badge badge-pro">PRO</span></h3>
+<p>Los usuarios profesionales pueden habilitar expresiones regulares para una coincidencia de patrones avanzada. Ejemplos:</p>
+<ul style="margin-top: 4px;">
+<li><code>^\+90</code> — Sólo números turcos</li>
+<li><code>OTP|verification|code</code> — Mensajes OTP</li>
+<li><code>\d{6}</code> — Mensajes que contienen códigos de 6 dígitos</li>
+</ul>
+</div>
+</div>
+ Permisos 
+<div class="section">
+<h2><span class="icon">🔐</span> Permisos</h2>
+<div class="card">
+<h3>Permisos requeridos</h3>
+<ul>
+<li><strong>SMS (Recibir SMS)</strong> — Funcionalidad principal, necesaria para capturar mensajes entrantes.</li>
+<li><strong>Notificaciones</strong> — Muestra notificaciones de estado de reenvío</li>
+<li><strong>Optimización de la batería</strong> — Evita que el sistema elimine el servicio en segundo plano.</li>
+</ul>
+<h3 style="margin-top: 16px;">Permisos opcionales</h3>
+<ul>
+<li><strong>Contactos</strong> — Permite filtrar por nombre de contacto en lugar de número de teléfono</li>
+</ul>
+</div>
+</div>
+ Batería 
+<div class="section">
+<h2><span class="icon">🔋</span> Servicio de batería y en segundo plano</h2>
+<div class="card">
+<h3>Mantener los SMS en marcha</h3>
+<p>Android elimina agresivamente las aplicaciones en segundo plano para ahorrar batería. Para garantizar que SMS Forward funcione de manera confiable:</p>
+<ol style="margin-top: 8px;">
+<li>Ir a <strong>Configuración → Optimización de la batería</strong> y desactivar la optimización para SMS Forward</li>
+<li>En <strong>Xiaomi/MIUI</strong>: Configuración → Aplicaciones → Administrar aplicaciones → Reenvío de SMS → Inicio automático: ACTIVADO</li>
+<li>En <strong>HUAWEI/EMUI</strong>: Configuración → Batería → Inicio de aplicación → Reenvío de SMS → Administrar manualmente → Habilitar todo</li>
+<li>En <strong>Samsung</strong>: Configuración → Batería → Uso de la batería → Aplicaciones para dormir → Eliminar reenvío de SMS</li>
+</ol>
+<div class="tip"><strong>⚠️ Importante:</strong> Después de reiniciar el dispositivo, el receptor de inicio de la aplicación reiniciará automáticamente el servicio de reenvío si estaba habilitado.</div>
+</div>
+</div>
+ Solución de problemas 
+<div class="section">
+<h2><span class="icon">🔧</span> Solución de problemas</h2>
+<div class="card">
+<h3>SMS no se reenvía</h3>
+<ul>
+<li>Compruebe que el servicio de reenvío esté <strong>EN</strong> (alternar en la pantalla de inicio)</li>
+<li>Verifique que el permiso de SMS esté otorgado en <strong>Configuración → Permisos</strong></li>
+<li>Asegúrese de que la optimización de la batería esté desactivada para la aplicación</li>
+<li>Compruebe que su regla de filtrado sea <strong>activo</strong> y tiene al menos un objetivo de reenvío</li>
+<li>Revisar <strong>Registros de depuración</strong> (Configuración → Registros de depuración) para obtener información detallada sobre los errores</li>
+</ul>
+</div>
+<div class="card">
+<h3>El envío de correo electrónico falla</h3>
+<ul>
+<li>Verifique sus credenciales SMTP: utilice un <strong>Contraseña de la aplicación</strong>, no tu contraseña habitual</li>
+<li>Verifique que el host SMTP y el puerto sean correctos</li>
+<li>Intente enviar un correo electrónico de prueba desde la pantalla de destino de reenvío</li>
+<li>Para Gmail: asegúrese de que estén configuradas las "Aplicaciones menos seguras" o las Contraseñas de aplicaciones</li>
+</ul>
+</div>
+<div class="card">
+<h3>Los mensajes de Telegram no llegan</h3>
+<ul>
+<li>Asegúrate de <strong>comenzó</strong> el bot (enviado/inicio o cualquier mensaje)</li>
+<li>Verifique que el token del bot y el ID del chat sean correctos</li>
+<li>Pruebe el botón de prueba en la pantalla de destino de reenvío de Telegram</li>
+</ul>
+</div>
+</div>
+ Gratis vs Pro 
+<div class="section">
+<h2><span class="icon">⭐</span> Gratis vs Pro</h2>
+<div class="card">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<tr style="border-bottom: 1px solid var(--border);">
+<th style="text-align: left; padding: 8px;">Característica</th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-free">FREE</span></th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-pro">PRO</span></th>
+</tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Reglas de filtrado</td><td style="text-align: center;">1</td><td style="text-align: center;">Ilimitado</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Destinatarios de correo electrónico</td><td style="text-align: center;">1</td><td style="text-align: center;">10</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Historial de SMS</td><td style="text-align: center;">50</td><td style="text-align: center;">Ilimitado</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Reenvío de correo electrónico</td><td style="text-align: center;">✅</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Telegrama</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Discordia</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">gancho web</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Filtrado de expresiones regulares</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr><td style="padding: 8px;">Anuncios</td><td style="text-align: center;">Sí</td><td style="text-align: center;">No</td></tr>
+</table>
+</div>
+</div>
+</div><div class="lang-content" data-lang="pt" lang="pt">
+ Começando 
+<div class="section">
+<h2><span class="icon">🚀</span> Começando</h2>
+<div class="card">
+<h3>Como funciona o encaminhamento de SMS</h3>
+<p>O SMS Forward captura automaticamente mensagens SMS recebidas e as encaminha para os destinos configurados – Email, Telegram, Discord ou Webhooks personalizados.</p>
+<ol style="margin-top: 12px;">
+<li>Configure pelo menos um <strong>Configuração de e-mail SMTP</strong></li>
+<li>Crie um <strong>destino de encaminhamento</strong> (para onde enviar)</li>
+<li>Crie um <strong>regra de filtro</strong> (qual SMS encaminhar)</li>
+<li>Conceder <strong>Permissões de SMS e notificação</strong></li>
+<li>Habilite o <strong>serviço de encaminhamento</strong></li>
+</ol>
+</div>
+</div>
+ Configuração SMTP 
+<div class="section">
+<h2><span class="icon">📧</span> Configuração de e-mail (SMTP)</h2>
+<div class="card">
+<h3>Configuração de senha do aplicativo Gmail</h3>
+<ol class="steps">
+<li><strong>Habilitar autenticação de dois fatores</strong><span>Vá para Conta do Google → Segurança → Verificação em duas etapas → Ativar</span></li>
+<li><strong>Gerar senha do aplicativo</strong><span>Conta do Google → Segurança → Senhas de aplicativos → Selecione "Mail" → Gerar</span></li>
+<li><strong>Copie a senha de 16 dígitos</strong><span>Esta será sua senha SMTP (NÃO sua senha normal do Gmail)</span></li>
+<li><strong>Configurar no encaminhamento de SMS</strong><span>Anfitrião SMTP: <code>smtp.gmail.com</code> | Porta: <code>587</code> | SSL: ativado</span></li>
+</ol>
+<div class="tip"><strong>💡 Dica:</strong> Para uso do Outlook <code>smtp-mail.outlook.com</code> porta <code>587</code>. Para uso do Yahoo <code>smtp.mail.yahoo.com</code> porta <code>465</code>.</div>
+</div>
+</div>
+ Telegrama 
+<div class="section">
+<h2><span class="icon">✈️</span> Configuração do bot do telegrama <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Crie um bot de telegrama e obtenha ID de bate-papo</h3>
+<ol class="steps">
+<li><strong>Abra @BotFather no Telegram</strong><span>Procurar <code>@BotFather</code> no Telegram e inicie um bate-papo</span></li>
+<li><strong>Enviar /newbot</strong><span>Siga as instruções para nomear seu bot e escolha um nome de usuário (deve terminar com “bot”)</span></li>
+<li><strong>Copie o token do bot</strong><span>BotFather lhe dará um token como: <code>1234567890:ABCdef...</code></span></li>
+<li><strong>Inicie seu bot</strong><span>Encontre seu novo bot no Telegram e pressione "Iniciar" e envie qualquer mensagem</span></li>
+<li><strong>Obtenha seu ID de bate-papo</strong><span>Abra no navegador: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></span></li>
+<li><strong>Encontre o ID do bate-papo</strong><span>Procurar <code>"chat":{"id":XXXXXXX}</code> - esse número é o seu ID de bate-papo</span></li>
+</ol>
+</div>
+</div>
+ Discórdia 
+<div class="section">
+<h2><span class="icon">🎮</span> Configuração do webhook do Discord <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Crie um webhook do Discord</h3>
+<ol class="steps">
+<li><strong>Abra as configurações do servidor</strong><span>Clique com o botão direito no seu servidor → Configurações do servidor → Integrações</span></li>
+<li><strong>Criar webhook</strong><span>Clique em "Webhooks" → "Novo Webhook" → Escolha o canal de destino</span></li>
+<li><strong>Copiar URL do webhook</strong><span>Clique em “Copiar URL do Webhook” – parece <code>https://discord.com/api/webhooks/...</code></span></li>
+<li><strong>Colar no encaminhamento de SMS</strong><span>Adicione um alvo de encaminhamento do Discord e cole o URL</span></li>
+</ol>
+</div>
+</div>
+ Webhook 
+<div class="section">
+<h2><span class="icon">🌐</span> Configuração de webhook <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Webhook HTTP genérico</h3>
+<p>Webhooks enviam uma solicitação HTTP POST (ou PUT/PATCH) para qualquer URL que você especificar sempre que um SMS corresponder à sua regra. Isso é perfeito para integração com:</p>
+<ul style="margin-top: 8px;">
+<li><strong>Zapier</strong> — Use um gatilho "Catch Hook"</li>
+<li><strong>IFTTT</strong> — Use um gatilho Webhooks</li>
+<li><strong>n8n / Fazer</strong> — Use um nó Webhook</li>
+<li><strong>API personalizada</strong> — Seu próprio endpoint de servidor</li>
+</ul>
+<h3 style="margin-top: 16px;">Espaços reservados para modelo de corpo</h3>
+<p>Use estes espaços reservados em seu modelo de corpo JSON:</p>
+<ul style="margin-top: 4px;">
+<li><code>{sender}</code> — Número de telefone ou ID do remetente</li>
+<li><code>{contactName}</code> — Nome do contato (se permissão concedida)</li>
+<li><code>{body}</code> — conteúdo de texto SMS</li>
+<li><code>{date}</code> — Carimbo de data/hora ISO 8601</li>
+<li><code>{ruleName}</code> — Nome da regra correspondente</li>
+</ul>
+</div>
+</div>
+ Regras de filtro 
+<div class="section">
+<h2><span class="icon">🔍</span> Regras de filtro</h2>
+<div class="card">
+<h3>Como funciona a correspondência de filtros</h3>
+<p>Cada regra de filtro tem um <strong>filtro de remetente</strong> e <strong>filtro de conteúdo</strong>. Ambos são opcionais:</p>
+<ul style="margin-top: 8px;">
+<li><strong>Ambos vazios</strong> - corresponde a TODOS os SMS recebidos</li>
+<li><strong>Apenas filtro de remetente</strong> — corresponde ao SMS de um remetente específico</li>
+<li><strong>Somente filtro de conteúdo</strong> — corresponde a SMS contendo texto específico</li>
+<li><strong>Ambos definidos</strong> — ambas as condições devem corresponder (lógica AND)</li>
+</ul>
+<div class="tip"><strong>💡 Dica:</strong> A correspondência não diferencia maiúsculas de minúsculas e suporta caracteres turcos (İ/i, Ş/ş, Ğ/ğ). Com permissão de contatos, você também pode filtrar por nome de contato.</div>
+<h3 style="margin-top: 16px;">Filtragem Regex <span class="badge badge-pro">PRO</span></h3>
+<p>Os usuários Pro podem habilitar regex para correspondência avançada de padrões. Exemplos:</p>
+<ul style="margin-top: 4px;">
+<li><code>^\+90</code> — apenas números turcos</li>
+<li><code>OTP|verification|code</code> - Mensagens OTP</li>
+<li><code>\d{6}</code> — Mensagens contendo códigos de 6 dígitos</li>
+</ul>
+</div>
+</div>
+ Permissões 
+<div class="section">
+<h2><span class="icon">🔐</span> Permissões</h2>
+<div class="card">
+<h3>Permissões necessárias</h3>
+<ul>
+<li><strong>SMS (receber SMS)</strong> — Funcionalidade principal, necessária para capturar mensagens recebidas</li>
+<li><strong>Notificações</strong> — Mostra notificações de status de encaminhamento</li>
+<li><strong>Otimização da bateria</strong> — Impede que o sistema elimine o serviço em segundo plano</li>
+</ul>
+<h3 style="margin-top: 16px;">Permissões opcionais</h3>
+<ul>
+<li><strong>Contatos</strong> — Permite a filtragem por nome de contato em vez de número de telefone</li>
+</ul>
+</div>
+</div>
+ Bateria 
+<div class="section">
+<h2><span class="icon">🔋</span> Bateria e serviço em segundo plano</h2>
+<div class="card">
+<h3>Mantendo o SMS em execução</h3>
+<p>O Android elimina agressivamente aplicativos em segundo plano para economizar bateria. Para garantir que o SMS Forward funcione de maneira confiável:</p>
+<ol style="margin-top: 8px;">
+<li>Vá para <strong>Configurações → Otimização da bateria</strong> e desabilitar a otimização para SMS Forward</li>
+<li>Sobre <strong>Xiaomi/MIUI</strong>: Configurações → Aplicativos → Gerenciar aplicativos → Encaminhamento de SMS → Inicialização automática: LIGADO</li>
+<li>Sobre <strong>Huawei/EMUI</strong>: Configurações → Bateria → Inicialização do aplicativo → Encaminhamento de SMS → Gerenciar manualmente → Ativar tudo</li>
+<li>Sobre <strong>Samsung</strong>: Configurações → Bateria → Uso da bateria → Aplicativos para dormir → Remover encaminhamento de SMS</li>
+</ol>
+<div class="tip"><strong>⚠️ Importante:</strong> Após a reinicialização do dispositivo, o receptor de inicialização do aplicativo reiniciará automaticamente o serviço de encaminhamento se ele estiver ativado.</div>
+</div>
+</div>
+ Solução de problemas 
+<div class="section">
+<h2><span class="icon">🔧</span> Solução de problemas</h2>
+<div class="card">
+<h3>SMS não está sendo encaminhado</h3>
+<ul>
+<li>Verifique se o serviço de encaminhamento está <strong>SOBRE</strong> (alternar na tela inicial)</li>
+<li>Verifique se a permissão de SMS foi concedida em <strong>Configurações → Permissões</strong></li>
+<li>Certifique-se de que a otimização da bateria esteja desativada para o aplicativo</li>
+<li>Verifique se sua regra de filtro é <strong>ativo</strong> e tem pelo menos um destino de encaminhamento</li>
+<li>Análise <strong>Registros de depuração</strong> (Configurações → Logs de depuração) para informações detalhadas sobre erros</li>
+</ul>
+</div>
+<div class="card">
+<h3>O envio de e-mail falha</h3>
+<ul>
+<li>Verifique suas credenciais SMTP — use um <strong>Senha do aplicativo</strong>, não sua senha normal</li>
+<li>Verifique se o host e a porta SMTP estão corretos</li>
+<li>Tente enviar um e-mail de teste na tela de destino de encaminhamento</li>
+<li>Para Gmail: certifique-se de que "Aplicativos menos seguros" ou Senhas de aplicativo estejam configurados</li>
+</ul>
+</div>
+<div class="card">
+<h3>Mensagens de telegrama não chegam</h3>
+<ul>
+<li>Certifique-se de que você <strong>iniciado</strong> o bot (enviado /start ou qualquer mensagem)</li>
+<li>Verifique se o token do bot e o ID do bate-papo estão corretos</li>
+<li>Experimente o botão de teste na tela de destino de encaminhamento do Telegram</li>
+</ul>
+</div>
+</div>
+ Grátis vs Pro 
+<div class="section">
+<h2><span class="icon">⭐</span> Grátis vs Pro</h2>
+<div class="card">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<tr style="border-bottom: 1px solid var(--border);">
+<th style="text-align: left; padding: 8px;">Recurso</th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-free">FREE</span></th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-pro">PRO</span></th>
+</tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Regras de filtragem</td><td style="text-align: center;">1</td><td style="text-align: center;">Ilimitado</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Destinatários de e-mail</td><td style="text-align: center;">1</td><td style="text-align: center;">10</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Histórico de SMS</td><td style="text-align: center;">50</td><td style="text-align: center;">Ilimitado</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Encaminhamento de e-mail</td><td style="text-align: center;">✅</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Telegrama</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Discórdia</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Webhook</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Filtragem Regex</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr><td style="padding: 8px;">Anúncios</td><td style="text-align: center;">Sim</td><td style="text-align: center;">Não</td></tr>
+</table>
+</div>
+</div>
+</div><div class="lang-content" data-lang="fr" lang="fr">
+ Commencer 
+<div class="section">
+<h2><span class="icon">🚀</span> Commencer</h2>
+<div class="card">
+<h3>Comment fonctionne le transfert de SMS</h3>
+<p>SMS Forward capture automatiquement les messages SMS entrants et les transfère vers vos destinations configurées : e-mail, télégramme, Discord ou Webhooks personnalisés.</p>
+<ol style="margin-top: 12px;">
+<li>Configurez au moins un <strong>Configuration de la messagerie SMTP</strong></li>
+<li>Créer un <strong>cible de transfert</strong> (où envoyer)</li>
+<li>Créer un <strong>règle de filtrage</strong> (quel SMS transférer)</li>
+<li>Accorder <strong>Autorisations SMS et notifications</strong></li>
+<li>Activer le <strong>service d'expédition</strong></li>
+</ol>
+</div>
+</div>
+ Configuration SMTP 
+<div class="section">
+<h2><span class="icon">📧</span> Configuration de la messagerie électronique (SMTP)</h2>
+<div class="card">
+<h3>Configuration du mot de passe de l'application Gmail</h3>
+<ol class="steps">
+<li><strong>Activer l'authentification à 2 facteurs</strong><span>Accédez à Compte Google → Sécurité → Vérification en 2 étapes → Activer</span></li>
+<li><strong>Générer le mot de passe de l'application</strong><span>Compte Google → Sécurité → Mots de passe d'application → Sélectionnez « Mail » → Générer</span></li>
+<li><strong>Copiez le mot de passe à 16 chiffres</strong><span>Ce sera votre mot de passe SMTP (PAS votre mot de passe Gmail habituel)</span></li>
+<li><strong>Configurer dans SMS Forward</strong><span>Hôte SMTP : <code>smtp.gmail.com</code> | Port: <code>587</code> | SSL : activé</span></li>
+</ol>
+<div class="tip"><strong>💡 Astuce :</strong> Pour une utilisation avec Outlook <code>smtp-mail.outlook.com</code> port <code>587</code>. Pour une utilisation Yahoo <code>smtp.mail.yahoo.com</code> port <code>465</code>.</div>
+</div>
+</div>
+ Télégramme 
+<div class="section">
+<h2><span class="icon">✈️</span> Configuration du robot Telegram <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Créez un robot Telegram et obtenez un identifiant de chat</h3>
+<ol class="steps">
+<li><strong>Ouvrez @BotFather sur Telegram</strong><span>Rechercher <code>@BotFather</code> dans Telegram et démarrez une discussion</span></li>
+<li><strong>Envoyer /nouveaubot</strong><span>Suivez les instructions pour nommer votre bot et choisissez un nom d'utilisateur (doit se terminer par « bot »)</span></li>
+<li><strong>Copiez le jeton du robot</strong><span>BotFather vous donnera un jeton comme : <code>1234567890:ABCdef...</code></span></li>
+<li><strong>Démarrez votre robot</strong><span>Trouvez votre nouveau bot dans Telegram et appuyez sur "Démarrer", puis envoyez n'importe quel message</span></li>
+<li><strong>Obtenez votre identifiant de chat</strong><span>Ouvrir dans le navigateur : <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></span></li>
+<li><strong>Trouver l'identifiant de discussion</strong><span>Rechercher <code>"chat":{"id":XXXXXXX}</code> - ce numéro est votre identifiant de chat</span></li>
+</ol>
+</div>
+</div>
+ Discorde 
+<div class="section">
+<h2><span class="icon">🎮</span> Configuration du webhook Discord <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Créer un webhook Discord</h3>
+<ol class="steps">
+<li><strong>Ouvrir les paramètres du serveur</strong><span>Cliquez avec le bouton droit sur votre serveur → Paramètres du serveur → Intégrations</span></li>
+<li><strong>Créer un webhook</strong><span>Cliquez sur "Webhooks" → "Nouveau Webhook" → Choisissez le canal cible</span></li>
+<li><strong>Copier l'URL du webhook</strong><span>Cliquez sur "Copier l'URL du Webhook" - cela ressemble à <code>https://discord.com/api/webhooks/...</code></span></li>
+<li><strong>Coller dans le transfert SMS</strong><span>Ajoutez une cible de transfert Discord et collez l'URL</span></li>
+</ol>
+</div>
+</div>
+ Webhook 
+<div class="section">
+<h2><span class="icon">🌐</span> Configuration du webhook <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Webhook HTTP générique</h3>
+<p>Les webhooks envoient une requête HTTP POST (ou PUT/PATCH) à n'importe quelle URL que vous spécifiez chaque fois qu'un SMS correspond à votre règle. C'est parfait pour intégrer avec :</p>
+<ul style="margin-top: 8px;">
+<li><strong>Zapier</strong> — Utiliser un déclencheur "Catch Hook"</li>
+<li><strong>IFTTT</strong> — Utiliser un déclencheur Webhooks</li>
+<li><strong>n8n / Faire</strong> — Utiliser un nœud Webhook</li>
+<li><strong>API personnalisée</strong> — Votre propre point de terminaison de serveur</li>
+</ul>
+<h3 style="margin-top: 16px;">Espaces réservés pour le modèle de corps</h3>
+<p>Utilisez ces espaces réservés dans votre modèle de corps JSON :</p>
+<ul style="margin-top: 4px;">
+<li><code>{sender}</code> — Numéro de téléphone ou identifiant de l'expéditeur</li>
+<li><code>{contactName}</code> — Nom du contact (si autorisation accordée)</li>
+<li><code>{body}</code> — Contenu du texte SMS</li>
+<li><code>{date}</code> — Horodatage ISO 8601</li>
+<li><code>{ruleName}</code> — Nom de la règle correspondant</li>
+</ul>
+</div>
+</div>
+ Règles de filtrage 
+<div class="section">
+<h2><span class="icon">🔍</span> Règles de filtrage</h2>
+<div class="card">
+<h3>Comment fonctionne la correspondance des filtres</h3>
+<p>Chaque règle de filtrage a un <strong>filtre d'expéditeur</strong> et <strong>filtre de contenu</strong>. Les deux sont facultatifs :</p>
+<ul style="margin-top: 8px;">
+<li><strong>Les deux vides</strong> — correspond à TOUS les SMS entrants</li>
+<li><strong>Filtre d'expéditeur uniquement</strong> — correspond aux SMS d'un expéditeur spécifique</li>
+<li><strong>Filtre de contenu uniquement</strong> — correspond aux SMS contenant un texte spécifique</li>
+<li><strong>Les deux sont fixés</strong> — les deux conditions doivent correspondre (logique ET)</li>
+</ul>
+<div class="tip"><strong>💡 Astuce :</strong> La correspondance n'est pas sensible à la casse et prend en charge les caractères turcs (İ/i, Ş/ş, Ğ/ğ). Avec l'autorisation des contacts, vous pouvez également filtrer par nom de contact.</div>
+<h3 style="margin-top: 16px;">Filtrage des expressions régulières <span class="badge badge-pro">PRO</span></h3>
+<p>Les utilisateurs professionnels peuvent activer les expressions régulières pour une correspondance de modèles avancée. Exemples :</p>
+<ul style="margin-top: 4px;">
+<li><code>^\+90</code> — Numéros turcs uniquement</li>
+<li><code>OTP|verification|code</code> -Messages OTP</li>
+<li><code>\d{6}</code> — Messages contenant des codes à 6 chiffres</li>
+</ul>
+</div>
+</div>
+ Autorisations 
+<div class="section">
+<h2><span class="icon">🔐</span> Autorisations</h2>
+<div class="card">
+<h3>Autorisations requises</h3>
+<ul>
+<li><strong>SMS (Recevoir des SMS)</strong> — Fonctionnalité de base, requise pour capturer les messages entrants</li>
+<li><strong>Notifications</strong> — Affiche les notifications d'état de transfert</li>
+<li><strong>Optimisation de la batterie</strong> — Empêche le système de tuer le service en arrière-plan</li>
+</ul>
+<h3 style="margin-top: 16px;">Autorisations facultatives</h3>
+<ul>
+<li><strong>Contacts</strong> — Permet le filtrage par nom de contact au lieu du numéro de téléphone</li>
+</ul>
+</div>
+</div>
+ Batterie 
+<div class="section">
+<h2><span class="icon">🔋</span> Service de batterie et d'arrière-plan</h2>
+<div class="card">
+<h3>Maintenir le fonctionnement de SMS Forward</h3>
+<p>Android tue de manière agressive les applications en arrière-plan pour économiser la batterie. Pour garantir le fonctionnement fiable de SMS Forward :</p>
+<ol style="margin-top: 8px;">
+<li>Aller à <strong>Paramètres → Optimisation de la batterie</strong> et désactivez l'optimisation pour SMS Forward</li>
+<li>Sur <strong>Xiaomi/MIUI</strong>: Paramètres → Applications → Gérer les applications → Transfert SMS → Démarrage automatique : activé</li>
+<li>Sur <strong>Huawei/EMUI</strong>: Paramètres → Batterie → Lancement de l'application → Transfert SMS → Gérer manuellement → Tout activer</li>
+<li>Sur <strong>Samsung</strong>: Paramètres → Batterie → Utilisation de la batterie → Applications en veille → Supprimer le transfert SMS</li>
+</ol>
+<div class="tip"><strong>⚠️Important :</strong> Après le redémarrage de l'appareil, le récepteur de démarrage de l'application redémarrera automatiquement le service de transfert s'il était activé.</div>
+</div>
+</div>
+ Dépannage 
+<div class="section">
+<h2><span class="icon">🔧</span> Dépannage</h2>
+<div class="card">
+<h3>Le SMS n'est pas transféré</h3>
+<ul>
+<li>Vérifiez que le service de réexpédition est <strong>SUR</strong> (basculer sur l'écran d'accueil)</li>
+<li>Vérifiez que l'autorisation SMS est accordée dans <strong>Paramètres → Autorisations</strong></li>
+<li>Assurez-vous que l'optimisation de la batterie est désactivée pour l'application</li>
+<li>Vérifiez que votre règle de filtrage est <strong>actif</strong> et possède au moins une cible de transfert</li>
+<li>Revoir <strong>Journaux de débogage</strong> (Paramètres → Journaux de débogage) pour des informations détaillées sur les erreurs</li>
+</ul>
+</div>
+<div class="card">
+<h3>L'envoi d'e-mail échoue</h3>
+<ul>
+<li>Vérifiez vos informations d'identification SMTP - utilisez un <strong>Mot de passe de l'application</strong>, pas votre mot de passe habituel</li>
+<li>Vérifiez que l'hôte et le port SMTP sont corrects</li>
+<li>Essayez d'envoyer un e-mail test à partir de l'écran de la cible de transfert</li>
+<li>Pour Gmail : assurez-vous que les « Applications moins sécurisées » ou les mots de passe des applications sont configurés.</li>
+</ul>
+</div>
+<div class="card">
+<h3>Les messages télégrammes n'arrivent pas</h3>
+<ul>
+<li>Assurez-vous de <strong>commencé</strong> le bot (envoyé /start ou n'importe quel message)</li>
+<li>Vérifiez que le jeton du bot et l'ID de chat sont corrects</li>
+<li>Essayez le bouton de test sur l'écran de la cible de transfert Telegram</li>
+</ul>
+</div>
+</div>
+ Gratuit ou Pro 
+<div class="section">
+<h2><span class="icon">⭐</span> Gratuit ou Pro</h2>
+<div class="card">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<tr style="border-bottom: 1px solid var(--border);">
+<th style="text-align: left; padding: 8px;">Fonctionnalité</th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-free">FREE</span></th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-pro">PRO</span></th>
+</tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Règles de filtrage</td><td style="text-align: center;">1</td><td style="text-align: center;">Illimité</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Destinataires des e-mails</td><td style="text-align: center;">1</td><td style="text-align: center;">10</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Historique des SMS</td><td style="text-align: center;">50</td><td style="text-align: center;">Illimité</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Transfert d'e-mails</td><td style="text-align: center;">✅</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Télégramme</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Discorde</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Webhook</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Filtrage des expressions régulières</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr><td style="padding: 8px;">Annonces</td><td style="text-align: center;">Oui</td><td style="text-align: center;">Non</td></tr>
+</table>
+</div>
+</div>
+</div><div class="lang-content" data-lang="ar" dir="rtl" lang="ar">
+ ابدء 
+<div class="section">
+<h2><span class="icon">🚀</span> ابدء</h2>
+<div class="card">
+<h3>كيف يعمل تحويل الرسائل القصيرة</h3>
+<p>يقوم تطبيق SMS Forward تلقائيًا بالتقاط رسائل SMS الواردة وإعادة توجيهها إلى الوجهات التي تم تكوينها - البريد الإلكتروني أو Telegram أو Discord أو Webhooks المخصصة.</p>
+<ol style="margin-top: 12px;">
+<li>قم بإعداد واحد على الأقل <strong>تكوين البريد الإلكتروني SMTP</strong></li>
+<li>إنشاء أ <strong>هدف الشحن</strong> (أين ترسل)</li>
+<li>إنشاء أ <strong>قاعدة التصفية</strong> (أي الرسائل القصيرة لإعادة التوجيه)</li>
+<li>منحة <strong>أذونات الرسائل القصيرة والإخطارات</strong></li>
+<li>تمكين <strong>خدمة الشحن</strong></li>
+</ol>
+</div>
+</div>
+ إعداد SMTP 
+<div class="section">
+<h2><span class="icon">📧</span> إعداد البريد الإلكتروني (SMTP).</h2>
+<div class="card">
+<h3>إعداد كلمة مرور تطبيق Gmail</h3>
+<ol class="steps">
+<li><strong>تمكين المصادقة الثنائية</strong><span>انتقل إلى حساب Google → الأمان → التحقق بخطوتين → تشغيل</span></li>
+<li><strong>إنشاء كلمة مرور التطبيق</strong><span>حساب Google ← الأمان ← كلمات مرور التطبيقات ← اختر "البريد" ← إنشاء</span></li>
+<li><strong>انسخ كلمة المرور المكونة من 16 رقمًا</strong><span>ستكون هذه هي كلمة مرور SMTP الخاصة بك (وليست كلمة مرور Gmail العادية)</span></li>
+<li><strong>تكوين في SMS إلى الأمام</strong><span>مضيف SMTP: <code>smtp.gmail.com</code> | ميناء: <code>587</code> | طبقة المقابس الآمنة: تشغيل</span></li>
+</ol>
+<div class="tip"><strong>💡 نصيحة:</strong> لاستخدام Outlook <code>smtp-mail.outlook.com</code> ميناء <code>587</code>. لاستخدام ياهو <code>smtp.mail.yahoo.com</code> ميناء <code>465</code>.</div>
+</div>
+</div>
+ برقية 
+<div class="section">
+<h2><span class="icon">✈️</span> إعداد بوت تيليجرام <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>أنشئ بوت Telegram واحصل على معرف الدردشة</h3>
+<ol class="steps">
+<li><strong>افتح @BotFather على تيليجرام</strong><span>بحث عن <code>@BotFather</code> في Telegram وابدأ الدردشة</span></li>
+<li><strong>إرسال / نيوبوت</strong><span>اتبع المطالبات لتسمية الروبوت الخاص بك واختيار اسم مستخدم (يجب أن ينتهي بـ "bot")</span></li>
+<li><strong>انسخ رمز الروبوت</strong><span>سيعطيك BotFather رمزًا مميزًا مثل: <code>1234567890:ABCdef...</code></span></li>
+<li><strong>ابدأ تشغيل الروبوت الخاص بك</strong><span>ابحث عن الروبوت الجديد الخاص بك في Telegram واضغط على "ابدأ"، ثم أرسل أي رسالة</span></li>
+<li><strong>احصل على معرف الدردشة الخاص بك</strong><span>فتح في المتصفح: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></span></li>
+<li><strong>ابحث عن معرف الدردشة</strong><span>بحث <code>"chat":{"id":XXXXXXX}</code> - هذا الرقم هو معرف الدردشة الخاص بك</span></li>
+</ol>
+</div>
+</div>
+ الفتنة 
+<div class="section">
+<h2><span class="icon">🎮</span> إعداد Discord Webhook <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>قم بإنشاء Discord Webhook</h3>
+<ol class="steps">
+<li><strong>افتح إعدادات الخادم</strong><span>انقر بزر الماوس الأيمن على الخادم الخاص بك → إعدادات الخادم → عمليات التكامل</span></li>
+<li><strong>إنشاء خطاف ويب</strong><span>انقر على "خطافات الويب" ← "خطاف الويب الجديد" ← اختر القناة المستهدفة</span></li>
+<li><strong>انسخ عنوان URL للويب هوك</strong><span>انقر على "نسخ عنوان URL الخاص بالويب هوك" — كما يبدو <code>https://discord.com/api/webhooks/...</code></span></li>
+<li><strong>لصق في الرسائل القصيرة إلى الأمام</strong><span>أضف هدف إعادة توجيه Discord والصق عنوان URL</span></li>
+</ol>
+</div>
+</div>
+ خطاف ويب 
+<div class="section">
+<h2><span class="icon">🌐</span> إعداد خطاف الويب <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>خطاف ويب HTTP عام</h3>
+<p>ترسل خطافات الويب طلب HTTP POST (أو PUT/PATCH) إلى أي عنوان URL تحدده عندما تتطابق رسالة SMS مع قاعدتك. هذا مثالي للتكامل مع:</p>
+<ul style="margin-top: 8px;">
+<li><strong>زابير</strong> - استخدم مشغل "Catch Hook".</li>
+<li><strong>إفتتت</strong> - استخدم مشغل Webhooks</li>
+<li><strong>n8n / اصنع</strong> - استخدم عقدة Webhook</li>
+<li><strong>واجهة برمجة التطبيقات المخصصة</strong> - نقطة نهاية الخادم الخاص بك</li>
+</ul>
+<h3 style="margin-top: 16px;">العناصر النائبة لقالب النص</h3>
+<p>استخدم هذه العناصر النائبة في قالب نص JSON الخاص بك:</p>
+<ul style="margin-top: 4px;">
+<li><code>{sender}</code> - رقم الهاتف أو معرف المرسل</li>
+<li><code>{contactName}</code> - اسم جهة الاتصال (إذا تم منح الإذن)</li>
+<li><code>{body}</code> - محتوى الرسائل النصية القصيرة</li>
+<li><code>{date}</code> - الطابع الزمني ISO 8601</li>
+<li><code>{ruleName}</code> - اسم القاعدة المتطابقة</li>
+</ul>
+</div>
+</div>
+ قواعد التصفية 
+<div class="section">
+<h2><span class="icon">🔍</span> قواعد التصفية</h2>
+<div class="card">
+<h3>كيف تعمل مطابقة الفلتر</h3>
+<p>تحتوي كل قاعدة تصفية على <strong>مرشح المرسل</strong> و <strong>مرشح المحتوى</strong>. كلاهما اختياري:</p>
+<ul style="margin-top: 8px;">
+<li><strong>كلاهما فارغ</strong> - يطابق جميع الرسائل القصيرة الواردة</li>
+<li><strong>مرشح المرسل فقط</strong> — يطابق الرسائل القصيرة من مرسل محدد</li>
+<li><strong>مرشح المحتوى فقط</strong> - يطابق الرسائل القصيرة التي تحتوي على نص محدد</li>
+<li><strong>كلا مجموعة</strong> - يجب أن يتطابق كلا الشرطين (والمنطق)</li>
+</ul>
+<div class="tip"><strong>💡 نصيحة:</strong> المطابقة غير حساسة لحالة الأحرف وتدعم الأحرف التركية (I/i، Ş/ş، Ğ/ğ). باستخدام إذن جهات الاتصال، يمكنك أيضًا التصفية حسب اسم جهة الاتصال.</div>
+<h3 style="margin-top: 16px;">تصفية ريجكس <span class="badge badge-pro">PRO</span></h3>
+<p>يمكن للمستخدمين المحترفين تمكين التعبير العادي لمطابقة الأنماط المتقدمة. أمثلة:</p>
+<ul style="margin-top: 4px;">
+<li><code>^\+90</code> - الارقام التركية فقط</li>
+<li><code>OTP|verification|code</code> - رسائل OTP</li>
+<li><code>\d{6}</code> — رسائل تحتوي على رموز مكونة من 6 أرقام</li>
+</ul>
+</div>
+</div>
+ الأذونات 
+<div class="section">
+<h2><span class="icon">🔐</span> الأذونات</h2>
+<div class="card">
+<h3>الأذونات المطلوبة</h3>
+<ul>
+<li><strong>الرسائل القصيرة (تلقي الرسائل القصيرة)</strong> - الوظيفة الأساسية المطلوبة لالتقاط الرسائل الواردة</li>
+<li><strong>إشعارات</strong> - يعرض إخطارات حالة إعادة التوجيه</li>
+<li><strong>تحسين البطارية</strong> - يمنع النظام من قتل خدمة الخلفية</li>
+</ul>
+<h3 style="margin-top: 16px;">أذونات اختيارية</h3>
+<ul>
+<li><strong>اتصالات</strong> - تمكين التصفية حسب اسم جهة الاتصال بدلاً من رقم الهاتف</li>
+</ul>
+</div>
+</div>
+ بطارية 
+<div class="section">
+<h2><span class="icon">🔋</span> خدمة البطارية والخلفية</h2>
+<div class="card">
+<h3>الحفاظ على تشغيل الرسائل القصيرة إلى الأمام</h3>
+<p>يقوم Android بقتل تطبيقات الخلفية بقوة لتوفير البطارية. للتأكد من أن خدمة SMS Forward تعمل بشكل موثوق:</p>
+<ol style="margin-top: 8px;">
+<li>اذهب الى <strong>الإعدادات → تحسين البطارية</strong> وتعطيل تحسين SMS Forward</li>
+<li>على <strong>زياومي/ميوي</strong>: الإعدادات ← التطبيقات ← إدارة التطبيقات ← إعادة توجيه الرسائل القصيرة ← التشغيل التلقائي: تشغيل</li>
+<li>على <strong>هواوي/EMUI</strong>: الإعدادات ← البطارية ← تشغيل التطبيق ← إعادة توجيه الرسائل القصيرة ← الإدارة يدويًا ← تمكين الكل</li>
+<li>على <strong>سامسونج</strong>: الإعدادات ← البطارية ← استخدام البطارية ← تطبيقات النوم ← إزالة إعادة توجيه الرسائل القصيرة</li>
+</ol>
+<div class="tip"><strong>⚠️ هام:</strong> بعد إعادة تشغيل الجهاز، سيقوم جهاز استقبال تمهيد التطبيق تلقائيًا بإعادة تشغيل خدمة إعادة التوجيه إذا تم تمكينها.</div>
+</div>
+</div>
+ استكشاف الأخطاء وإصلاحها 
+<div class="section">
+<h2><span class="icon">🔧</span> استكشاف الأخطاء وإصلاحها</h2>
+<div class="card">
+<h3>لا يتم إعادة توجيه الرسائل القصيرة</h3>
+<ul>
+<li>تأكد من أن خدمة إعادة التوجيه <strong>على</strong> (تبديل على الشاشة الرئيسية)</li>
+<li>تحقق من منح إذن الرسائل القصيرة في <strong>الإعدادات → الأذونات</strong></li>
+<li>تأكد من تعطيل تحسين البطارية للتطبيق</li>
+<li>تأكد من أن قاعدة التصفية الخاصة بك هي <strong>نشيط</strong> ولديه هدف إعادة توجيه واحد على الأقل</li>
+<li>مراجعة <strong>سجلات التصحيح</strong> (الإعدادات → سجلات التصحيح) للحصول على معلومات تفصيلية عن الخطأ</li>
+</ul>
+</div>
+<div class="card">
+<h3>فشل إرسال البريد الإلكتروني</h3>
+<ul>
+<li>تحقق من بيانات اعتماد SMTP الخاصة بك - استخدم <strong>كلمة مرور التطبيق</strong>، وليست كلمة المرور العادية</li>
+<li>تحقق من صحة مضيف ومنفذ SMTP</li>
+<li>حاول إرسال بريد إلكتروني تجريبي من شاشة إعادة التوجيه المستهدفة</li>
+<li>بالنسبة إلى Gmail: تأكد من تهيئة "التطبيقات الأقل أمانًا" أو كلمات مرور التطبيقات</li>
+</ul>
+</div>
+<div class="card">
+<h3>رسائل التليجرام لا تصل</h3>
+<ul>
+<li>تأكد من أنك <strong>بدأ</strong> الروبوت (إرسال/بدء أو أي رسالة)</li>
+<li>تحقق من صحة رمز الروبوت ومعرف الدردشة</li>
+<li>جرب زر الاختبار الموجود على شاشة هدف إعادة توجيه Telegram</li>
+</ul>
+</div>
+</div>
+ مجاني مقابل برو 
+<div class="section">
+<h2><span class="icon">⭐</span> مجاني مقابل برو</h2>
+<div class="card">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<tr style="border-bottom: 1px solid var(--border);">
+<th style="text-align: left; padding: 8px;">ميزة</th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-free">FREE</span></th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-pro">PRO</span></th>
+</tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">قواعد التصفية</td><td style="text-align: center;">1</td><td style="text-align: center;">غير محدود</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">مستلمو البريد الإلكتروني</td><td style="text-align: center;">1</td><td style="text-align: center;">10</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">تاريخ الرسائل القصيرة</td><td style="text-align: center;">50</td><td style="text-align: center;">غير محدود</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">إعادة توجيه البريد الإلكتروني</td><td style="text-align: center;">✅</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">برقية</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">الفتنة</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">خطاف ويب</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">تصفية ريجكس</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr><td style="padding: 8px;">إعلانات</td><td style="text-align: center;">نعم</td><td style="text-align: center;">لا</td></tr>
+</table>
+</div>
+</div>
+</div><div class="lang-content" data-lang="hi" lang="hi">
+ शुरू करना 
+<div class="section">
+<h2><span class="icon">🚀</span> शुरू करना</h2>
+<div class="card">
+<h3>एसएमएस फॉरवर्ड कैसे काम करता है</h3>
+<p>एसएमएस फॉरवर्ड स्वचालित रूप से आने वाले एसएमएस संदेशों को कैप्चर करता है और उन्हें आपके कॉन्फ़िगर किए गए गंतव्यों - ईमेल, टेलीग्राम, डिस्कॉर्ड, या कस्टम वेबहुक पर भेज देता है।</p>
+<ol style="margin-top: 12px;">
+<li>कम से कम एक सेट करें <strong>एसएमटीपी ईमेल कॉन्फ़िगरेशन</strong></li>
+<li>एक बनाने के <strong>अग्रेषण लक्ष्य</strong> (कहां भेजना है)</li>
+<li>एक बनाने के <strong>फ़िल्टर नियम</strong> (कौन सा एसएमएस फॉरवर्ड करना है)</li>
+<li>अनुदान <strong>एसएमएस और अधिसूचना अनुमतियाँ</strong></li>
+<li>सक्षम करें <strong>अग्रेषण सेवा</strong></li>
+</ol>
+</div>
+</div>
+ एसएमटीपी सेटअप 
+<div class="section">
+<h2><span class="icon">📧</span> ईमेल (एसएमटीपी) सेटअप</h2>
+<div class="card">
+<h3>जीमेल ऐप पासवर्ड सेटअप</h3>
+<ol class="steps">
+<li><strong>2-कारक प्रमाणीकरण सक्षम करें</strong><span>Google खाता → सुरक्षा → 2-चरणीय सत्यापन → चालू करें पर जाएँ</span></li>
+<li><strong>ऐप पासवर्ड जनरेट करें</strong><span>Google खाता → सुरक्षा → ऐप पासवर्ड → "मेल" चुनें → जेनरेट करें</span></li>
+<li><strong>16 अंकों का पासवर्ड कॉपी करें</strong><span>यह आपका एसएमटीपी पासवर्ड होगा (आपका नियमित जीमेल पासवर्ड नहीं)</span></li>
+<li><strong>एसएमएस फॉरवर्ड में कॉन्फ़िगर करें</strong><span>एसएमटीपी होस्ट: <code>smtp.gmail.com</code> | पत्तन: <code>587</code> | एसएसएल: चालू</span></li>
+</ol>
+<div class="tip"><strong>💡टिप:</strong> आउटलुक उपयोग के लिए <code>smtp-mail.outlook.com</code> पत्तन <code>587</code>. याहू उपयोग के लिए <code>smtp.mail.yahoo.com</code> पत्तन <code>465</code>.</div>
+</div>
+</div>
+ टेलीग्राम 
+<div class="section">
+<h2><span class="icon">✈️</span> टेलीग्राम बॉट सेटअप <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>एक टेलीग्राम बॉट बनाएं और चैट आईडी प्राप्त करें</h3>
+<ol class="steps">
+<li><strong>टेलीग्राम पर @BotFather खोलें</strong><span>निम्न को खोजें <code>@BotFather</code> टेलीग्राम में और चैट शुरू करें</span></li>
+<li><strong>भेजें/न्यूबॉट</strong><span>अपने बॉट को नाम देने के लिए संकेतों का पालन करें और एक उपयोगकर्ता नाम चुनें ("बॉट" के साथ समाप्त होना चाहिए)</span></li>
+<li><strong>बॉट टोकन की प्रतिलिपि बनाएँ</strong><span>BotFather आपको एक टोकन देगा जैसे: <code>1234567890:ABCdef...</code></span></li>
+<li><strong>अपना बॉट प्रारंभ करें</strong><span>टेलीग्राम में अपना नया बॉट ढूंढें और "स्टार्ट" दबाएँ, फिर कोई भी संदेश भेजें</span></li>
+<li><strong>अपनी चैट आईडी प्राप्त करें</strong><span>ब्राउज़र में खोलें: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></span></li>
+<li><strong>चैट आईडी ढूंढें</strong><span>देखो के लिए <code>"chat":{"id":XXXXXXX}</code> - वह नंबर आपकी चैट आईडी है</span></li>
+</ol>
+</div>
+</div>
+ कलह 
+<div class="section">
+<h2><span class="icon">🎮</span> डिस्कॉर्ड वेबहुक सेटअप <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>एक डिस्कॉर्ड वेबहुक बनाएं</h3>
+<ol class="steps">
+<li><strong>सर्वर सेटिंग्स खोलें</strong><span>अपने सर्वर → सर्वर सेटिंग्स → एकीकरण पर राइट-क्लिक करें</span></li>
+<li><strong>वेबहुक बनाएं</strong><span>"वेबहुक" → "नया वेबहुक" → लक्ष्य चैनल चुनें पर क्लिक करें</span></li>
+<li><strong>वेबहुक यूआरएल कॉपी करें</strong><span>"वेबहुक यूआरएल कॉपी करें" पर क्लिक करें - ऐसा लगता है <code>https://discord.com/api/webhooks/...</code></span></li>
+<li><strong>एसएमएस फॉरवर्ड में पेस्ट करें</strong><span>एक डिस्कॉर्ड फ़ॉरवर्डिंग लक्ष्य जोड़ें और URL पेस्ट करें</span></li>
+</ol>
+</div>
+</div>
+ WEbhook 
+<div class="section">
+<h2><span class="icon">🌐</span> वेबहुक सेटअप <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>जेनेरिक HTTP वेबहुक</h3>
+<p>जब भी कोई एसएमएस आपके नियम से मेल खाता है, तो वेबहुक आपके द्वारा निर्दिष्ट किसी भी यूआरएल पर एक HTTP POST (या PUT/PATCH) अनुरोध भेजता है। यह इनके साथ एकीकरण के लिए बिल्कुल उपयुक्त है:</p>
+<ul style="margin-top: 8px;">
+<li><strong>Zapier</strong> - "कैच हुक" ट्रिगर का उपयोग करें</li>
+<li><strong>आईएफटीटीटी</strong> - वेबहुक ट्रिगर का उपयोग करें</li>
+<li><strong>n8n / बनाओ</strong> - वेबहुक नोड का उपयोग करें</li>
+<li><strong>कस्टम एपीआई</strong> - आपका अपना सर्वर एंडपॉइंट</li>
+</ul>
+<h3 style="margin-top: 16px;">बॉडी टेम्पलेट प्लेसहोल्डर</h3>
+<p>अपने JSON बॉडी टेम्पलेट में इन प्लेसहोल्डर्स का उपयोग करें:</p>
+<ul style="margin-top: 4px;">
+<li><code>{sender}</code> - फ़ोन नंबर या प्रेषक आईडी</li>
+<li><code>{contactName}</code> - संपर्क नाम (यदि अनुमति दी गई हो)</li>
+<li><code>{body}</code> - एसएमएस पाठ्य सामग्री</li>
+<li><code>{date}</code> - आईएसओ 8601 टाइमस्टैम्प</li>
+<li><code>{ruleName}</code> - सुमेलित नियम नाम</li>
+</ul>
+</div>
+</div>
+ फ़िल्टर नियम 
+<div class="section">
+<h2><span class="icon">🔍</span> फ़िल्टर नियम</h2>
+<div class="card">
+<h3>फ़िल्टर मिलान कैसे काम करता है</h3>
+<p>प्रत्येक फ़िल्टर नियम में एक है <strong>प्रेषक फ़िल्टर</strong> और <strong>सामग्री फ़िल्टर</strong>. दोनों वैकल्पिक हैं:</p>
+<ul style="margin-top: 8px;">
+<li><strong>दोनों खाली</strong> - आने वाले सभी एसएमएस से मेल खाता है</li>
+<li><strong>केवल प्रेषक फ़िल्टर</strong> - विशिष्ट प्रेषक के एसएमएस से मेल खाता है</li>
+<li><strong>केवल सामग्री फ़िल्टर</strong> - विशिष्ट पाठ वाले एसएमएस से मेल खाता है</li>
+<li><strong>दोनों सेट</strong> - दोनों स्थितियाँ मेल खानी चाहिए (और तर्क)</li>
+</ul>
+<div class="tip"><strong>💡टिप:</strong> मिलान केस-असंवेदनशील है और तुर्की वर्णों (İ/i, Ş/ş, Ğ/ğ) का समर्थन करता है। संपर्क अनुमति के साथ, आप संपर्क नाम से भी फ़िल्टर कर सकते हैं।</div>
+<h3 style="margin-top: 16px;">रेगेक्स फ़िल्टरिंग <span class="badge badge-pro">PRO</span></h3>
+<p>प्रो उपयोगकर्ता उन्नत पैटर्न मिलान के लिए रेगेक्स सक्षम कर सकते हैं। उदाहरण:</p>
+<ul style="margin-top: 4px;">
+<li><code>^\+90</code> - केवल तुर्की संख्याएँ</li>
+<li><code>OTP|verification|code</code> - ओटीपी संदेश</li>
+<li><code>\d{6}</code> - 6 अंकों वाले कोड वाले संदेश</li>
+</ul>
+</div>
+</div>
+ अनुमतियां 
+<div class="section">
+<h2><span class="icon">🔐</span> अनुमतियां</h2>
+<div class="card">
+<h3>आवश्यक अनुमतियाँ</h3>
+<ul>
+<li><strong>एसएमएस (एसएमएस प्राप्त करें)</strong> - आने वाले संदेशों को कैप्चर करने के लिए आवश्यक मुख्य कार्यक्षमता</li>
+<li><strong>सूचनाएं</strong> - अग्रेषण स्थिति सूचनाएं दिखाता है</li>
+<li><strong>बैटरी अनुकूलन</strong> - सिस्टम को पृष्ठभूमि सेवा को बंद करने से रोकता है</li>
+</ul>
+<h3 style="margin-top: 16px;">वैकल्पिक अनुमतियाँ</h3>
+<ul>
+<li><strong>संपर्क</strong> - फ़ोन नंबर के बजाय संपर्क नाम से फ़िल्टर करना सक्षम करता है</li>
+</ul>
+</div>
+</div>
+ बैटरी 
+<div class="section">
+<h2><span class="icon">🔋</span> बैटरी एवं पृष्ठभूमि सेवा</h2>
+<div class="card">
+<h3>एसएमएस फॉरवर्ड चालू रखना</h3>
+<p>बैटरी बचाने के लिए एंड्रॉइड आक्रामक तरीके से बैकग्राउंड ऐप्स को खत्म कर देता है। यह सुनिश्चित करने के लिए कि एसएमएस फ़ॉरवर्ड विश्वसनीय रूप से काम करता है:</p>
+<ol style="margin-top: 8px;">
+<li>जाओ <strong>सेटिंग्स → बैटरी अनुकूलन</strong> और एसएमएस फॉरवर्ड के लिए अनुकूलन अक्षम करें</li>
+<li>पर <strong>श्याओमी/एमआईयूआई</strong>: सेटिंग्स → ऐप्स → ऐप्स प्रबंधित करें → एसएमएस फॉरवर्ड → ऑटोस्टार्ट: चालू</li>
+<li>पर <strong>हुआवेई/ईएमयूआई</strong>: सेटिंग्स → बैटरी → ऐप लॉन्च → एसएमएस फॉरवर्ड → मैन्युअल रूप से प्रबंधित करें → सभी को सक्षम करें</li>
+<li>पर <strong>SAMSUNG</strong>: सेटिंग्स → बैटरी → बैटरी उपयोग → स्लीपिंग ऐप्स → एसएमएस फॉरवर्ड हटाएं</li>
+</ol>
+<div class="tip"><strong>⚠️ महत्वपूर्ण:</strong> डिवाइस के पुनरारंभ होने के बाद, ऐप का बूट रिसीवर सक्षम होने पर अग्रेषण सेवा को स्वचालित रूप से पुनरारंभ कर देगा।</div>
+</div>
+</div>
+ समस्या निवारण 
+<div class="section">
+<h2><span class="icon">🔧</span> समस्या निवारण</h2>
+<div class="card">
+<h3>एसएमएस अग्रेषित नहीं किया जा रहा है</h3>
+<ul>
+<li>जांचें कि अग्रेषण सेवा है <strong>पर</strong> (होम स्क्रीन पर टॉगल करें)</li>
+<li>सत्यापित करें कि एसएमएस की अनुमति दी गई है <strong>सेटिंग्स → अनुमतियाँ</strong></li>
+<li>सुनिश्चित करें कि ऐप के लिए बैटरी अनुकूलन अक्षम है</li>
+<li>जांचें कि आपका फ़िल्टर नियम है <strong>सक्रिय</strong> और उसके पास कम से कम एक अग्रेषण लक्ष्य है</li>
+<li>समीक्षा <strong>दोषमार्जन लॉग</strong> (सेटिंग्स → डीबग लॉग्स) विस्तृत त्रुटि जानकारी के लिए</li>
+</ul>
+</div>
+<div class="card">
+<h3>ईमेल भेजना विफल रहता है</h3>
+<ul>
+<li>अपने एसएमटीपी क्रेडेंशियल सत्यापित करें - एक का उपयोग करें <strong>ऐप पासवर्ड</strong>, आपका नियमित पासवर्ड नहीं</li>
+<li>जांचें कि एसएमटीपी होस्ट और पोर्ट सही हैं</li>
+<li>अग्रेषण लक्ष्य स्क्रीन से एक परीक्षण ईमेल भेजने का प्रयास करें</li>
+<li>जीमेल के लिए: सुनिश्चित करें कि "कम सुरक्षित ऐप्स" या ऐप पासवर्ड कॉन्फ़िगर किए गए हैं</li>
+</ul>
+</div>
+<div class="card">
+<h3>टेलीग्राम संदेश नहीं आ रहे हैं</h3>
+<ul>
+<li>सुनिश्चित करें कि आप <strong>शुरू कर दिया</strong> बॉट (भेजा/प्रारंभ या कोई संदेश)</li>
+<li>सत्यापित करें कि बॉट टोकन और चैट आईडी सही हैं</li>
+<li>टेलीग्राम फ़ॉरवर्डिंग लक्ष्य स्क्रीन पर परीक्षण बटन आज़माएँ</li>
+</ul>
+</div>
+</div>
+ मुफ़्त बनाम प्रो 
+<div class="section">
+<h2><span class="icon">⭐</span> मुफ़्त बनाम प्रो</h2>
+<div class="card">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<tr style="border-bottom: 1px solid var(--border);">
+<th style="text-align: left; padding: 8px;">विशेषता</th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-free">FREE</span></th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-pro">PRO</span></th>
+</tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">फ़िल्टर नियम</td><td style="text-align: center;">1</td><td style="text-align: center;">असीमित</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">ईमेल प्राप्तकर्ता</td><td style="text-align: center;">1</td><td style="text-align: center;">10</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">एसएमएस इतिहास</td><td style="text-align: center;">50</td><td style="text-align: center;">असीमित</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">ईमेल अग्रेषण</td><td style="text-align: center;">✅</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">टेलीग्राम</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">कलह</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">WEbhook</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">रेगेक्स फ़िल्टरिंग</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr><td style="padding: 8px;">विज्ञापन</td><td style="text-align: center;">हाँ</td><td style="text-align: center;">नहीं</td></tr>
+</table>
+</div>
+</div>
+</div><div class="lang-content" data-lang="ru" lang="ru">
+ Начиная 
+<div class="section">
+<h2><span class="icon">🚀</span> Начиная</h2>
+<div class="card">
+<h3>Как работает СМС переадресация</h3>
+<p>SMS Forward автоматически перехватывает входящие SMS-сообщения и пересылает их в настроенные вами пункты назначения — электронную почту, Telegram, Discord или пользовательские веб-перехватчики.</p>
+<ol style="margin-top: 12px;">
+<li>Установите хотя бы один <strong>Настройка электронной почты SMTP</strong></li>
+<li>Создайте <strong>цель пересылки</strong> (куда отправить)</li>
+<li>Создайте <strong>правило фильтра</strong> (какое СМС пересылать)</li>
+<li>Грант <strong>Разрешения на SMS и уведомления</strong></li>
+<li>Включите <strong>экспедиторская служба</strong></li>
+</ol>
+</div>
+</div>
+ Настройка SMTP 
+<div class="section">
+<h2><span class="icon">📧</span> Настройка электронной почты (SMTP)</h2>
+<div class="card">
+<h3>Настройка пароля приложения Gmail</h3>
+<ol class="steps">
+<li><strong>Включить двухфакторную аутентификацию</strong><span>Перейдите в «Аккаунт Google» → «Безопасность» → «Двухэтапная проверка» → «Включить».</span></li>
+<li><strong>Создать пароль приложения</strong><span>Учетная запись Google → Безопасность → Пароли приложений → Выберите «Почта» → Создать.</span></li>
+<li><strong>Скопируйте 16-значный пароль</strong><span>Это будет ваш пароль SMTP (НЕ ваш обычный пароль Gmail).</span></li>
+<li><strong>Настроить в СМС Переадресация</strong><span>SMTP-хост: <code>smtp.gmail.com</code> | Порт: <code>587</code> | SSL: Вкл.</span></li>
+</ol>
+<div class="tip"><strong>💡Совет:</strong> Для использования Outlook <code>smtp-mail.outlook.com</code> порт <code>587</code>. Для использования Yahoo <code>smtp.mail.yahoo.com</code> порт <code>465</code>.</div>
+</div>
+</div>
+ Телеграмма 
+<div class="section">
+<h2><span class="icon">✈️</span> Настройка Telegram-бота <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Создайте бота Telegram и получите идентификатор чата</h3>
+<ol class="steps">
+<li><strong>Откройте @BotFather в Telegram</strong><span>Искать <code>@BotFather</code> в Telegram и начните чат</span></li>
+<li><strong>Отправить /newbot</strong><span>Следуйте инструкциям, чтобы назвать своего бота и выбрать имя пользователя (должно заканчиваться на «бот»)</span></li>
+<li><strong>Скопируйте токен бота</strong><span>BotFather предоставит вам токен типа: <code>1234567890:ABCdef...</code></span></li>
+<li><strong>Запустите своего бота</strong><span>Найдите своего нового бота в Telegram и нажмите «Старт», затем отправьте любое сообщение.</span></li>
+<li><strong>Получите свой идентификатор чата</strong><span>Открыть в браузере: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></span></li>
+<li><strong>Найдите идентификатор чата</strong><span>Искать <code>"chat":{"id":XXXXXXX}</code> — этот номер и есть ваш идентификатор чата</span></li>
+</ol>
+</div>
+</div>
+ Раздор 
+<div class="section">
+<h2><span class="icon">🎮</span> Настройка вебхука Discord <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Создайте вебхук Discord</h3>
+<ol class="steps">
+<li><strong>Открыть настройки сервера</strong><span>Щелкните правой кнопкой мыши свой сервер → Настройки сервера → Интеграции.</span></li>
+<li><strong>Создать вебхук</strong><span>Нажмите «Вебхуки» → «Новый вебхук» → выберите целевой канал.</span></li>
+<li><strong>Скопировать URL-адрес вебхука</strong><span>Нажмите «Копировать URL-адрес вебхука» — это выглядит так <code>https://discord.com/api/webhooks/...</code></span></li>
+<li><strong>Вставить в СМС переслать</strong><span>Добавьте цель пересылки Discord и вставьте URL-адрес.</span></li>
+</ol>
+</div>
+</div>
+ Вебхук 
+<div class="section">
+<h2><span class="icon">🌐</span> Настройка вебхука <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Общий HTTP-вебхук</h3>
+<p>Веб-перехватчики отправляют запрос HTTP POST (или PUT/PATCH) на любой указанный вами URL-адрес всякий раз, когда SMS соответствует вашему правилу. Это идеально подходит для интеграции с:</p>
+<ul style="margin-top: 8px;">
+<li><strong>Запир</strong> — Используйте триггер «Catch Hook».</li>
+<li><strong>ИФТТТ</strong> — Используйте триггер вебхуков.</li>
+<li><strong>n8n / Сделать</strong> — Используйте узел Webhook</li>
+<li><strong>Пользовательский API</strong> — Ваша собственная конечная точка сервера</li>
+</ul>
+<h3 style="margin-top: 16px;">Заполнители шаблонов тела</h3>
+<p>Используйте эти заполнители в шаблоне тела JSON:</p>
+<ul style="margin-top: 4px;">
+<li><code>{sender}</code> — Номер телефона или идентификатор отправителя</li>
+<li><code>{contactName}</code> — Имя контактного лица (если получено разрешение)</li>
+<li><code>{body}</code> — Текстовое содержание СМС</li>
+<li><code>{date}</code> — Временная метка ISO 8601</li>
+<li><code>{ruleName}</code> — Соответствующее имя правила</li>
+</ul>
+</div>
+</div>
+ Правила фильтра 
+<div class="section">
+<h2><span class="icon">🔍</span> Правила фильтра</h2>
+<div class="card">
+<h3>Как работает сопоставление фильтров</h3>
+<p>Каждое правило фильтра имеет <strong>фильтр отправителя</strong> и <strong>фильтр контента</strong>. Оба являются необязательными:</p>
+<ul style="margin-top: 8px;">
+<li><strong>Оба пусты</strong> — соответствует ВСЕМ входящим SMS</li>
+<li><strong>Только фильтр отправителей</strong> — соответствует SMS от конкретного отправителя</li>
+<li><strong>Только фильтр контента</strong> — соответствует SMS, содержащему определенный текст</li>
+<li><strong>Оба набора</strong> — оба условия должны совпадать (логика И)</li>
+</ul>
+<div class="tip"><strong>💡Совет:</strong> Сопоставление не учитывает регистр и поддерживает турецкие символы (İ/i, Ş/ş, Ğ/ğ). Если у вас есть разрешение на контакты, вы также можете фильтровать по имени контакта.</div>
+<h3 style="margin-top: 16px;">Фильтрация регулярных выражений <span class="badge badge-pro">PRO</span></h3>
+<p>Пользователи Pro могут включить регулярное выражение для расширенного сопоставления с образцом. Примеры:</p>
+<ul style="margin-top: 4px;">
+<li><code>^\+90</code> — Только турецкие номера</li>
+<li><code>OTP|verification|code</code> — OTP-сообщения</li>
+<li><code>\d{6}</code> — Сообщения, содержащие 6-значные коды</li>
+</ul>
+</div>
+</div>
+ Разрешения 
+<div class="section">
+<h2><span class="icon">🔐</span> Разрешения</h2>
+<div class="card">
+<h3>Требуемые разрешения</h3>
+<ul>
+<li><strong>СМС (Получить СМС)</strong> — Основная функциональность, необходимая для захвата входящих сообщений.</li>
+<li><strong>Уведомления</strong> — Показывает уведомления о статусе пересылки</li>
+<li><strong>Оптимизация батареи</strong> — Не позволяет системе завершить работу фоновой службы.</li>
+</ul>
+<h3 style="margin-top: 16px;">Дополнительные разрешения</h3>
+<ul>
+<li><strong>Контакты</strong> — Включает фильтрацию по имени контакта вместо номера телефона.</li>
+</ul>
+</div>
+</div>
+ Батарея 
+<div class="section">
+<h2><span class="icon">🔋</span> Аккумулятор и фоновое обслуживание</h2>
+<div class="card">
+<h3>Поддержание пересылки SMS</h3>
+<p>Android агрессивно убивает фоновые приложения, чтобы сэкономить заряд батареи. Чтобы обеспечить надежную работу SMS Forward:</p>
+<ol style="margin-top: 8px;">
+<li>Перейти к <strong>Настройки → Оптимизация батареи</strong> и отключить оптимизацию для СМС Форвард</li>
+<li>На <strong>Сяоми/МИУИ</strong>: Настройки → Приложения → Управление приложениями → Пересылка SMS → Автозапуск: ВКЛ.</li>
+<li>На <strong>Huawei/EMUI</strong>: Настройки → Аккумулятор → Запуск приложения → Переадресация SMS → Управление вручную → Включить все</li>
+<li>На <strong>Samsung</strong>: Настройки → Аккумулятор → Использование аккумулятора → Спящие приложения → Удалить пересылку SMS.</li>
+</ol>
+<div class="tip"><strong>⚠️ Важно:</strong> После перезагрузки устройства загрузочный приемник приложения автоматически перезапустит службу переадресации, если она была включена.</div>
+</div>
+</div>
+ Поиск неисправностей 
+<div class="section">
+<h2><span class="icon">🔧</span> Поиск неисправностей</h2>
+<div class="card">
+<h3>СМС не пересылаются</h3>
+<ul>
+<li>Проверьте, работает ли служба переадресации. <strong>НА</strong> (переключиться на главный экран)</li>
+<li>Убедитесь, что разрешение на SMS предоставлено в <strong>Настройки → Разрешения</strong></li>
+<li>Убедитесь, что оптимизация заряда батареи отключена для приложения.</li>
+<li>Убедитесь, что ваше правило фильтра <strong>активный</strong> и имеет хотя бы одну цель пересылки</li>
+<li>Обзор <strong>Журналы отладки</strong> (Настройки → Журналы отладки) для получения подробной информации об ошибках.</li>
+</ul>
+</div>
+<div class="card">
+<h3>Отправка электронной почты не удалась</h3>
+<ul>
+<li>Проверьте свои учетные данные SMTP — используйте <strong>Пароль приложения</strong>, а не ваш обычный пароль</li>
+<li>Проверьте правильность хоста и порта SMTP</li>
+<li>Попробуйте отправить тестовое письмо с экрана цели пересылки.</li>
+<li>Для Gmail: убедитесь, что настроены «Менее безопасные приложения» или пароли приложений.</li>
+</ul>
+</div>
+<div class="card">
+<h3>Сообщения Telegram не приходят</h3>
+<ul>
+<li>Убедитесь, что вы <strong>началось</strong> бот (отправленный /start или любое сообщение)</li>
+<li>Убедитесь, что токен бота и идентификатор чата верны.</li>
+<li>Попробуйте кнопку тестирования на целевом экране переадресации Telegram.</li>
+</ul>
+</div>
+</div>
+ Бесплатное или профессиональное 
+<div class="section">
+<h2><span class="icon">⭐</span> Бесплатное или профессиональное</h2>
+<div class="card">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<tr style="border-bottom: 1px solid var(--border);">
+<th style="text-align: left; padding: 8px;">Особенность</th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-free">FREE</span></th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-pro">PRO</span></th>
+</tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Правила фильтрации</td><td style="text-align: center;">1</td><td style="text-align: center;">Безлимитный</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Получатели электронной почты</td><td style="text-align: center;">1</td><td style="text-align: center;">10</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">История СМС</td><td style="text-align: center;">50</td><td style="text-align: center;">Безлимитный</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Пересылка электронной почты</td><td style="text-align: center;">✅</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Телеграмма</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Раздор</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Вебхук</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Фильтрация регулярных выражений</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr><td style="padding: 8px;">Объявления</td><td style="text-align: center;">Да</td><td style="text-align: center;">Нет</td></tr>
+</table>
+</div>
+</div>
+</div><div class="lang-content" data-lang="id" lang="id">
+ Memulai 
+<div class="section">
+<h2><span class="icon">🚀</span> Memulai</h2>
+<div class="card">
+<h3>Cara Kerja Penerusan SMS</h3>
+<p>SMS Forward secara otomatis menangkap pesan SMS masuk dan meneruskannya ke tujuan yang Anda konfigurasi — Email, Telegram, Discord, atau Webhook khusus.</p>
+<ol style="margin-top: 12px;">
+<li>Siapkan setidaknya satu <strong>Konfigurasi email SMTP</strong></li>
+<li>Buat sebuah <strong>sasaran penerusan</strong> (ke mana harus mengirim)</li>
+<li>Buat sebuah <strong>aturan penyaring</strong> (SMS mana yang akan diteruskan)</li>
+<li>Menganugerahkan <strong>Izin SMS dan notifikasi</strong></li>
+<li>Aktifkan <strong>layanan penerusan</strong></li>
+</ol>
+</div>
+</div>
+ Pengaturan SMTP 
+<div class="section">
+<h2><span class="icon">📧</span> Pengaturan Email (SMTP).</h2>
+<div class="card">
+<h3>Pengaturan Kata Sandi Aplikasi Gmail</h3>
+<ol class="steps">
+<li><strong>Aktifkan Otentikasi 2 Faktor</strong><span>Buka Akun Google → Keamanan → Verifikasi 2 Langkah → Nyalakan</span></li>
+<li><strong>Hasilkan Kata Sandi Aplikasi</strong><span>Akun Google → Keamanan → Kata Sandi Aplikasi → Pilih "Mail" → Hasilkan</span></li>
+<li><strong>Salin kata sandi 16 digit</strong><span>Ini akan menjadi kata sandi SMTP Anda (BUKAN kata sandi Gmail biasa Anda)</span></li>
+<li><strong>Konfigurasikan di SMS Forward</strong><span>Tuan Rumah SMTP: <code>smtp.gmail.com</code> | Pelabuhan: <code>587</code> | SSL: Aktif</span></li>
+</ol>
+<div class="tip"><strong>💡 Kiat:</strong> Untuk penggunaan Outlook <code>smtp-mail.outlook.com</code> pelabuhan <code>587</code>. Untuk penggunaan Yahoo <code>smtp.mail.yahoo.com</code> pelabuhan <code>465</code>.</div>
+</div>
+</div>
+ Telegram 
+<div class="section">
+<h2><span class="icon">✈️</span> Pengaturan Bot Telegram <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Buat Bot Telegram &amp; Dapatkan ID Obrolan</h3>
+<ol class="steps">
+<li><strong>Buka @Botfather di Telegram</strong><span>Cari <code>@BotFather</code> di Telegram dan mulai obrolan</span></li>
+<li><strong>Kirim /newbot</strong><span>Ikuti petunjuk untuk memberi nama bot Anda dan pilih nama pengguna (harus diakhiri dengan "bot")</span></li>
+<li><strong>Salin Token Bot</strong><span>BotAyah akan memberi Anda token seperti: <code>1234567890:ABCdef...</code></span></li>
+<li><strong>Mulai bot Anda</strong><span>Temukan bot baru Anda di Telegram dan tekan "Mulai", lalu kirim pesan apa pun</span></li>
+<li><strong>Dapatkan ID Obrolan Anda</strong><span>Buka di peramban: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></span></li>
+<li><strong>Temukan ID obrolan</strong><span>Mencari <code>"chat":{"id":XXXXXXX}</code> — nomor itu adalah ID Obrolan Anda</span></li>
+</ol>
+</div>
+</div>
+ Perselisihan 
+<div class="section">
+<h2><span class="icon">🎮</span> Pengaturan Webhook Perselisihan <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Buat Webhook Perselisihan</h3>
+<ol class="steps">
+<li><strong>Buka Pengaturan Server</strong><span>Klik kanan server Anda → Pengaturan Server → Integrasi</span></li>
+<li><strong>Buat Webhook</strong><span>Klik "Webhook" → "Webhook Baru" → Pilih saluran target</span></li>
+<li><strong>Salin URL Webhook</strong><span>Klik "Salin URL Webhook" — sepertinya <code>https://discord.com/api/webhooks/...</code></span></li>
+<li><strong>Tempel di SMS Teruskan</strong><span>Tambahkan target penerusan Discord dan tempelkan URL-nya</span></li>
+</ol>
+</div>
+</div>
+ kait web 
+<div class="section">
+<h2><span class="icon">🌐</span> Penyiapan webhook <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>Webhook HTTP Generik</h3>
+<p>Webhook mengirimkan permintaan HTTP POST (atau PUT/PATCH) ke URL mana pun yang Anda tentukan setiap kali ada SMS yang cocok dengan aturan Anda. Ini sempurna untuk diintegrasikan dengan:</p>
+<ul style="margin-top: 8px;">
+<li><strong>Zapier</strong> — Gunakan pemicu "Tangkap Kail".</li>
+<li><strong>IFTTT</strong> — Gunakan pemicu Webhook</li>
+<li><strong>n8n / Buat</strong> — Gunakan simpul Webhook</li>
+<li><strong>API khusus</strong> — Titik akhir server Anda sendiri</li>
+</ul>
+<h3 style="margin-top: 16px;">Placeholder Templat Tubuh</h3>
+<p>Gunakan placeholder ini di templat isi JSON Anda:</p>
+<ul style="margin-top: 4px;">
+<li><code>{sender}</code> — Nomor telepon atau ID pengirim</li>
+<li><code>{contactName}</code> — Nama kontak (jika izin diberikan)</li>
+<li><code>{body}</code> — Konten teks SMS</li>
+<li><code>{date}</code> — Stempel waktu ISO 8601</li>
+<li><code>{ruleName}</code> — Nama aturan yang cocok</li>
+</ul>
+</div>
+</div>
+ Aturan Penyaringan 
+<div class="section">
+<h2><span class="icon">🔍</span> Aturan Penyaringan</h2>
+<div class="card">
+<h3>Cara Kerja Pencocokan Filter</h3>
+<p>Setiap aturan filter memiliki a <strong>filter pengirim</strong> Dan <strong>penyaring konten</strong>. Keduanya opsional:</p>
+<ul style="margin-top: 8px;">
+<li><strong>Keduanya kosong</strong> — cocok dengan SEMUA SMS yang masuk</li>
+<li><strong>Filter pengirim saja</strong> — mencocokkan SMS dari pengirim tertentu</li>
+<li><strong>Filter konten saja</strong> — mencocokkan SMS yang berisi teks tertentu</li>
+<li><strong>Keduanya siap</strong> — kedua kondisi harus cocok (DAN logika)</li>
+</ul>
+<div class="tip"><strong>💡 Kiat:</strong> Pencocokan tidak peka huruf besar-kecil dan mendukung karakter Turki (İ/i, Ş/ş, Ğ/ğ). Dengan izin kontak, Anda juga dapat memfilter berdasarkan nama kontak.</div>
+<h3 style="margin-top: 16px;">Penyaringan Regex <span class="badge badge-pro">PRO</span></h3>
+<p>Pengguna pro dapat mengaktifkan regex untuk pencocokan pola tingkat lanjut. Contoh:</p>
+<ul style="margin-top: 4px;">
+<li><code>^\+90</code> — Hanya nomor Turki</li>
+<li><code>OTP|verification|code</code> — Pesan OTP</li>
+<li><code>\d{6}</code> — Pesan berisi kode 6 digit</li>
+</ul>
+</div>
+</div>
+ Izin 
+<div class="section">
+<h2><span class="icon">🔐</span> Izin</h2>
+<div class="card">
+<h3>Izin yang Diperlukan</h3>
+<ul>
+<li><strong>SMS (Terima SMS)</strong> — Fungsi inti, diperlukan untuk menangkap pesan masuk</li>
+<li><strong>Pemberitahuan</strong> — Menampilkan pemberitahuan status penerusan</li>
+<li><strong>Optimasi Baterai</strong> — Mencegah sistem mematikan layanan latar belakang</li>
+</ul>
+<h3 style="margin-top: 16px;">Izin Opsional</h3>
+<ul>
+<li><strong>Kontak</strong> — Mengaktifkan pemfilteran berdasarkan nama kontak, bukan nomor telepon</li>
+</ul>
+</div>
+</div>
+ Baterai 
+<div class="section">
+<h2><span class="icon">🔋</span> Baterai &amp; Layanan Latar Belakang</h2>
+<div class="card">
+<h3>Menjaga SMS Terus Berjalan</h3>
+<p>Android secara agresif mematikan aplikasi latar belakang untuk menghemat baterai. Untuk memastikan SMS Forward berfungsi dengan andal:</p>
+<ol style="margin-top: 8px;">
+<li>Pergi ke <strong>Pengaturan → Optimasi Baterai</strong> dan nonaktifkan optimasi untuk SMS Forward</li>
+<li>Pada <strong>Xiaomi/MIUI</strong>: Pengaturan → Aplikasi → Kelola aplikasi → Teruskan SMS → Mulai otomatis: AKTIF</li>
+<li>Pada <strong>Huawei/EMUI</strong>: Pengaturan → Baterai → Peluncuran aplikasi → Penerusan SMS → Kelola secara manual → Aktifkan semua</li>
+<li>Pada <strong>Samsung</strong>: Pengaturan → Baterai → Penggunaan baterai → Aplikasi tidur → Hapus SMS Forward</li>
+</ol>
+<div class="tip"><strong>⚠️ Penting:</strong> Setelah perangkat dimulai ulang, penerima boot aplikasi akan secara otomatis memulai ulang layanan penerusan jika diaktifkan.</div>
+</div>
+</div>
+ Pemecahan masalah 
+<div class="section">
+<h2><span class="icon">🔧</span> Pemecahan masalah</h2>
+<div class="card">
+<h3>SMS tidak diteruskan</h3>
+<ul>
+<li>Periksa apakah layanan penerusannya aktif <strong>PADA</strong> (beralih di layar beranda)</li>
+<li>Verifikasi izin SMS diberikan di <strong>Pengaturan → Izin</strong></li>
+<li>Pastikan pengoptimalan baterai dinonaktifkan untuk aplikasi</li>
+<li>Periksa apakah aturan filter Anda benar <strong>aktif</strong> dan memiliki setidaknya satu target penerusan</li>
+<li>Tinjauan <strong>Log Debug</strong> (Pengaturan → Log Debug) untuk info kesalahan mendetail</li>
+</ul>
+</div>
+<div class="card">
+<h3>Pengiriman email gagal</h3>
+<ul>
+<li>Verifikasi kredensial SMTP Anda — gunakan <strong>Kata Sandi Aplikasi</strong>, bukan kata sandi biasa Anda</li>
+<li>Periksa host dan port SMTP sudah benar</li>
+<li>Coba kirim email percobaan dari layar target penerusan</li>
+<li>Untuk Gmail: pastikan "Aplikasi yang kurang aman" atau Kata Sandi Aplikasi dikonfigurasi</li>
+</ul>
+</div>
+<div class="card">
+<h3>Pesan Telegram tidak sampai</h3>
+<ul>
+<li>Pastikan kamu <strong>dimulai</strong> bot (dikirim/mulai atau pesan apa pun)</li>
+<li>Verifikasi Token Bot dan ID Obrolan sudah benar</li>
+<li>Coba tombol tes pada layar target penerusan Telegram</li>
+</ul>
+</div>
+</div>
+ Gratis vs Pro 
+<div class="section">
+<h2><span class="icon">⭐</span> Gratis vs Pro</h2>
+<div class="card">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<tr style="border-bottom: 1px solid var(--border);">
+<th style="text-align: left; padding: 8px;">Fitur</th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-free">FREE</span></th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-pro">PRO</span></th>
+</tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Filter aturan</td><td style="text-align: center;">1</td><td style="text-align: center;">Tak terbatas</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Penerima email</td><td style="text-align: center;">1</td><td style="text-align: center;">10</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">riwayat SMS</td><td style="text-align: center;">50</td><td style="text-align: center;">Tak terbatas</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Penerusan email</td><td style="text-align: center;">✅</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Telegram</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Perselisihan</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">kait web</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Pemfilteran ekspresi reguler</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr><td style="padding: 8px;">Iklan</td><td style="text-align: center;">Ya</td><td style="text-align: center;">TIDAK</td></tr>
+</table>
+</div>
+</div>
+</div><div class="lang-content" data-lang="bn" lang="bn">
+ শুরু করা 
+<div class="section">
+<h2><span class="icon">🚀</span> শুরু করা</h2>
+<div class="card">
+<h3>কিভাবে SMS ফরওয়ার্ড কাজ করে</h3>
+<p>এসএমএস ফরওয়ার্ড স্বয়ংক্রিয়ভাবে ইনকামিং এসএমএস বার্তাগুলি ক্যাপচার করে এবং আপনার কনফিগার করা গন্তব্যে সেগুলিকে ফরোয়ার্ড করে — ইমেল, টেলিগ্রাম, ডিসকর্ড, বা কাস্টম ওয়েবহুক।</p>
+<ol style="margin-top: 12px;">
+<li>অন্তত একটি সেট আপ করুন <strong>SMTP ইমেল কনফিগারেশন</strong></li>
+<li>সৃষ্টি a <strong>ফরোয়ার্ডিং লক্ষ্য</strong> (কোথায় পাঠাতে হবে)</li>
+<li>সৃষ্টি a <strong>ফিল্টার নিয়ম</strong> (যে এসএমএস ফরওয়ার্ড করতে হবে)</li>
+<li>অনুদান <strong>এসএমএস এবং বিজ্ঞপ্তি অনুমতি</strong></li>
+<li>সক্রিয় করুন <strong>ফরওয়ার্ডিং পরিষেবা</strong></li>
+</ol>
+</div>
+</div>
+ SMTP সেটআপ 
+<div class="section">
+<h2><span class="icon">📧</span> ইমেল (SMTP) সেটআপ</h2>
+<div class="card">
+<h3>জিমেইল অ্যাপ পাসওয়ার্ড সেটআপ</h3>
+<ol class="steps">
+<li><strong>2-ফ্যাক্টর প্রমাণীকরণ সক্ষম করুন</strong><span>Google অ্যাকাউন্টে যান → নিরাপত্তা → 2-পদক্ষেপ যাচাইকরণ → চালু করুন</span></li>
+<li><strong>অ্যাপ পাসওয়ার্ড তৈরি করুন</strong><span>Google অ্যাকাউন্ট → নিরাপত্তা → অ্যাপ পাসওয়ার্ড → "মেল" নির্বাচন করুন → জেনারেট করুন</span></li>
+<li><strong>16-সংখ্যার পাসওয়ার্ড কপি করুন</strong><span>এটি আপনার SMTP পাসওয়ার্ড হবে (আপনার নিয়মিত জিমেইল পাসওয়ার্ড নয়)</span></li>
+<li><strong>এসএমএস ফরওয়ার্ডে কনফিগার করুন</strong><span>SMTP হোস্ট: <code>smtp.gmail.com</code> | বন্দর: <code>587</code> | SSL: চালু</span></li>
+</ol>
+<div class="tip"><strong>💡 পরামর্শ:</strong> আউটলুক ব্যবহারের জন্য <code>smtp-mail.outlook.com</code> বন্দর <code>587</code>. ইয়াহু ব্যবহারের জন্য <code>smtp.mail.yahoo.com</code> বন্দর <code>465</code>.</div>
+</div>
+</div>
+ টেলিগ্রাম 
+<div class="section">
+<h2><span class="icon">✈️</span> টেলিগ্রাম বট সেটআপ <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>একটি টেলিগ্রাম বট তৈরি করুন এবং চ্যাট আইডি পান</h3>
+<ol class="steps">
+<li><strong>টেলিগ্রামে @BotFather খুলুন</strong><span>জন্য অনুসন্ধান করুন <code>@BotFather</code> টেলিগ্রামে এবং একটি চ্যাট শুরু করুন</span></li>
+<li><strong>/নতুন বট পাঠান</strong><span>আপনার বটের নাম দেওয়ার জন্য প্রম্পটগুলি অনুসরণ করুন এবং একটি ব্যবহারকারীর নাম চয়ন করুন ("বট" দিয়ে শেষ হতে হবে)</span></li>
+<li><strong>বট টোকেন কপি করুন</strong><span>BotFather আপনাকে একটি টোকেন দেবে যেমন: <code>1234567890:ABCdef...</code></span></li>
+<li><strong>আপনার বট শুরু করুন</strong><span>টেলিগ্রামে আপনার নতুন বট খুঁজুন এবং "স্টার্ট" টিপুন, তারপর যেকোনো বার্তা পাঠান</span></li>
+<li><strong>আপনার চ্যাট আইডি পান</strong><span>ব্রাউজারে খুলুন: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></span></li>
+<li><strong>চ্যাট আইডি খুঁজুন</strong><span>সন্ধান করুন <code>"chat":{"id":XXXXXXX}</code> - সেই নম্বরটি আপনার চ্যাট আইডি</span></li>
+</ol>
+</div>
+</div>
+ বিরোধ 
+<div class="section">
+<h2><span class="icon">🎮</span> ডিসকর্ড ওয়েবহুক সেটআপ <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>একটি ডিসকর্ড ওয়েবহুক তৈরি করুন</h3>
+<ol class="steps">
+<li><strong>সার্ভার সেটিংস খুলুন</strong><span>আপনার সার্ভার → সার্ভার সেটিংস → ইন্টিগ্রেশনে ডান-ক্লিক করুন</span></li>
+<li><strong>ওয়েবহুক তৈরি করুন</strong><span>"ওয়েবহুকস" → "নতুন ওয়েবহুক" এ ক্লিক করুন → টার্গেট চ্যানেল বেছে নিন</span></li>
+<li><strong>ওয়েবহুক ইউআরএল কপি করুন</strong><span>"ওয়েবহুক ইউআরএল অনুলিপি করুন"-এ ক্লিক করুন - এটি এমন দেখাচ্ছে <code>https://discord.com/api/webhooks/...</code></span></li>
+<li><strong>এসএমএস ফরওয়ার্ডে পেস্ট করুন</strong><span>একটি ডিসকর্ড ফরওয়ার্ডিং টার্গেট যোগ করুন এবং URL পেস্ট করুন</span></li>
+</ol>
+</div>
+</div>
+ ওয়েবহুক 
+<div class="section">
+<h2><span class="icon">🌐</span> ওয়েবহুক সেটআপ <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>জেনেরিক HTTP ওয়েবহুক</h3>
+<p>ওয়েবহুক আপনার নিয়মের সাথে মেলে যখনই কোনো SMS আপনার নির্দিষ্ট করা কোনো URL-এ একটি HTTP POST (বা PUT/PATCH) অনুরোধ পাঠায়। এটি এর সাথে সংহত করার জন্য উপযুক্ত:</p>
+<ul style="margin-top: 8px;">
+<li><strong>জাপিয়ার</strong> - একটি "ক্যাচ হুক" ট্রিগার ব্যবহার করুন</li>
+<li><strong>আইএফটিটিটি</strong> - একটি ওয়েবহুক ট্রিগার ব্যবহার করুন</li>
+<li><strong>n8n/ মেক</strong> - একটি ওয়েবহুক নোড ব্যবহার করুন</li>
+<li><strong>কাস্টম API</strong> - আপনার নিজস্ব সার্ভার শেষ পয়েন্ট</li>
+</ul>
+<h3 style="margin-top: 16px;">বডি টেমপ্লেট প্লেসহোল্ডার</h3>
+<p>আপনার JSON বডি টেমপ্লেটে এই স্থানধারকগুলি ব্যবহার করুন:</p>
+<ul style="margin-top: 4px;">
+<li><code>{sender}</code> - ফোন নম্বর বা প্রেরকের আইডি</li>
+<li><code>{contactName}</code> - যোগাযোগের নাম (যদি অনুমতি দেওয়া হয়)</li>
+<li><code>{body}</code> — SMS পাঠ্য বিষয়বস্তু</li>
+<li><code>{date}</code> — ISO 8601 টাইমস্ট্যাম্প</li>
+<li><code>{ruleName}</code> - মিলে যাওয়া নিয়মের নাম</li>
+</ul>
+</div>
+</div>
+ ফিল্টার নিয়ম 
+<div class="section">
+<h2><span class="icon">🔍</span> ফিল্টার নিয়ম</h2>
+<div class="card">
+<h3>ফিল্টার ম্যাচিং কিভাবে কাজ করে</h3>
+<p>প্রতিটি ফিল্টার নিয়ম আছে a <strong>প্রেরক ফিল্টার</strong> এবং <strong>বিষয়বস্তু ফিল্টার</strong>. উভয়ই ঐচ্ছিক:</p>
+<ul style="margin-top: 8px;">
+<li><strong>দুটোই খালি</strong> - সমস্ত আগত এসএমএস মেলে</li>
+<li><strong>শুধুমাত্র প্রেরক ফিল্টার</strong> - নির্দিষ্ট প্রেরকের কাছ থেকে এসএমএস মেলে</li>
+<li><strong>শুধুমাত্র কন্টেন্ট ফিল্টার</strong> - নির্দিষ্ট টেক্সট ধারণকারী SMS মেলে</li>
+<li><strong>উভয় সেট</strong> — উভয় শর্ত অবশ্যই মিলবে (এবং যুক্তি)</li>
+</ul>
+<div class="tip"><strong>💡 পরামর্শ:</strong> ম্যাচিং কেস-সংবেদনশীল এবং তুর্কি অক্ষর সমর্থন করে (İ/i, Ş/ş, Ğ/ğ)। পরিচিতি অনুমতি সহ, আপনি পরিচিতির নাম দ্বারা ফিল্টার করতে পারেন।</div>
+<h3 style="margin-top: 16px;">Regex ফিল্টারিং <span class="badge badge-pro">PRO</span></h3>
+<p>প্রো ব্যবহারকারীরা উন্নত প্যাটার্ন মিলের জন্য regex সক্ষম করতে পারেন। উদাহরণ:</p>
+<ul style="margin-top: 4px;">
+<li><code>^\+90</code> - শুধুমাত্র তুর্কি সংখ্যা</li>
+<li><code>OTP|verification|code</code> - ওটিপি বার্তা</li>
+<li><code>\d{6}</code> - 6-সংখ্যার কোড ধারণকারী বার্তা</li>
+</ul>
+</div>
+</div>
+ অনুমতি 
+<div class="section">
+<h2><span class="icon">🔐</span> অনুমতি</h2>
+<div class="card">
+<h3>প্রয়োজনীয় অনুমতি</h3>
+<ul>
+<li><strong>এসএমএস (এসএমএস পান)</strong> - মূল কার্যকারিতা, আগত বার্তাগুলি ক্যাপচার করার জন্য প্রয়োজনীয়</li>
+<li><strong>বিজ্ঞপ্তি</strong> - ফরওয়ার্ডিং স্ট্যাটাস বিজ্ঞপ্তি দেখায়</li>
+<li><strong>ব্যাটারি অপ্টিমাইজেশান</strong> — ব্যাকগ্রাউন্ড পরিষেবাকে হত্যা করা থেকে সিস্টেমকে বাধা দেয়</li>
+</ul>
+<h3 style="margin-top: 16px;">ঐচ্ছিক অনুমতি</h3>
+<ul>
+<li><strong>পরিচিতি</strong> — ফোন নম্বরের পরিবর্তে পরিচিতির নাম দ্বারা ফিল্টারিং সক্ষম করে৷</li>
+</ul>
+</div>
+</div>
+ ব্যাটারি 
+<div class="section">
+<h2><span class="icon">🔋</span> ব্যাটারি এবং পটভূমি পরিষেবা</h2>
+<div class="card">
+<h3>এসএমএস ফরওয়ার্ড চালু রাখা</h3>
+<p>ব্যাটারি বাঁচাতে অ্যান্ড্রয়েড আক্রমনাত্মকভাবে ব্যাকগ্রাউন্ড অ্যাপসকে মেরে ফেলে। নিশ্চিত করতে এসএমএস ফরওয়ার্ড নির্ভরযোগ্যভাবে কাজ করে:</p>
+<ol style="margin-top: 8px;">
+<li>যান <strong>সেটিংস → ব্যাটারি অপ্টিমাইজেশান৷</strong> এবং এসএমএস ফরওয়ার্ডের জন্য অপ্টিমাইজেশন অক্ষম করুন</li>
+<li>চালু <strong>Xiaomi/MIUI</strong>: সেটিংস → অ্যাপস → অ্যাপ পরিচালনা করুন → এসএমএস ফরওয়ার্ড → অটোস্টার্ট: চালু</li>
+<li>চালু <strong>Huawei/EMUI</strong>: সেটিংস → ব্যাটারি → অ্যাপ লঞ্চ → এসএমএস ফরওয়ার্ড → ম্যানুয়ালি পরিচালনা করুন → সমস্ত সক্ষম করুন</li>
+<li>চালু <strong>স্যামসাং</strong>: সেটিংস → ব্যাটারি → ব্যাটারি ব্যবহার → স্লিপিং অ্যাপস → এসএমএস ফরওয়ার্ড সরান</li>
+</ol>
+<div class="tip"><strong>⚠️ গুরুত্বপূর্ণ:</strong> একটি ডিভাইস পুনঃসূচনা করার পরে, অ্যাপটির বুট রিসিভার স্বয়ংক্রিয়ভাবে ফরওয়ার্ডিং পরিষেবাটি সক্ষম হলে পুনরায় চালু করবে।</div>
+</div>
+</div>
+ সমস্যা সমাধান 
+<div class="section">
+<h2><span class="icon">🔧</span> সমস্যা সমাধান</h2>
+<div class="card">
+<h3>এসএমএস ফরওয়ার্ড করা হচ্ছে না</h3>
+<ul>
+<li>ফরোয়ার্ডিং পরিষেবাটি পরীক্ষা করুন <strong>চালু</strong> (হোম স্ক্রিনে টগল করুন)</li>
+<li>যাচাই করুন এসএমএস অনুমতি দেওয়া হয়েছে <strong>সেটিংস → অনুমতি</strong></li>
+<li>অ্যাপের জন্য ব্যাটারি অপ্টিমাইজেশন অক্ষম করা আছে তা নিশ্চিত করুন</li>
+<li>আপনার ফিল্টার নিয়ম চেক করুন <strong>সক্রিয়</strong> এবং অন্তত একটি ফরওয়ার্ডিং লক্ষ্য আছে</li>
+<li>পর্যালোচনা <strong>ডিবাগ লগ</strong> বিশদ ত্রুটির তথ্যের জন্য (সেটিংস → ডিবাগ লগ)</li>
+</ul>
+</div>
+<div class="card">
+<h3>ইমেল পাঠানো ব্যর্থ হয়েছে</h3>
+<ul>
+<li>আপনার SMTP শংসাপত্র যাচাই করুন — একটি ব্যবহার করুন <strong>অ্যাপ পাসওয়ার্ড</strong>, আপনার নিয়মিত পাসওয়ার্ড নয়</li>
+<li>চেক করুন SMTP হোস্ট এবং পোর্ট সঠিক</li>
+<li>ফরওয়ার্ডিং টার্গেট স্ক্রীন থেকে একটি পরীক্ষার ইমেল পাঠানোর চেষ্টা করুন</li>
+<li>Gmail এর জন্য: নিশ্চিত করুন "কম সুরক্ষিত অ্যাপ" বা অ্যাপ পাসওয়ার্ড কনফিগার করা আছে</li>
+</ul>
+</div>
+<div class="card">
+<h3>টেলিগ্রাম বার্তা আসছে না</h3>
+<ul>
+<li>আপনি নিশ্চিত করুন <strong>শুরু</strong> বট (প্রেরিত/শুরু বা কোনো বার্তা)</li>
+<li>বট টোকেন এবং চ্যাট আইডি সঠিক কিনা তা যাচাই করুন</li>
+<li>টেলিগ্রাম ফরওয়ার্ডিং টার্গেট স্ক্রিনে পরীক্ষা বোতামটি ব্যবহার করে দেখুন</li>
+</ul>
+</div>
+</div>
+ ফ্রি বনাম প্রো 
+<div class="section">
+<h2><span class="icon">⭐</span> ফ্রি বনাম প্রো</h2>
+<div class="card">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<tr style="border-bottom: 1px solid var(--border);">
+<th style="text-align: left; padding: 8px;">বৈশিষ্ট্য</th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-free">FREE</span></th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-pro">PRO</span></th>
+</tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">ফিল্টার নিয়ম</td><td style="text-align: center;">1</td><td style="text-align: center;">আনলিমিটেড</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">ইমেল প্রাপক</td><td style="text-align: center;">1</td><td style="text-align: center;">10</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">এসএমএস ইতিহাস</td><td style="text-align: center;">50</td><td style="text-align: center;">আনলিমিটেড</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">ইমেল ফরওয়ার্ডিং</td><td style="text-align: center;">✅</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">টেলিগ্রাম</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">বিরোধ</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">ওয়েবহুক</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">Regex ফিল্টারিং</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr><td style="padding: 8px;">বিজ্ঞাপন</td><td style="text-align: center;">হ্যাঁ</td><td style="text-align: center;">না</td></tr>
+</table>
+</div>
+</div>
+</div><div class="lang-content" data-lang="ur" dir="rtl" lang="ur">
+ شروع کرنا 
+<div class="section">
+<h2><span class="icon">🚀</span> شروع کرنا</h2>
+<div class="card">
+<h3>ایس ایم ایس فارورڈ کیسے کام کرتا ہے۔</h3>
+<p>ایس ایم ایس فارورڈ خود بخود آنے والے ایس ایم ایس پیغامات کو کیپچر کرتا ہے اور انہیں آپ کی ترتیب شدہ منزلوں — ای میل، ٹیلیگرام، ڈسکارڈ، یا حسب ضرورت ویب ہکس پر بھیج دیتا ہے۔</p>
+<ol style="margin-top: 12px;">
+<li>کم از کم ایک سیٹ اپ کریں۔ <strong>SMTP ای میل کنفیگریشن</strong></li>
+<li>بنائیں a <strong>آگے بڑھانے کا ہدف</strong> (کہاں بھیجنا ہے)</li>
+<li>بنائیں a <strong>فلٹر اصول</strong> (جو ایس ایم ایس فارورڈ کرنا ہے)</li>
+<li>گرانٹ <strong>ایس ایم ایس اور اطلاع کی اجازت</strong></li>
+<li>کو فعال کریں۔ <strong>فارورڈنگ سروس</strong></li>
+</ol>
+</div>
+</div>
+ SMTP سیٹ اپ 
+<div class="section">
+<h2><span class="icon">📧</span> ای میل (SMTP) سیٹ اپ</h2>
+<div class="card">
+<h3>Gmail ایپ پاس ورڈ سیٹ اپ</h3>
+<ol class="steps">
+<li><strong>2 فیکٹر کی توثیق کو فعال کریں۔</strong><span>گوگل اکاؤنٹ پر جائیں → سیکیورٹی → 2 قدمی توثیق → آن کریں۔</span></li>
+<li><strong>ایپ پاس ورڈ بنائیں</strong><span>گوگل اکاؤنٹ → سیکیورٹی → ایپ پاس ورڈز → "میل" کو منتخب کریں → تخلیق کریں۔</span></li>
+<li><strong>16 ہندسوں کا پاس ورڈ کاپی کریں۔</strong><span>یہ آپ کا SMTP پاس ورڈ ہوگا (آپ کا باقاعدہ جی میل پاس ورڈ نہیں)</span></li>
+<li><strong>ایس ایم ایس فارورڈ میں ترتیب دیں۔</strong><span>SMTP میزبان: <code>smtp.gmail.com</code> | پورٹ: <code>587</code> | SSL: آن</span></li>
+</ol>
+<div class="tip"><strong>💡 مشورہ:</strong> آؤٹ لک استعمال کے لیے <code>smtp-mail.outlook.com</code> بندرگاہ <code>587</code>. یاہو کے استعمال کے لیے <code>smtp.mail.yahoo.com</code> بندرگاہ <code>465</code>.</div>
+</div>
+</div>
+ ٹیلی گرام 
+<div class="section">
+<h2><span class="icon">✈️</span> ٹیلیگرام بوٹ سیٹ اپ <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>ٹیلیگرام بوٹ بنائیں اور چیٹ آئی ڈی حاصل کریں۔</h3>
+<ol class="steps">
+<li><strong>ٹیلیگرام پر @BotFather کھولیں۔</strong><span>تلاش کریں۔ <code>@BotFather</code> ٹیلیگرام میں اور چیٹ شروع کریں۔</span></li>
+<li><strong>بھیجیں /نئے بوٹ</strong><span>اپنے بوٹ کو نام دینے کے اشارے پر عمل کریں اور صارف نام کا انتخاب کریں ("بوٹ" کے ساتھ ختم ہونا چاہیے)</span></li>
+<li><strong>بوٹ ٹوکن کاپی کریں۔</strong><span>BotFather آپ کو ایک ٹوکن دے گا جیسے: <code>1234567890:ABCdef...</code></span></li>
+<li><strong>اپنا بوٹ شروع کریں۔</strong><span>ٹیلیگرام میں اپنا نیا بوٹ تلاش کریں اور "اسٹارٹ" دبائیں، پھر کوئی بھی پیغام بھیجیں۔</span></li>
+<li><strong>اپنی چیٹ آئی ڈی حاصل کریں۔</strong><span>براؤزر میں کھولیں: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></span></li>
+<li><strong>چیٹ آئی ڈی تلاش کریں۔</strong><span>تلاش کریں۔ <code>"chat":{"id":XXXXXXX}</code> - وہ نمبر آپ کی چیٹ آئی ڈی ہے۔</span></li>
+</ol>
+</div>
+</div>
+ اختلاف 
+<div class="section">
+<h2><span class="icon">🎮</span> ڈسکارڈ ویب ہک سیٹ اپ <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>ڈسکارڈ ویب ہک بنائیں</h3>
+<ol class="steps">
+<li><strong>سرور کی ترتیبات کھولیں۔</strong><span>اپنے سرور پر دائیں کلک کریں → سرور کی ترتیبات → انٹیگریشنز</span></li>
+<li><strong>ویب ہک بنائیں</strong><span>"Webhooks" → "New Webhook" → ٹارگٹ چینل کا انتخاب کریں۔</span></li>
+<li><strong>ویب ہک یو آر ایل کاپی کریں۔</strong><span>"Copy Webhook URL" پر کلک کریں — ایسا لگتا ہے۔ <code>https://discord.com/api/webhooks/...</code></span></li>
+<li><strong>ایس ایم ایس فارورڈ میں چسپاں کریں۔</strong><span>ڈسکارڈ فارورڈنگ ٹارگٹ شامل کریں اور یو آر ایل پیسٹ کریں۔</span></li>
+</ol>
+</div>
+</div>
+ ویب ہُک 
+<div class="section">
+<h2><span class="icon">🌐</span> ویب ہُک سیٹ اپ <span class="badge badge-pro">PRO</span></h2>
+<div class="card">
+<h3>عام HTTP ویب ہُک</h3>
+<p>ویب ہکس HTTP POST (یا PUT/PATCH) کی درخواست بھیجتے ہیں کسی بھی URL پر جو آپ بیان کرتے ہیں جب بھی کوئی SMS آپ کے اصول سے میل کھاتا ہے۔ یہ اس کے ساتھ ضم کرنے کے لیے بہترین ہے:</p>
+<ul style="margin-top: 8px;">
+<li><strong>زپیئر</strong> - ایک "کیچ ہک" ٹرگر استعمال کریں۔</li>
+<li><strong>آئی ایف ٹی ٹی ٹی</strong> - ویب ہکس ٹرگر استعمال کریں۔</li>
+<li><strong>n8n / بنائیں</strong> - ایک ویب ہک نوڈ استعمال کریں۔</li>
+<li><strong>حسب ضرورت API</strong> - آپ کا اپنا سرور اینڈ پوائنٹ</li>
+</ul>
+<h3 style="margin-top: 16px;">باڈی ٹیمپلیٹ پلیس ہولڈرز</h3>
+<p>اپنے JSON باڈی ٹیمپلیٹ میں ان پلیس ہولڈرز کا استعمال کریں:</p>
+<ul style="margin-top: 4px;">
+<li><code>{sender}</code> - فون نمبر یا بھیجنے والے کی شناخت</li>
+<li><code>{contactName}</code> - رابطہ کا نام (اگر اجازت دی گئی ہو)</li>
+<li><code>{body}</code> - ایس ایم ایس ٹیکسٹ مواد</li>
+<li><code>{date}</code> - ISO 8601 ٹائم اسٹیمپ</li>
+<li><code>{ruleName}</code> - مماثل اصول کا نام</li>
+</ul>
+</div>
+</div>
+ فلٹر رولز 
+<div class="section">
+<h2><span class="icon">🔍</span> فلٹر رولز</h2>
+<div class="card">
+<h3>فلٹر میچنگ کیسے کام کرتی ہے۔</h3>
+<p>ہر فلٹر اصول میں ایک ہوتا ہے۔ <strong>بھیجنے والا فلٹر</strong> اور <strong>مواد فلٹر</strong>. دونوں اختیاری ہیں:</p>
+<ul style="margin-top: 8px;">
+<li><strong>دونوں خالی</strong> - تمام آنے والے SMS سے میل کھاتا ہے۔</li>
+<li><strong>صرف بھیجنے والا فلٹر</strong> - مخصوص بھیجنے والے کے ایس ایم ایس سے میل کھاتا ہے۔</li>
+<li><strong>صرف مواد کا فلٹر</strong> - مخصوص متن پر مشتمل SMS سے میل کھاتا ہے۔</li>
+<li><strong>دونوں سیٹ</strong> - دونوں شرائط مماثل ہونی چاہئیں (اور منطق)</li>
+</ul>
+<div class="tip"><strong>💡 مشورہ:</strong> مماثلت کیس کے لحاظ سے غیر حساس ہے اور ترکی حروف (İ/i، Ş/ş، Ğ/ğ) کو سپورٹ کرتی ہے۔ رابطوں کی اجازت کے ساتھ، آپ رابطے کے نام سے بھی فلٹر کر سکتے ہیں۔</div>
+<h3 style="margin-top: 16px;">ریجیکس فلٹرنگ <span class="badge badge-pro">PRO</span></h3>
+<p>پرو صارفین جدید پیٹرن کی مماثلت کے لیے ریجیکس کو فعال کر سکتے ہیں۔ مثالیں:</p>
+<ul style="margin-top: 4px;">
+<li><code>^\+90</code> - صرف ترکی کے نمبر</li>
+<li><code>OTP|verification|code</code> - OTP پیغامات</li>
+<li><code>\d{6}</code> - 6 ہندسوں کے کوڈ پر مشتمل پیغامات</li>
+</ul>
+</div>
+</div>
+ اجازتیں 
+<div class="section">
+<h2><span class="icon">🔐</span> اجازتیں</h2>
+<div class="card">
+<h3>مطلوبہ اجازتیں۔</h3>
+<ul>
+<li><strong>SMS (SMS وصول کریں)</strong> - بنیادی فعالیت، آنے والے پیغامات کو کیپچر کرنے کے لیے درکار ہے۔</li>
+<li><strong>اطلاعات</strong> - فارورڈنگ اسٹیٹس کی اطلاعات دکھاتا ہے۔</li>
+<li><strong>بیٹری کی اصلاح</strong> - سسٹم کو بیک گراؤنڈ سروس کو ختم کرنے سے روکتا ہے۔</li>
+</ul>
+<h3 style="margin-top: 16px;">اختیاری اجازتیں۔</h3>
+<ul>
+<li><strong>رابطے</strong> - فون نمبر کے بجائے رابطے کے نام سے فلٹرنگ کو قابل بناتا ہے۔</li>
+</ul>
+</div>
+</div>
+ بیٹری 
+<div class="section">
+<h2><span class="icon">🔋</span> بیٹری اور پس منظر کی خدمت</h2>
+<div class="card">
+<h3>ایس ایم ایس فارورڈ کو جاری رکھنا</h3>
+<p>اینڈرائیڈ بیٹری کو بچانے کے لیے بیک گراؤنڈ ایپس کو جارحانہ طور پر مار ڈالتا ہے۔ یہ یقینی بنانے کے لیے کہ ایس ایم ایس فارورڈ قابل اعتماد طریقے سے کام کرے:</p>
+<ol style="margin-top: 8px;">
+<li>پر جائیں۔ <strong>سیٹنگز → بیٹری آپٹیمائزیشن</strong> اور ایس ایم ایس فارورڈ کے لیے اصلاح کو غیر فعال کریں۔</li>
+<li>پر <strong>Xiaomi/MIUI</strong>: سیٹنگز → ایپس → ایپس کا نظم کریں → SMS فارورڈ → آٹو اسٹارٹ: آن</li>
+<li>پر <strong>Huawei/EMUI</strong>: سیٹنگز → بیٹری → ایپ لانچ → SMS فارورڈ → مینوئل مینیج کریں → تمام کو فعال کریں</li>
+<li>پر <strong>سام سنگ</strong>: سیٹنگز → بیٹری → بیٹری کا استعمال → سلیپنگ ایپس → ایس ایم ایس فارورڈ ہٹائیں</li>
+</ol>
+<div class="tip"><strong>⚠️ اہم:</strong> ڈیوائس کے دوبارہ شروع ہونے کے بعد، ایپ کا بوٹ ریسیور خود بخود فارورڈنگ سروس کو دوبارہ شروع کر دے گا اگر یہ فعال ہو گئی تھی۔</div>
+</div>
+</div>
+ خرابی کا سراغ لگانا 
+<div class="section">
+<h2><span class="icon">🔧</span> خرابی کا سراغ لگانا</h2>
+<div class="card">
+<h3>ایس ایم ایس فارورڈ نہیں کیا جا رہا ہے۔</h3>
+<ul>
+<li>چیک کریں کہ فارورڈنگ سروس ہے۔ <strong>آن</strong> (ہوم اسکرین پر ٹوگل کریں)</li>
+<li>تصدیق کریں کہ ایس ایم ایس کی اجازت دی گئی ہے۔ <strong>ترتیبات → اجازتیں۔</strong></li>
+<li>یقینی بنائیں کہ ایپ کے لیے بیٹری کی اصلاح کو غیر فعال کر دیا گیا ہے۔</li>
+<li>چیک کریں کہ آپ کا فلٹر اصول ہے۔ <strong>فعال</strong> اور کم از کم ایک فارورڈنگ ہدف ہے۔</li>
+<li>جائزہ لیں <strong>ڈیبگ لاگز</strong> (ترتیبات → ڈیبگ لاگز) خرابی کی تفصیلی معلومات کے لیے</li>
+</ul>
+</div>
+<div class="card">
+<h3>ای میل بھیجنے میں ناکام</h3>
+<ul>
+<li>اپنے SMTP اسناد کی تصدیق کریں - ایک استعمال کریں۔ <strong>ایپ پاس ورڈ</strong>آپ کا باقاعدہ پاس ورڈ نہیں۔</li>
+<li>چیک کریں کہ SMTP ہوسٹ اور پورٹ درست ہیں۔</li>
+<li>فارورڈنگ ٹارگٹ اسکرین سے ٹیسٹ ای میل بھیجنے کی کوشش کریں۔</li>
+<li>Gmail کے لیے: یقینی بنائیں کہ "کم محفوظ ایپس" یا ایپ پاس ورڈز کنفیگر ہیں۔</li>
+</ul>
+</div>
+<div class="card">
+<h3>ٹیلی گرام پیغامات نہیں آرہے ہیں۔</h3>
+<ul>
+<li>یقینی بنائیں کہ آپ <strong>شروع کیا</strong> بوٹ (بھیجا / شروع یا کوئی پیغام)</li>
+<li>تصدیق کریں کہ بوٹ ٹوکن اور چیٹ آئی ڈی درست ہیں۔</li>
+<li>ٹیلیگرام فارورڈنگ ٹارگٹ اسکرین پر ٹیسٹ بٹن آزمائیں۔</li>
+</ul>
+</div>
+</div>
+ مفت بمقابلہ پرو 
+<div class="section">
+<h2><span class="icon">⭐</span> مفت بمقابلہ پرو</h2>
+<div class="card">
+<table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+<tr style="border-bottom: 1px solid var(--border);">
+<th style="text-align: left; padding: 8px;">فیچر</th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-free">FREE</span></th>
+<th style="text-align: center; padding: 8px;"><span class="badge badge-pro">PRO</span></th>
+</tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">فلٹر کے قواعد</td><td style="text-align: center;">1</td><td style="text-align: center;">لا محدود</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">وصول کنندگان کو ای میل کریں۔</td><td style="text-align: center;">1</td><td style="text-align: center;">10</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">ایس ایم ایس کی تاریخ</td><td style="text-align: center;">50</td><td style="text-align: center;">لا محدود</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">ای میل فارورڈنگ</td><td style="text-align: center;">✅</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">ٹیلی گرام</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">اختلاف</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">ویب ہُک</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr style="border-bottom: 1px solid var(--border);"><td style="padding: 8px;">ریجیکس فلٹرنگ</td><td style="text-align: center;">—</td><td style="text-align: center;">✅</td></tr>
+<tr><td style="padding: 8px;">اشتہارات</td><td style="text-align: center;">جی ہاں</td><td style="text-align: center;">نہیں</td></tr>
+</table>
+</div>
+</div>
+</div></div>
+<div class="footer">
+<p>SMS Forward by Yorulmaz Software</p>
+<p style="margin-top: 4px;">
+<a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Service</a> · <a href="mailto:yorulmazsoftware@gmail.com">Contact</a>
+</p>
+</div>
 </body>
 </html>
